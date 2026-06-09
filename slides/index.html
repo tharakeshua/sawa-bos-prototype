@@ -9,20 +9,28 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
 <style>
   :root {
+    /* Warm editorial paper palette */
     --paper:        #FBFAF7;
     --paper-2:      #F4F2EC;
     --paper-3:      #ECE9DF;
+    --paper-4:      #E2DECF;
     --line:         #E6E3D9;
     --line-2:       #D5D1C2;
+    --line-3:       #B9B5A5;
+    /* Ink */
     --ink:          #0E1714;
     --ink-2:        #1F2A26;
     --ink-3:        #5B7380;
     --ink-4:        #8B9B97;
     --ink-5:        #B1BDB8;
+    /* Accents */
     --lime:         #C7FB55;
     --lime-2:       #B3F03A;
+    --lime-3:       #9DD025;
     --lime-ink:     #1A2A05;
+    /* Semantic */
     --pos:          #0F6B4E;
+    --pos-soft:     #D6EDDE;
     --neg:          #BE3A3A;
     --neg-soft:     #F6D8D5;
     --warn:         #B07309;
@@ -31,27 +39,35 @@
     --blue-soft:    #D8E4FA;
     --rose:         #D8527C;
     --rose-soft:    #F8D9E3;
+    /* Brand */
+    --b-ame: #B7341F;  --b-ame-s: #F4DDD7;
+    --b-bbw: #E498A6;  --b-bbw-s: #FAE6EA;
+    --b-hm:  #CE2434;  --b-hm-s:  #F6D5D9;
+    --b-vs:  #D71F62;  --b-vs-s:  #F8D4E1;
+    --b-cos: #424242;  --b-cos-s: #DEDEDE;
+    --b-ct:  #C8965B;  --b-ct-s:  #F0E0CB;
+    /* Layout */
     --slide-w:      1280px;
     --slide-h:      800px;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body {
-    background: #08100D;
+    background: #DCD8C8;
     color: var(--ink);
     font-family: 'Inter', sans-serif;
     overflow: hidden;
     height: 100%;
   }
-  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.55;transform:scale(.8)} }
-  @keyframes drift-1 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(60px,40px)} }
-  @keyframes drift-2 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-50px,-30px)} }
-  @keyframes shimmer { 0%{transform:translateX(-100%)} 100%{transform:translateX(120%)} }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(.7)} }
+  @keyframes drift-1 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(70px,40px)} }
+  @keyframes drift-2 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-60px,-30px)} }
 
   /* ── Deck shell ───────────────────────────────────────────────── */
   .deck {
     position: fixed; inset: 0;
     display: grid; place-items: center;
-    background: radial-gradient(60% 50% at 50% 30%, #0F1715 0%, #06090B 100%);
+    background:
+      radial-gradient(60% 50% at 50% 30%, #E8E4D2 0%, #D5D1BE 100%);
   }
   .stage {
     width: var(--slide-w); height: var(--slide-h);
@@ -60,140 +76,151 @@
   }
   .slide {
     position: absolute; inset: 0;
-    border-radius: 18px;
+    border-radius: 16px;
     overflow: hidden;
-    box-shadow: 0 40px 90px -30px rgba(0,0,0,.7), 0 0 0 1px rgba(255,255,255,.04);
+    box-shadow:
+      0 36px 80px -32px rgba(35,40,30,.35),
+      0 2px 0 rgba(255,255,255,.6) inset,
+      0 0 0 1px rgba(0,0,0,.04);
     opacity: 0; pointer-events: none;
     transition: opacity .35s ease, transform .45s cubic-bezier(.22,.61,.36,1);
     transform: translateX(40px) scale(.99);
+    background: var(--paper);
+    color: var(--ink);
   }
   .slide.active { opacity: 1; pointer-events: auto; transform: none; }
   .slide.exit-left { transform: translateX(-40px) scale(.99); }
 
   /* slide chrome — slot number + progress */
   .chrome {
-    position: absolute; left: 36px; right: 36px; bottom: 26px;
+    position: absolute; left: 36px; right: 36px; bottom: 24px;
     display: flex; justify-content: space-between; align-items: center;
     z-index: 5; pointer-events: none;
-    font-family: 'JetBrains Mono', monospace; font-size: 10px;
-    text-transform: uppercase; letter-spacing: .18em;
+    font-family: 'JetBrains Mono', monospace; font-size: 9.5px;
+    text-transform: uppercase; letter-spacing: .2em;
+    color: var(--ink-3);
   }
   .chrome .l, .chrome .r { display: inline-flex; align-items: center; gap: 8px; }
   .chrome .dot {
     width: 6px; height: 6px; border-radius: 50%;
-    background: var(--lime); box-shadow: 0 0 6px var(--lime);
+    background: var(--lime-3);
+    box-shadow: 0 0 0 3px rgba(199,251,85,.18);
     animation: pulse 1.6s ease-in-out infinite;
   }
-  .slide.dark .chrome { color: rgba(255,255,255,.5); }
-  .slide.light .chrome { color: var(--ink-3); }
 
   /* nav controls */
   .nav-hint {
     position: fixed; bottom: 14px; left: 50%; transform: translateX(-50%);
     display: inline-flex; align-items: center; gap: 10px;
     padding: 7px 14px; border-radius: 999px;
-    background: rgba(11,16,14,.7); color: rgba(255,255,255,.6);
-    border: 1px solid rgba(255,255,255,.08); backdrop-filter: blur(8px);
+    background: rgba(255,255,255,.85);
+    color: var(--ink-3);
+    border: 1px solid var(--line-2);
+    backdrop-filter: blur(8px);
     font-family: 'JetBrains Mono', monospace; font-size: 9.5px;
     text-transform: uppercase; letter-spacing: .18em;
     z-index: 50;
+    box-shadow: 0 6px 20px -8px rgba(35,40,30,.18);
   }
   .nav-hint .k {
-    background: rgba(255,255,255,.08); color: #fff;
+    background: var(--ink); color: var(--paper);
     padding: 1.5px 6px; border-radius: 4px; font-size: 9px;
   }
   .progress-bar {
     position: fixed; left: 0; right: 0; top: 0; height: 2.5px;
-    background: rgba(255,255,255,.06); z-index: 60;
+    background: rgba(0,0,0,.06); z-index: 60;
   }
   .progress-bar i {
     display: block; height: 100%;
     background: linear-gradient(90deg, var(--lime-2), var(--lime));
     width: 0%;
     transition: width .35s ease;
-    box-shadow: 0 0 10px rgba(199,251,85,.5);
+    box-shadow: 0 0 8px rgba(199,251,85,.55);
   }
 
-  /* ── Slide base palettes ─────────────────────────────────────── */
-  .slide.dark {
-    background:
-      radial-gradient(60% 45% at 18% 12%, rgba(199,251,85,.10) 0%, transparent 60%),
-      radial-gradient(70% 60% at 100% 100%, rgba(64,120,255,.07) 0%, transparent 65%),
-      linear-gradient(180deg, #0B100E 0%, #0F1614 40%, #11181A 100%);
-    color: #ECF1EE;
-  }
-  .slide.light {
-    background: var(--paper);
-    color: var(--ink);
-  }
+  /* ── Slide palettes ─────────────────────────────────────────── */
+  .slide.paper { background: var(--paper); }
   .slide.cream {
     background:
-      radial-gradient(60% 60% at 10% 0%, rgba(199,251,85,.06) 0%, transparent 60%),
+      radial-gradient(70% 60% at 0% 0%, rgba(199,251,85,.06) 0%, transparent 60%),
       linear-gradient(180deg, var(--paper) 0%, var(--paper-2) 100%);
-    color: var(--ink);
+  }
+  .slide.linen {
+    background:
+      radial-gradient(60% 50% at 100% 100%, rgba(45,108,223,.04) 0%, transparent 60%),
+      linear-gradient(160deg, var(--paper-2) 0%, var(--paper-3) 100%);
+  }
+  .slide.warm {
+    background: linear-gradient(140deg, var(--paper-2) 0%, var(--paper-3) 50%, var(--paper-4) 100%);
   }
 
   /* shared inner padding */
   .inner {
     position: absolute; inset: 0;
-    padding: 64px 72px 80px;
+    padding: 60px 68px 70px;
     display: flex; flex-direction: column;
   }
   .inner.center { justify-content: center; }
+  .inner.center-x { align-items: center; text-align: center; }
 
   /* ── Type tokens ─────────────────────────────────────────────── */
   .eyebrow {
     display: inline-flex; align-items: center; gap: 8px;
-    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    font-family: 'JetBrains Mono', monospace; font-size: 10.5px;
     text-transform: uppercase; letter-spacing: .22em; font-weight: 500;
-    padding: 7px 14px; border-radius: 999px;
-    background: rgba(199,251,85,.10); color: var(--lime);
-    border: 1px solid rgba(199,251,85,.25);
-  }
-  .slide.light .eyebrow, .slide.cream .eyebrow {
+    padding: 6px 13px; border-radius: 999px;
     background: var(--ink); color: var(--lime);
-    border-color: var(--ink);
+    border: 1px solid var(--ink);
   }
   .eyebrow::before {
     content: ""; width: 5px; height: 5px; border-radius: 50%;
-    background: var(--lime); box-shadow: 0 0 6px var(--lime);
+    background: var(--lime); box-shadow: 0 0 0 3px rgba(199,251,85,.25);
     animation: pulse 1.4s ease-in-out infinite;
   }
   .eyebrow.danger {
-    background: rgba(190,58,58,.10); color: #FF8B7E;
-    border-color: rgba(190,58,58,.35);
+    background: var(--neg); color: #fff; border-color: var(--neg);
   }
-  .eyebrow.danger::before { background: #FF8B7E; box-shadow: 0 0 6px #FF8B7E; }
-  .slide.light .eyebrow.danger { background: var(--neg); color: #fff; border-color: var(--neg); }
-  .slide.light .eyebrow.danger::before { background: #fff; box-shadow: none; }
+  .eyebrow.danger::before { background: #fff; box-shadow: 0 0 0 3px rgba(255,255,255,.25); }
+  .eyebrow.soft {
+    background: var(--paper-3); color: var(--ink-2); border-color: var(--line);
+  }
+  .eyebrow.soft::before { background: var(--lime-3); }
 
   h1.hero {
     font-family: 'Fraunces', serif; font-weight: 500;
-    font-size: 80px; line-height: 1.02; letter-spacing: -.035em;
-    margin: 22px 0 18px;
+    font-size: 78px; line-height: 1.02; letter-spacing: -.035em;
+    margin: 20px 0 16px; color: var(--ink);
   }
   h1.hero em {
     font-style: italic; font-weight: 500;
-    background: linear-gradient(180deg, var(--lime), #93D124);
-    -webkit-background-clip: text; background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-  .slide.light h1.hero em, .slide.cream h1.hero em {
-    background: linear-gradient(180deg, #1A2A05, #2A4308);
-    -webkit-background-clip: text; background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: var(--lime-ink);
+    background:
+      linear-gradient(180deg, transparent 60%, var(--lime) 60% 96%, transparent 96%);
+    padding: 0 2px;
   }
   h2.hero {
     font-family: 'Fraunces', serif; font-weight: 500;
-    font-size: 56px; line-height: 1.06; letter-spacing: -.03em;
-    margin: 18px 0 14px;
+    font-size: 54px; line-height: 1.05; letter-spacing: -.03em;
+    margin: 16px 0 12px; color: var(--ink);
+  }
+  h2.hero em {
+    font-style: italic; font-weight: 500;
+    color: var(--lime-ink);
+    background:
+      linear-gradient(180deg, transparent 62%, var(--lime) 62% 96%, transparent 96%);
+    padding: 0 2px;
   }
   .sub {
     font-family: 'Inter', sans-serif; font-size: 17px; font-weight: 400;
     line-height: 1.55; max-width: 760px;
-    color: rgba(255,255,255,.72);
+    color: var(--ink-2);
   }
-  .slide.light .sub, .slide.cream .sub { color: var(--ink-2); }
+  .sub.muted { color: var(--ink-3); }
+
+  .footnote {
+    font-family: 'JetBrains Mono', monospace; font-size: 10.5px;
+    color: var(--ink-3); text-transform: uppercase; letter-spacing: .18em;
+  }
 
   /* ── Cover (slide 1) ─────────────────────────────────────────── */
   .cover-bg {
@@ -203,525 +230,559 @@
   .cover-bg .grid {
     position: absolute; inset: 0;
     background-image:
-      linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
+      linear-gradient(rgba(0,0,0,.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,0,0,.04) 1px, transparent 1px);
     background-size: 56px 56px;
     mask-image: radial-gradient(closest-side at 50% 40%, #000 40%, transparent 80%);
     -webkit-mask-image: radial-gradient(closest-side at 50% 40%, #000 40%, transparent 80%);
   }
   .cover-bg .orb {
-    position: absolute; border-radius: 50%; filter: blur(70px); opacity: .5;
+    position: absolute; border-radius: 50%; filter: blur(80px); opacity: .55;
   }
   .cover-bg .o1 {
     width: 380px; height: 380px; left: -110px; top: -80px;
-    background: radial-gradient(closest-side, rgba(199,251,85,.55), transparent 70%);
+    background: radial-gradient(closest-side, rgba(199,251,85,.85), transparent 70%);
     animation: drift-1 18s ease-in-out infinite;
   }
   .cover-bg .o2 {
     width: 460px; height: 460px; right: -120px; bottom: -100px;
-    background: radial-gradient(closest-side, rgba(60,130,255,.4), transparent 70%);
+    background: radial-gradient(closest-side, rgba(216,82,124,.32), transparent 70%);
     animation: drift-2 22s ease-in-out infinite;
   }
   .cover-meta {
-    display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 18px;
-    margin-top: 64px; max-width: 920px;
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px;
+    margin-top: 56px; max-width: 920px;
   }
-  .cover-meta .m {
-    border-left: 1px solid rgba(255,255,255,.10);
-    padding: 4px 0 4px 16px;
-  }
+  .cover-meta .m { border-left: 1px solid var(--line-2); padding: 4px 0 4px 16px; }
   .cover-meta .l {
     font-family: 'JetBrains Mono', monospace; font-size: 9.5px;
     text-transform: uppercase; letter-spacing: .22em;
-    color: rgba(255,255,255,.5); margin-bottom: 8px;
+    color: var(--ink-3); margin-bottom: 8px;
   }
   .cover-meta .v {
-    font-family: 'Fraunces', serif; font-size: 18px; font-weight: 500;
-    letter-spacing: -.015em; line-height: 1.2;
-    color: #fff;
+    font-family: 'Fraunces', serif; font-size: 20px; font-weight: 500;
+    letter-spacing: -.015em; line-height: 1.15; color: var(--ink);
   }
   .cover-foot {
-    position: absolute; left: 72px; right: 72px; top: 52px;
+    position: absolute; left: 68px; right: 68px; top: 52px;
     display: flex; justify-content: space-between; align-items: center;
   }
   .cover-brand { display: flex; align-items: center; gap: 14px; }
   .mono-logo {
-    width: 46px; height: 46px; border-radius: 12px;
-    background: #fff; color: #0B100E;
+    width: 44px; height: 44px; border-radius: 11px;
+    background: var(--ink); color: var(--lime);
     display: grid; place-items: center;
     font-family: 'Fraunces', serif; font-weight: 500; font-size: 22px;
-    position: relative; box-shadow: 0 8px 20px rgba(199,251,85,.18);
+    position: relative; box-shadow: 0 8px 20px -6px rgba(15,20,23,.25);
   }
   .mono-logo::after {
     content: ""; position: absolute; right: -3px; top: -3px;
-    width: 11px; height: 11px; border-radius: 50%;
-    background: var(--lime); border: 2.5px solid #0B100E;
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--lime); border: 2px solid var(--paper);
     animation: pulse 2s ease-in-out infinite;
   }
   .lh-t {
     font-family: 'Fraunces', serif; font-weight: 500; font-size: 22px;
-    letter-spacing: -.02em; color: #fff;
+    letter-spacing: -.02em; color: var(--ink);
   }
-  .lh-t em { font-style: italic; color: rgba(255,255,255,.55); font-weight: 400; }
+  .lh-t em { font-style: italic; color: var(--ink-3); font-weight: 400; }
   .lh-s {
     font-family: 'JetBrains Mono', monospace; font-size: 9.5px;
-    color: rgba(255,255,255,.5); text-transform: uppercase; letter-spacing: .18em;
+    color: var(--ink-3); text-transform: uppercase; letter-spacing: .18em;
     margin-top: 5px;
   }
   .cover-secure {
     display: inline-flex; align-items: center; gap: 8px;
     font-family: 'JetBrains Mono', monospace; font-size: 10px;
-    color: rgba(255,255,255,.6); text-transform: uppercase; letter-spacing: .18em;
+    color: var(--ink-2); text-transform: uppercase; letter-spacing: .18em;
     padding: 7px 14px; border-radius: 999px;
-    background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08);
+    background: var(--paper-3); border: 1px solid var(--line-2);
   }
   .cover-secure::before {
     content: ""; width: 6px; height: 6px; border-radius: 50%;
-    background: var(--lime); box-shadow: 0 0 6px var(--lime);
+    background: var(--lime-3);
+    box-shadow: 0 0 0 3px rgba(199,251,85,.25);
     animation: pulse 1.5s ease-in-out infinite;
   }
 
   /* ── Number callouts ─────────────────────────────────────────── */
   .big {
     font-family: 'Fraunces', serif; font-weight: 500;
-    font-size: 200px; line-height: .9; letter-spacing: -.04em;
+    font-size: 180px; line-height: .9; letter-spacing: -.04em;
+    color: var(--ink);
   }
-  .big em { font-style: italic; font-weight: 500; color: var(--lime); }
+  .big em { font-style: italic; font-weight: 500; color: var(--lime-ink);
+    background: linear-gradient(180deg, transparent 62%, var(--lime) 62% 96%, transparent 96%);
+    padding: 0 4px;
+  }
   .big-row { display: flex; align-items: flex-end; gap: 18px; }
   .big-row .unit {
-    font-family: 'JetBrains Mono', monospace; font-size: 14px;
-    color: rgba(255,255,255,.55); text-transform: uppercase; letter-spacing: .2em;
+    font-family: 'JetBrains Mono', monospace; font-size: 13px;
+    color: var(--ink-3); text-transform: uppercase; letter-spacing: .2em;
     padding-bottom: 22px;
   }
-  .slide.light .big-row .unit, .slide.cream .big-row .unit { color: var(--ink-3); }
 
-  /* ── 3 Truths grid ───────────────────────────────────────────── */
-  .truths {
-    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px;
-    margin-top: 36px;
-  }
-  .truth {
-    background: rgba(255,255,255,.04);
-    border: 1px solid rgba(255,255,255,.08);
-    border-radius: 18px; padding: 26px 24px 24px;
-    position: relative; overflow: hidden;
-  }
-  .truth::before {
-    content: ""; position: absolute; left: 0; right: 0; top: 0; height: 2.5px;
-    background: var(--lime);
-  }
-  .truth .ix {
-    font-family: 'JetBrains Mono', monospace; font-size: 11px;
-    color: var(--lime); text-transform: uppercase; letter-spacing: .22em;
-    margin-bottom: 14px;
-  }
-  .truth h3 {
-    font-family: 'Fraunces', serif; font-size: 30px; font-weight: 500;
-    letter-spacing: -.02em; line-height: 1.12; margin-bottom: 12px;
-    color: #fff;
-  }
-  .truth .num {
-    font-family: 'Fraunces', serif; font-size: 60px; font-weight: 500;
-    color: var(--lime); line-height: 1; margin-bottom: 10px;
-    letter-spacing: -.03em;
-  }
-  .truth p {
-    font-family: 'Inter', sans-serif; font-size: 14px; line-height: 1.55;
-    color: rgba(255,255,255,.65);
-  }
-  .truth .src {
-    margin-top: 14px;
-    font-family: 'JetBrains Mono', monospace; font-size: 9px;
-    color: rgba(255,255,255,.4); text-transform: uppercase; letter-spacing: .18em;
-  }
-  .truth.t-red::before    { background: #FF8B7E; }
-  .truth.t-red .ix, .truth.t-red .num    { color: #FF8B7E; }
-  .truth.t-amber::before  { background: #FFCE74; }
-  .truth.t-amber .ix, .truth.t-amber .num { color: #FFCE74; }
-  .truth.t-blue::before   { background: #7FB8FF; }
-  .truth.t-blue .ix, .truth.t-blue .num  { color: #7FB8FF; }
-
-  /* ── Field evidence stack ────────────────────────────────────── */
-  .evidence-row {
-    display: flex; gap: 56px; align-items: stretch;
-    margin-top: 30px;
-  }
-  .evidence-row .col-left { flex: 1.2; }
-  .evidence-row .col-right { flex: 1; }
-  .e-quote {
-    font-family: 'Fraunces', serif; font-size: 30px; font-weight: 500;
-    line-height: 1.22; letter-spacing: -.015em;
-    color: rgba(255,255,255,.92);
-    border-left: 3px solid var(--lime); padding-left: 18px;
-    margin: 22px 0 30px;
-  }
-  .slide.light .e-quote, .slide.cream .e-quote { color: var(--ink); }
-  .e-quote em { font-style: italic; }
-  .e-source {
-    font-family: 'JetBrains Mono', monospace; font-size: 10px;
-    color: var(--ink-4); text-transform: uppercase; letter-spacing: .18em;
-  }
-  .slide.dark .e-source { color: rgba(255,255,255,.5); }
-
-  /* number tokens reused from prototype's AI brief */
+  /* number pills (reused from prototype's AI brief tokens) */
   .num-pill {
     display: inline-flex; align-items: baseline; gap: 4px;
     font-family: 'JetBrains Mono', monospace; font-weight: 600;
-    padding: 2px 7px; border-radius: 6px; white-space: nowrap;
+    padding: 2px 8px; border-radius: 6px; white-space: nowrap;
   }
-  .num-pill.pos { color: var(--pos); background: rgba(15,107,78,.10); }
-  .num-pill.neg { color: var(--neg); background: rgba(190,58,58,.10); }
-  .num-pill.pct { color: var(--ink); background: rgba(199,251,85,.30); }
-  .num-pill.aed {
-    color: var(--ink); background: rgba(45,108,223,.10); font-weight: 700;
-  }
+  .num-pill.pos { color: var(--pos); background: var(--pos-soft); }
+  .num-pill.neg { color: var(--neg); background: var(--neg-soft); }
+  .num-pill.pct { color: var(--lime-ink); background: var(--lime); font-weight: 700; }
+  .num-pill.aed { color: var(--ink); background: var(--blue-soft); font-weight: 700; }
   .num-pill.aed .cur { color: var(--blue); font-weight: 600; font-size: .82em; }
-  .slide.dark .num-pill.pos { color: #9BF09A; background: rgba(155,240,154,.14); }
-  .slide.dark .num-pill.neg { color: #FF8B7E; background: rgba(255,93,93,.16); }
-  .slide.dark .num-pill.pct { color: var(--lime); background: rgba(199,251,85,.20); }
-  .slide.dark .num-pill.aed { color: #fff; background: rgba(255,255,255,.08); }
-  .slide.dark .num-pill.aed .cur { color: #9DC1FF; }
+  .num-pill.t { color: var(--blue); background: var(--blue-soft); }
+  .num-pill.warn { color: var(--warn); background: var(--warn-soft); }
 
-  /* ── Side-by-side device showcase ───────────────────────────── */
-  .device-shot {
-    border-radius: 14px;
-    border: 1px solid rgba(255,255,255,.08);
-    box-shadow: 0 22px 50px -20px rgba(0,0,0,.55);
-    overflow: hidden;
-    background: #FBFAF7;
+  /* ── 4 Truths grid ───────────────────────────────────────────── */
+  .truths {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
+    margin-top: 28px;
   }
-  .device-shot img { display: block; width: 100%; height: auto; }
-  .slide.light .device-shot, .slide.cream .device-shot {
-    border-color: var(--line);
-    box-shadow: 0 22px 50px -28px rgba(0,0,0,.18);
+  .truth {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 14px; padding: 22px 20px 20px;
+    position: relative; overflow: hidden;
+    box-shadow: 0 4px 14px -8px rgba(35,40,30,.06);
   }
+  .truth::before {
+    content: ""; position: absolute; left: 0; right: 0; top: 0; height: 3px;
+  }
+  .truth .ix {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    text-transform: uppercase; letter-spacing: .22em;
+    margin-bottom: 12px; font-weight: 600;
+  }
+  .truth h3 {
+    font-family: 'Fraunces', serif; font-size: 22px; font-weight: 500;
+    letter-spacing: -.015em; line-height: 1.18; margin-bottom: 10px;
+    color: var(--ink);
+  }
+  .truth .num {
+    font-family: 'Fraunces', serif; font-size: 46px; font-weight: 500;
+    line-height: 1; margin-bottom: 10px; letter-spacing: -.03em;
+  }
+  .truth p {
+    font-family: 'Inter', sans-serif; font-size: 13px; line-height: 1.5;
+    color: var(--ink-2);
+  }
+  .truth .src {
+    margin-top: 12px;
+    font-family: 'JetBrains Mono', monospace; font-size: 8.5px;
+    color: var(--ink-3); text-transform: uppercase; letter-spacing: .18em;
+    line-height: 1.5;
+  }
+  .truth.t-red::before  { background: var(--neg); }
+  .truth.t-red .ix, .truth.t-red .num    { color: var(--neg); }
+  .truth.t-amber::before{ background: var(--warn); }
+  .truth.t-amber .ix, .truth.t-amber .num{ color: var(--warn); }
+  .truth.t-blue::before { background: var(--blue); }
+  .truth.t-blue .ix, .truth.t-blue .num  { color: var(--blue); }
+  .truth.t-rose::before { background: var(--rose); }
+  .truth.t-rose .ix, .truth.t-rose .num  { color: var(--rose); }
+
+  /* ── Six brands footprint ────────────────────────────────────── */
+  .brands-row {
+    display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px;
+    margin-top: 36px;
+  }
+  .b-chip {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 14px; padding: 14px 12px 12px;
+    position: relative; overflow: hidden;
+  }
+  .b-chip::before {
+    content: ""; position: absolute; left: 0; right: 0; top: 0; height: 3px;
+  }
+  .b-chip.ame::before { background: var(--b-ame); }
+  .b-chip.bbw::before { background: var(--b-bbw); }
+  .b-chip.hm::before  { background: var(--b-hm); }
+  .b-chip.vs::before  { background: var(--b-vs); }
+  .b-chip.cos::before { background: var(--b-cos); }
+  .b-chip.ct::before  { background: var(--b-ct); }
+  .b-chip.ulta::before{ background: var(--b-vs); }
+  .b-chip .nm {
+    font-family: 'Fraunces', serif; font-size: 16px; font-weight: 500;
+    letter-spacing: -.01em; color: var(--ink); line-height: 1.1;
+  }
+  .b-chip .code {
+    font-family: 'JetBrains Mono', monospace; font-size: 8.5px;
+    color: var(--ink-3); text-transform: uppercase; letter-spacing: .2em;
+    margin-top: 3px;
+  }
+  .b-chip .loc {
+    margin-top: 10px; font-size: 11px; line-height: 1.4;
+    color: var(--ink-2);
+  }
+  .b-chip .loc b { color: var(--ink); font-weight: 600; }
+
+  /* ── Field evidence stack ────────────────────────────────────── */
+  .e-quote {
+    font-family: 'Fraunces', serif; font-size: 30px; font-weight: 500;
+    line-height: 1.22; letter-spacing: -.015em;
+    color: var(--ink);
+    border-left: 3px solid var(--lime); padding-left: 18px;
+    margin: 22px 0 30px;
+  }
+  .e-quote em { font-style: italic; }
+  .e-source { color: var(--ink-3); }
 
   /* ── Map: Problem → Solution ─────────────────────────────────── */
   .map {
-    display: grid; grid-template-columns: 1fr 60px 1fr; gap: 14px;
-    margin-top: 30px;
+    display: grid; grid-template-columns: 1fr 56px 1fr; gap: 14px;
+    margin-top: 26px;
   }
   .map .col-h {
     grid-column: 1 / 4;
-    display: grid; grid-template-columns: 1fr 60px 1fr; gap: 14px;
+    display: grid; grid-template-columns: 1fr 56px 1fr; gap: 14px;
     margin-bottom: 12px;
   }
   .map .col-h .h {
     font-family: 'JetBrains Mono', monospace; font-size: 10px;
     text-transform: uppercase; letter-spacing: .22em;
-    color: rgba(255,255,255,.55);
+    color: var(--ink-3);
   }
-  .map .col-h .h.right { color: var(--lime); }
+  .map .col-h .h.right { color: var(--pos); }
   .map .pain {
-    background: rgba(190,58,58,.10);
+    background: var(--neg-soft);
     border: 1px solid rgba(190,58,58,.22);
-    border-radius: 14px; padding: 16px 18px 14px;
+    border-radius: 12px; padding: 14px 16px 12px;
   }
   .map .pain .lab {
     font-family: 'JetBrains Mono', monospace; font-size: 10px;
-    color: #FF8B7E; text-transform: uppercase; letter-spacing: .18em;
-    margin-bottom: 7px; font-weight: 700;
+    color: var(--neg); text-transform: uppercase; letter-spacing: .18em;
+    margin-bottom: 6px; font-weight: 700;
   }
   .map .pain .t {
-    font-family: 'Fraunces', serif; font-size: 19px; font-weight: 500;
-    letter-spacing: -.015em; line-height: 1.25; color: #fff;
+    font-family: 'Fraunces', serif; font-size: 17px; font-weight: 500;
+    letter-spacing: -.015em; line-height: 1.25; color: var(--ink);
   }
   .map .arrow {
     display: grid; place-items: center;
-    color: rgba(255,255,255,.5); font-size: 22px;
+    color: var(--ink-3); font-size: 22px;
   }
   .map .arrow .a {
     width: 100%; height: 2px;
-    background: linear-gradient(90deg, rgba(190,58,58,.4), var(--lime));
+    background: linear-gradient(90deg, rgba(190,58,58,.4), var(--lime-3));
     position: relative;
   }
   .map .arrow .a::after {
     content: ""; position: absolute; right: 0; top: -5px;
     width: 0; height: 0;
-    border-left: 8px solid var(--lime);
+    border-left: 8px solid var(--lime-3);
     border-top: 6px solid transparent; border-bottom: 6px solid transparent;
   }
   .map .fix {
-    background: rgba(199,251,85,.10);
-    border: 1px solid rgba(199,251,85,.32);
-    border-radius: 14px; padding: 16px 18px 14px;
+    background: rgba(199,251,85,.18);
+    border: 1px solid rgba(157,208,37,.45);
+    border-radius: 12px; padding: 14px 16px 12px;
   }
   .map .fix .lab {
     font-family: 'JetBrains Mono', monospace; font-size: 10px;
-    color: var(--lime); text-transform: uppercase; letter-spacing: .18em;
-    margin-bottom: 7px; font-weight: 700;
+    color: var(--lime-ink); text-transform: uppercase; letter-spacing: .18em;
+    margin-bottom: 6px; font-weight: 700;
   }
   .map .fix .t {
-    font-family: 'Fraunces', serif; font-size: 19px; font-weight: 500;
-    letter-spacing: -.015em; line-height: 1.25; color: #fff;
+    font-family: 'Fraunces', serif; font-size: 17px; font-weight: 500;
+    letter-spacing: -.015em; line-height: 1.25; color: var(--ink);
   }
 
-  /* ── The receipts: stat grid ─────────────────────────────────── */
+  /* ── Stat grid ─────────────────────────────────────────────── */
   .stats-grid {
-    display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px;
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
     margin-top: 30px;
   }
   .stat {
-    background: rgba(255,255,255,.03);
-    border: 1px solid rgba(255,255,255,.08);
-    border-radius: 16px; padding: 22px 20px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 14px; padding: 22px 20px;
+    box-shadow: 0 4px 14px -8px rgba(35,40,30,.06);
   }
   .stat .n {
-    font-family: 'Fraunces', serif; font-size: 50px; font-weight: 500;
-    letter-spacing: -.03em; line-height: 1; color: #fff;
+    font-family: 'Fraunces', serif; font-size: 48px; font-weight: 500;
+    letter-spacing: -.03em; line-height: 1; color: var(--ink);
   }
-  .stat .n em { font-style: italic; color: var(--lime); }
+  .stat .n em { font-style: italic; color: var(--lime-ink);
+    background: linear-gradient(180deg, transparent 62%, var(--lime) 62% 96%, transparent 96%);
+    padding: 0 4px;
+  }
   .stat .l {
     margin-top: 10px;
     font-family: 'JetBrains Mono', monospace; font-size: 9.5px;
-    color: rgba(255,255,255,.5); text-transform: uppercase; letter-spacing: .18em;
+    color: var(--ink-3); text-transform: uppercase; letter-spacing: .18em;
+    line-height: 1.5;
   }
 
-  /* ── Tools chip cloud ────────────────────────────────────────── */
+  /* ── Tools chip cloud (light) ────────────────────────────────── */
   .tools {
     display: flex; flex-wrap: wrap; gap: 8px;
-    margin-top: 30px; max-width: 900px;
+    margin-top: 28px; max-width: 920px; align-items: center;
   }
   .tools .t {
     font-family: 'JetBrains Mono', monospace; font-size: 11px;
-    color: rgba(255,255,255,.78); text-transform: uppercase; letter-spacing: .14em;
-    padding: 8px 14px; border-radius: 999px;
-    background: rgba(255,255,255,.04);
-    border: 1px solid rgba(255,255,255,.10);
+    color: var(--ink-2); text-transform: uppercase; letter-spacing: .14em;
+    padding: 8px 13px; border-radius: 999px;
+    background: var(--paper);
+    border: 1px solid var(--line-2);
   }
   .tools .t.strike {
-    color: rgba(255,255,255,.4);
+    color: var(--ink-4);
     text-decoration: line-through;
     text-decoration-thickness: 1px;
+    background: var(--paper-2);
   }
   .tools .arrow {
-    color: var(--lime); font-size: 18px;
-    padding: 8px 6px;
+    color: var(--lime-3); font-size: 18px; padding: 8px 6px;
   }
   .tools .t.new {
-    background: var(--lime); color: var(--lime-ink);
-    border-color: var(--lime);
+    background: var(--ink); color: var(--lime);
+    border-color: var(--ink);
     text-transform: none; font-family: 'Inter', sans-serif;
     font-size: 12px; font-weight: 600; letter-spacing: 0;
     padding: 9px 14px;
   }
 
-  /* ── Architecture row (slide 11) ─────────────────────────────── */
+  /* ── Architecture tile grid ─────────────────────────────────── */
   .arch-grid {
-    display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px;
-    margin-top: 36px;
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
+    margin-top: 30px;
   }
   .arch {
-    background: rgba(255,255,255,.04);
-    border: 1px solid rgba(255,255,255,.08);
-    border-radius: 16px; padding: 22px 20px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 14px; padding: 20px 18px;
   }
   .arch .ix {
     font-family: 'JetBrains Mono', monospace; font-size: 10px;
-    color: var(--lime); text-transform: uppercase; letter-spacing: .2em;
-    margin-bottom: 12px;
+    color: var(--lime-ink); background: var(--lime);
+    display: inline-block; padding: 3px 8px; border-radius: 4px;
+    text-transform: uppercase; letter-spacing: .18em;
+    margin-bottom: 12px; font-weight: 700;
   }
   .arch .n {
-    font-family: 'Fraunces', serif; font-size: 50px; font-weight: 500;
-    letter-spacing: -.03em; line-height: 1; color: #fff;
+    font-family: 'Fraunces', serif; font-size: 46px; font-weight: 500;
+    letter-spacing: -.03em; line-height: 1; color: var(--ink);
   }
   .arch .l {
     margin-top: 10px;
-    font-family: 'Inter', sans-serif; font-size: 13px;
-    color: rgba(255,255,255,.6); line-height: 1.45;
+    font-family: 'Inter', sans-serif; font-size: 12.5px;
+    color: var(--ink-2); line-height: 1.45;
   }
 
   /* ── Four roles compare grid ─────────────────────────────────── */
   .roles-grid {
     display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
-    margin-top: 30px;
+    margin-top: 28px;
   }
   .role-card {
-    background: rgba(255,255,255,.04);
-    border: 1px solid rgba(255,255,255,.08);
-    border-radius: 16px; padding: 20px 18px;
-    display: flex; flex-direction: column; gap: 10px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 14px; padding: 18px 16px;
+    display: flex; flex-direction: column; gap: 8px;
+    box-shadow: 0 4px 14px -8px rgba(35,40,30,.06);
   }
   .role-card.lead {
-    background: linear-gradient(160deg, rgba(199,251,85,.16), rgba(255,255,255,.04));
-    border-color: rgba(199,251,85,.35);
+    background: linear-gradient(160deg, var(--lime) 0%, rgba(199,251,85,.55) 100%);
+    border-color: var(--lime-3);
   }
   .role-card .ic {
-    width: 38px; height: 38px; border-radius: 11px;
-    background: rgba(255,255,255,.08);
-    color: var(--lime);
+    width: 36px; height: 36px; border-radius: 10px;
+    background: var(--paper-3);
+    color: var(--ink);
     display: grid; place-items: center;
   }
-  .role-card.lead .ic { background: var(--lime); color: var(--lime-ink); }
+  .role-card.lead .ic { background: var(--ink); color: var(--lime); }
   .role-card .name {
-    font-family: 'Fraunces', serif; font-size: 22px; font-weight: 500;
-    letter-spacing: -.015em; color: #fff; line-height: 1.1;
+    font-family: 'Fraunces', serif; font-size: 20px; font-weight: 500;
+    letter-spacing: -.015em; color: var(--ink); line-height: 1.1;
   }
   .role-card .focus {
-    font-family: 'JetBrains Mono', monospace; font-size: 9.5px;
-    color: rgba(255,255,255,.55); text-transform: uppercase; letter-spacing: .18em;
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    color: var(--ink-3); text-transform: uppercase; letter-spacing: .18em;
   }
+  .role-card.lead .focus { color: var(--lime-ink); opacity: .8; }
   .role-card .focus em {
-    color: var(--lime); font-style: normal;
+    color: var(--ink); font-style: normal; font-weight: 600;
   }
   .role-card .brief {
-    margin-top: 6px;
-    font-family: 'Fraunces', serif; font-size: 14.5px; line-height: 1.45;
-    color: rgba(255,255,255,.82);
+    margin-top: 4px;
+    font-family: 'Fraunces', serif; font-size: 14px; line-height: 1.4;
+    color: var(--ink-2);
   }
   .role-card .brief b {
-    font-weight: 600;
-    background: linear-gradient(180deg, transparent 60%, rgba(199,251,85,.28) 60% 95%, transparent 95%);
+    font-weight: 600; color: var(--ink);
+    background: linear-gradient(180deg, transparent 62%, rgba(199,251,85,.5) 62% 95%, transparent 95%);
     padding: 0 1px;
   }
+  .role-card.lead .brief { color: var(--lime-ink); }
+  .role-card.lead .brief b {
+    background: linear-gradient(180deg, transparent 62%, rgba(255,255,255,.55) 62% 95%, transparent 95%);
+    color: var(--lime-ink);
+  }
   .role-card .access {
-    margin-top: auto;
-    display: flex; flex-wrap: wrap; gap: 5px;
+    margin-top: auto; padding-top: 6px;
+    display: flex; flex-wrap: wrap; gap: 4px;
   }
   .role-card .access .ax {
-    font-family: 'JetBrains Mono', monospace; font-size: 8.5px;
+    font-family: 'JetBrains Mono', monospace; font-size: 8px;
     text-transform: uppercase; letter-spacing: .14em; font-weight: 600;
-    padding: 3px 7px; border-radius: 5px;
-    background: rgba(255,255,255,.06); color: rgba(255,255,255,.75);
-    border: 1px solid rgba(255,255,255,.08);
+    padding: 3px 6px; border-radius: 4px;
+    background: var(--paper-3); color: var(--ink-2);
+    border: 1px solid var(--line);
   }
-  .role-card.lead .access .ax.k {
-    background: var(--lime); color: var(--lime-ink); border-color: var(--lime);
+  .role-card.lead .access .ax {
+    background: var(--ink); color: var(--lime); border-color: var(--ink);
+  }
+  .role-quote {
+    margin-top: 4px;
+    font-family: 'Inter', sans-serif; font-style: italic;
+    font-size: 11px; line-height: 1.35;
+    color: var(--ink-3);
+    padding-top: 6px; border-top: 1px dashed var(--line);
+  }
+  .role-card.lead .role-quote { color: var(--lime-ink); opacity: .75;
+    border-top-color: rgba(26,42,5,.18);
   }
 
   /* ── Brand showcase grid ─────────────────────────────────────── */
   .brand-grid {
     display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
-    margin-top: 30px;
+    margin-top: 26px;
   }
   .brand-card {
-    background: rgba(255,255,255,.04);
-    border: 1px solid rgba(255,255,255,.08);
-    border-radius: 14px; padding: 18px 18px 16px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 14px; padding: 16px 18px 14px;
     position: relative; overflow: hidden;
+    box-shadow: 0 4px 14px -8px rgba(35,40,30,.06);
   }
-  .brand-card::before {
-    content: ""; position: absolute; left: 0; right: 0; top: 0; height: 3px;
-  }
-  .brand-card.ame::before { background: #B7341F; }
-  .brand-card.bbw::before { background: #E498A6; }
-  .brand-card.hm::before  { background: #CE2434; }
-  .brand-card.vs::before  { background: #D71F62; }
-  .brand-card.cos::before { background: #424242; }
-  .brand-card.ct::before  { background: #C8965B; }
+  .brand-card::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 3px; }
+  .brand-card.ame::before { background: var(--b-ame); }
+  .brand-card.bbw::before { background: var(--b-bbw); }
+  .brand-card.hm::before  { background: var(--b-hm); }
+  .brand-card.vs::before  { background: var(--b-vs); }
+  .brand-card.cos::before { background: var(--b-cos); }
+  .brand-card.ct::before  { background: var(--b-ct); }
   .brand-card .nm {
-    font-family: 'Fraunces', serif; font-size: 20px; font-weight: 500;
-    letter-spacing: -.015em; color: #fff; line-height: 1.1;
+    font-family: 'Fraunces', serif; font-size: 19px; font-weight: 500;
+    letter-spacing: -.01em; color: var(--ink); line-height: 1.1;
   }
   .brand-card .code {
-    font-family: 'JetBrains Mono', monospace; font-size: 9px;
-    color: var(--lime); text-transform: uppercase; letter-spacing: .2em;
-    margin-bottom: 8px;
+    font-family: 'JetBrains Mono', monospace; font-size: 8.5px;
+    color: var(--ink-3); text-transform: uppercase; letter-spacing: .18em;
+    margin-bottom: 6px;
   }
   .brand-card .kpis {
-    margin-top: 13px;
-    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px;
+    margin-top: 11px;
+    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px;
   }
   .brand-card .k .v {
-    font-family: 'Fraunces', serif; font-size: 22px; font-weight: 500;
-    letter-spacing: -.02em; line-height: 1; color: #fff;
+    font-family: 'Fraunces', serif; font-size: 21px; font-weight: 500;
+    letter-spacing: -.02em; line-height: 1; color: var(--ink);
   }
   .brand-card .k .l {
     font-family: 'JetBrains Mono', monospace; font-size: 8px;
-    color: rgba(255,255,255,.5); text-transform: uppercase; letter-spacing: .14em;
+    color: var(--ink-3); text-transform: uppercase; letter-spacing: .12em;
     margin-top: 4px; line-height: 1.25;
   }
 
   /* ── Solution feature: split ─────────────────────────────────── */
   .feature-split {
-    display: grid; grid-template-columns: 1fr 1.1fr; gap: 56px;
-    align-items: center; margin-top: 26px;
+    display: grid; grid-template-columns: 1fr 1.15fr; gap: 48px;
+    align-items: center; margin-top: 22px;
     flex: 1;
   }
   .feature-split .desc h2 {
-    font-family: 'Fraunces', serif; font-size: 50px; font-weight: 500;
-    letter-spacing: -.025em; line-height: 1.05; margin-bottom: 16px;
+    font-family: 'Fraunces', serif; font-size: 46px; font-weight: 500;
+    letter-spacing: -.025em; line-height: 1.05; margin-bottom: 14px;
+    color: var(--ink);
   }
   .feature-split .desc h2 em {
-    font-style: italic; color: var(--lime);
-  }
-  .slide.light .feature-split .desc h2 em,
-  .slide.cream .feature-split .desc h2 em {
-    color: var(--lime-ink);
+    font-style: italic; color: var(--lime-ink);
+    background: linear-gradient(180deg, transparent 62%, var(--lime) 62% 95%, transparent 95%);
+    padding: 0 4px;
   }
   .feature-split .desc p {
-    font-size: 16px; line-height: 1.55;
-    color: rgba(255,255,255,.7); max-width: 480px;
-    margin-bottom: 18px;
+    font-size: 15.5px; line-height: 1.55;
+    color: var(--ink-2); max-width: 480px;
+    margin-bottom: 16px;
   }
-  .slide.light .feature-split .desc p,
-  .slide.cream .feature-split .desc p { color: var(--ink-2); }
   .feature-bullets {
-    list-style: none; display: flex; flex-direction: column; gap: 10px;
+    list-style: none; display: flex; flex-direction: column; gap: 9px;
   }
   .feature-bullets li {
-    font-family: 'Inter', sans-serif; font-size: 14px; line-height: 1.45;
-    color: rgba(255,255,255,.78);
-    padding-left: 22px; position: relative;
+    font-family: 'Inter', sans-serif; font-size: 13.5px; line-height: 1.5;
+    color: var(--ink-2);
+    padding-left: 20px; position: relative;
   }
-  .slide.light .feature-bullets li,
-  .slide.cream .feature-bullets li { color: var(--ink-2); }
   .feature-bullets li::before {
     content: "";
     position: absolute; left: 0; top: 8px;
-    width: 8px; height: 8px; border-radius: 50%;
-    background: var(--lime);
-    box-shadow: 0 0 6px rgba(199,251,85,.6);
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--lime-3);
   }
-  .feature-bullets li b {
-    color: #fff; font-weight: 600;
-  }
-  .slide.light .feature-bullets li b,
-  .slide.cream .feature-bullets li b { color: var(--ink); }
+  .feature-bullets li b { color: var(--ink); font-weight: 600; }
 
-  /* ── Outcome (slide 18) ──────────────────────────────────────── */
+  /* device-shot for solution slides */
+  .device-shot {
+    border-radius: 14px;
+    border: 1px solid var(--line-2);
+    box-shadow:
+      0 20px 50px -22px rgba(35,40,30,.22),
+      0 0 0 1px rgba(0,0,0,.02);
+    overflow: hidden;
+    background: var(--paper);
+  }
+  .device-shot img { display: block; width: 100%; height: auto; }
+
+  /* ── Outcome ──────────────────────────────────────────────── */
   .outcome {
     display: grid; grid-template-columns: 1fr 1fr; gap: 80px;
-    align-items: center; margin-top: 50px;
+    align-items: center; margin-top: 40px;
   }
   .outcome .from .lab,
   .outcome .to .lab {
     font-family: 'JetBrains Mono', monospace; font-size: 10px;
-    color: var(--ink-4); text-transform: uppercase; letter-spacing: .22em;
+    color: var(--ink-3); text-transform: uppercase; letter-spacing: .22em;
     margin-bottom: 14px;
   }
   .outcome .from .num,
   .outcome .to .num {
     font-family: 'Fraunces', serif; font-size: 110px; font-weight: 500;
-    letter-spacing: -.04em; line-height: 1;
+    letter-spacing: -.04em; line-height: 1; color: var(--ink);
   }
   .outcome .to .num em {
     font-style: italic;
-    background: linear-gradient(180deg, var(--lime), #93D124);
-    -webkit-background-clip: text; background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: var(--lime-ink);
+    background: linear-gradient(180deg, transparent 62%, var(--lime) 62% 95%, transparent 95%);
+    padding: 0 6px;
   }
-  .outcome .from { opacity: .6; }
-  .outcome .from .num { text-decoration: line-through; text-decoration-thickness: 4px; text-decoration-color: rgba(255,255,255,.3); }
-  .slide.light .outcome .from .num { text-decoration-color: rgba(0,0,0,.2); }
+  .outcome .from { opacity: .55; }
+  .outcome .from .num {
+    text-decoration: line-through;
+    text-decoration-thickness: 4px;
+    text-decoration-color: var(--ink-4);
+  }
   .outcome .sub2 {
-    font-family: 'Inter', sans-serif; font-size: 14px;
-    color: rgba(255,255,255,.6); margin-top: 12px; line-height: 1.55;
-    max-width: 380px;
+    font-family: 'Inter', sans-serif; font-size: 13.5px;
+    color: var(--ink-3); margin-top: 14px; line-height: 1.55;
+    max-width: 360px;
   }
-  .slide.light .outcome .sub2,
-  .slide.cream .outcome .sub2 { color: var(--ink-3); }
 
   /* ── Day in the life timeline ────────────────────────────────── */
   .timeline {
-    margin-top: 30px;
+    margin-top: 26px;
     display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px;
     position: relative;
   }
   .timeline::before {
     content: ""; position: absolute;
     top: 24px; left: 24px; right: 24px; height: 2px;
-    background: linear-gradient(90deg, rgba(255,255,255,.06), rgba(199,251,85,.4), rgba(255,255,255,.06));
+    background: linear-gradient(90deg, var(--line-2), var(--lime-3), var(--line-2));
   }
   .tl {
     position: relative;
@@ -731,103 +792,246 @@
     position: absolute; top: 18px; left: 50%; transform: translateX(-50%);
     width: 14px; height: 14px; border-radius: 50%;
     background: var(--lime);
-    box-shadow: 0 0 12px var(--lime), 0 0 0 5px rgba(11,16,14,1);
+    box-shadow:
+      0 0 0 4px var(--paper),
+      0 0 0 5.5px var(--lime-3);
   }
   .tl .t {
     font-family: 'JetBrains Mono', monospace; font-size: 11px;
-    color: var(--lime); text-transform: uppercase; letter-spacing: .18em;
-    margin-bottom: 8px;
+    color: var(--lime-ink); background: var(--lime);
+    display: inline-block; padding: 2px 7px; border-radius: 4px;
+    text-transform: uppercase; letter-spacing: .15em;
+    margin-bottom: 8px; font-weight: 700;
   }
   .tl h4 {
-    font-family: 'Fraunces', serif; font-size: 18px; font-weight: 500;
+    font-family: 'Fraunces', serif; font-size: 17px; font-weight: 500;
     letter-spacing: -.015em; line-height: 1.2;
-    color: #fff; margin-bottom: 6px;
+    color: var(--ink); margin-bottom: 6px;
   }
   .tl p {
-    font-family: 'Inter', sans-serif; font-size: 12.5px; line-height: 1.5;
-    color: rgba(255,255,255,.6);
+    font-family: 'Inter', sans-serif; font-size: 12px; line-height: 1.5;
+    color: var(--ink-2);
+  }
+  .tl p .src {
+    display: block; margin-top: 6px;
+    font-family: 'JetBrains Mono', monospace; font-size: 8.5px;
+    color: var(--ink-3); text-transform: uppercase; letter-spacing: .14em;
   }
 
-  /* ── Links slide (final CTA) ─────────────────────────────────── */
-  .links-grid {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
-    margin-top: 30px; max-width: 880px;
+  /* ── Quotes panel ───────────────────────────────────────────── */
+  .quotes-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 18px;
+    margin-top: 22px; flex: 1;
   }
-  .lk {
-    background: rgba(255,255,255,.04);
-    border: 1px solid rgba(255,255,255,.08);
-    border-radius: 14px; padding: 18px 20px;
-    text-decoration: none; color: inherit;
-    transition: transform .15s ease, border-color .15s, background .15s;
-    display: flex; flex-direction: column; gap: 4px;
+  .qcard {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 16px; padding: 24px 26px;
+    display: flex; flex-direction: column; justify-content: space-between;
+    box-shadow: 0 4px 14px -8px rgba(35,40,30,.06);
+    position: relative; overflow: hidden;
   }
-  .lk:hover {
-    transform: translateY(-2px);
-    border-color: rgba(199,251,85,.5);
-    background: rgba(199,251,85,.06);
+  .qcard::before {
+    content: ""; position: absolute; left: 0; right: 0; top: 0; height: 3px;
+    background: var(--lime);
   }
-  .lk .lab {
-    font-family: 'JetBrains Mono', monospace; font-size: 9.5px;
-    color: var(--lime); text-transform: uppercase; letter-spacing: .2em;
-  }
-  .lk .t {
+  .qcard.brand-vs::before  { background: var(--b-vs); }
+  .qcard.brand-bbw::before { background: var(--b-bbw); }
+  .qcard.brand-hm::before  { background: var(--b-hm); }
+  .qcard.brand-ame::before { background: var(--b-ame); }
+  .qcard q {
     font-family: 'Fraunces', serif; font-size: 22px; font-weight: 500;
-    letter-spacing: -.015em; color: #fff; line-height: 1.15;
-    margin-top: 6px;
+    letter-spacing: -.015em; line-height: 1.32; color: var(--ink);
+    quotes: "“" "”" "‘" "’";
+    display: block;
   }
-  .lk .u {
-    margin-top: 5px;
-    font-family: 'JetBrains Mono', monospace; font-size: 10.5px;
-    color: rgba(255,255,255,.55); letter-spacing: 0; text-transform: none;
-    word-break: break-all;
+  .qcard q::before, .qcard q::after { color: var(--lime-3); }
+  .qcard .who {
+    margin-top: 18px;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 12px;
+  }
+  .qcard .who .nm {
+    font-family: 'Fraunces', serif; font-size: 14px; font-weight: 500;
+    color: var(--ink); letter-spacing: -.005em;
+  }
+  .qcard .who .meta {
+    font-family: 'JetBrains Mono', monospace; font-size: 9.5px;
+    color: var(--ink-3); text-transform: uppercase; letter-spacing: .18em;
+    text-align: right; line-height: 1.5;
+  }
+  .qcard .who .meta b { color: var(--ink); font-weight: 600; }
+
+  /* full-width single quote card */
+  .qcard.full {
+    grid-column: 1 / 3;
+    padding: 28px 32px;
+    background: linear-gradient(160deg, var(--lime) 0%, var(--paper-2) 110%);
+    border-color: var(--lime-3);
+  }
+  .qcard.full::before { display: none; }
+  .qcard.full q {
+    font-size: 30px; line-height: 1.3;
+  }
+
+  /* ── Hagar's Equation (slide 13) ─────────────────────────────── */
+  .equation {
+    margin: 60px auto 0;
+    display: flex; align-items: center; gap: 24px;
+    font-family: 'Fraunces', serif;
+    font-weight: 500; letter-spacing: -.03em;
+    justify-content: center;
+  }
+  .eq-term {
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+  }
+  .eq-term .ch {
+    width: 130px; height: 130px; border-radius: 50%;
+    display: grid; place-items: center;
+    font-size: 86px; line-height: 1;
+    background: var(--paper);
+    border: 2px solid var(--line-2);
+    color: var(--ink);
+    box-shadow: 0 8px 24px -12px rgba(35,40,30,.12);
+  }
+  .eq-term.r .ch { background: var(--lime); border-color: var(--lime-3); color: var(--lime-ink); }
+  .eq-term.o .ch { background: var(--ink); border-color: var(--ink); color: var(--lime); }
+  .eq-term .l {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    color: var(--ink-3); text-transform: uppercase; letter-spacing: .22em;
+    font-weight: 500;
+  }
+  .eq-term .gloss {
+    font-family: 'Inter', sans-serif; font-size: 13px; font-style: italic;
+    color: var(--ink-3); margin-top: 2px;
+  }
+  .eq-op {
+    font-family: 'Fraunces', serif; font-size: 56px;
+    color: var(--ink-4); font-weight: 400; line-height: 1;
+  }
+
+  /* ── Parallel universe (slide 9) ─────────────────────────────── */
+  .pu-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+    margin-top: 28px;
+  }
+  .pu {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 14px; padding: 18px 18px 16px;
+    position: relative; overflow: hidden;
+  }
+  .pu::before {
+    content: ""; position: absolute; left: 0; right: 0; top: 0; height: 3px;
+  }
+  .pu.ame::before { background: var(--b-ame); }
+  .pu.bbw::before { background: var(--b-bbw); }
+  .pu.hm::before  { background: var(--b-hm); }
+  .pu.vs::before  { background: var(--b-vs); }
+  .pu.cos::before { background: var(--b-cos); }
+  .pu .badge {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    color: var(--ink-3); text-transform: uppercase; letter-spacing: .2em;
+    margin-bottom: 4px;
+  }
+  .pu .name {
+    font-family: 'Fraunces', serif; font-size: 17px; font-weight: 500;
+    color: var(--ink); letter-spacing: -.01em;
+    margin-bottom: 10px;
+  }
+  .pu .what {
+    font-family: 'Inter', sans-serif; font-size: 12.5px; line-height: 1.5;
+    color: var(--ink-2);
+  }
+  .pu .what b { color: var(--ink); font-weight: 600; }
+  .pu .what em {
+    font-style: italic; color: var(--ink-3);
+    display: block; margin-top: 6px; font-size: 11px;
   }
 
   /* ── Section divider ─────────────────────────────────────────── */
   .section-num {
-    font-family: 'JetBrains Mono', monospace; font-size: 13px;
-    color: var(--lime); text-transform: uppercase; letter-spacing: .3em;
-    margin-bottom: 28px;
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    color: var(--lime-ink); background: var(--lime);
+    display: inline-block; padding: 4px 10px; border-radius: 4px;
+    text-transform: uppercase; letter-spacing: .3em;
+    margin-bottom: 24px; font-weight: 700;
   }
   .section-h {
-    font-family: 'Fraunces', serif; font-size: 110px; font-weight: 500;
-    letter-spacing: -.04em; line-height: 1; color: #fff;
+    font-family: 'Fraunces', serif; font-size: 100px; font-weight: 500;
+    letter-spacing: -.04em; line-height: 1; color: var(--ink);
   }
   .section-h em {
-    font-style: italic;
-    background: linear-gradient(180deg, var(--lime), #93D124);
-    -webkit-background-clip: text; background-clip: text;
-    -webkit-text-fill-color: transparent;
+    font-style: italic; color: var(--lime-ink);
+    background: linear-gradient(180deg, transparent 62%, var(--lime) 62% 95%, transparent 95%);
+    padding: 0 6px;
   }
   .section-sub {
-    margin-top: 22px; font-size: 17px; line-height: 1.55;
-    color: rgba(255,255,255,.6); max-width: 640px;
+    margin-top: 22px; font-size: 16.5px; line-height: 1.55;
+    color: var(--ink-2); max-width: 700px;
   }
 
-  /* QR placeholder */
-  .qr {
-    width: 130px; height: 130px;
-    background:
-      conic-gradient(from 0deg, #fff 0 25%, transparent 25% 50%, #fff 50% 75%, transparent 75%) 0 0/12px 12px,
-      #fff;
-    border-radius: 10px;
-    box-shadow: 0 12px 30px -10px rgba(0,0,0,.4);
-    position: relative;
+  /* ── Links slide ────────────────────────────────────────────── */
+  .links-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+    margin-top: 26px; max-width: 880px;
   }
-  .qr::before, .qr::after {
-    content: "";
-    position: absolute; width: 28px; height: 28px;
-    border: 5px solid #0B100E;
-    border-radius: 4px;
-    background: #fff;
+  .lk {
+    background: var(--paper);
+    border: 1px solid var(--line-2);
+    border-radius: 14px; padding: 16px 18px;
+    text-decoration: none; color: inherit;
+    transition: transform .15s ease, border-color .15s, background .15s, box-shadow .15s;
+    display: flex; flex-direction: column; gap: 3px;
   }
-  .qr::before { top: 8px; left: 8px; }
-  .qr::after  { bottom: 8px; left: 8px; }
+  .lk:hover {
+    transform: translateY(-2px);
+    border-color: var(--lime-3);
+    background: rgba(199,251,85,.10);
+    box-shadow: 0 10px 24px -14px rgba(35,40,30,.18);
+  }
+  .lk .lab {
+    font-family: 'JetBrains Mono', monospace; font-size: 9.5px;
+    color: var(--lime-ink); background: var(--lime);
+    display: inline-block; padding: 3px 7px; border-radius: 4px;
+    text-transform: uppercase; letter-spacing: .2em; font-weight: 700;
+    align-self: flex-start;
+  }
+  .lk .t {
+    font-family: 'Fraunces', serif; font-size: 21px; font-weight: 500;
+    letter-spacing: -.015em; color: var(--ink); line-height: 1.15;
+    margin-top: 7px;
+  }
+  .lk .u {
+    margin-top: 4px;
+    font-family: 'JetBrains Mono', monospace; font-size: 10.5px;
+    color: var(--ink-3); letter-spacing: 0; text-transform: none;
+    word-break: break-all;
+  }
 
-  /* ── Scale to viewport ──────────────────────────────────────── */
-  /* JS sets --deck-scale */
+  /* ── Thank-you logo card ────────────────────────────────────── */
+  .scan-card {
+    margin-top: 36px;
+    display: inline-flex; gap: 18px; align-items: center;
+    padding: 14px 22px 14px 16px; border-radius: 14px;
+    background: var(--paper);
+    border: 1px solid var(--line-2);
+    box-shadow: 0 10px 24px -14px rgba(35,40,30,.18);
+  }
+  .scan-card .lab {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    color: var(--lime-ink); background: var(--lime);
+    padding: 3px 7px; border-radius: 4px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: .2em;
+  }
+  .scan-card .url {
+    font-family: 'Fraunces', serif; font-size: 18px; font-weight: 500;
+    color: var(--ink);
+  }
+
+  /* ── Scale ──────────────────────────────────────────────── */
   .stage { transform: scale(var(--deck-scale, 1)); }
 
-  /* Print to PDF (one slide per page) */
   @media print {
     html, body { background: #fff; overflow: visible; }
     .deck { position: static; display: block; }
@@ -850,7 +1054,7 @@
  <div class="stage" id="stage">
 
   <!-- ═══════════════ 01 · COVER ═══════════════ -->
-  <section class="slide dark active" data-slide="1">
+  <section class="slide cream active" data-slide="1">
     <div class="cover-bg">
       <div class="grid"></div>
       <div class="orb o1"></div>
@@ -865,29 +1069,31 @@
           <div class="lh-s">back office system · v5.3</div>
         </div>
       </div>
-      <div class="cover-secure">discovery sprint · live</div>
+      <div class="cover-secure">discovery sprint · evidence-led</div>
     </div>
 
     <div class="inner center">
-      <span class="eyebrow">Discovery Sprint · 02–12 Jun 2026</span>
+      <span class="eyebrow">Discovery Sprint · May–Jun 2026</span>
       <h1 class="hero">Run your floor in <em>real time.</em><br/>One sign-in. Every brand.</h1>
-      <p class="sub" style="margin-top:6px;font-size:19px;max-width:820px;">
-        We watched four roles, six brands and fifteen broken tools across a single Dubai mall.
-        Then we rebuilt the floor's morning into one live surface — tailored by role, true to each brand.
+      <p class="sub" style="margin-top:6px;font-size:18px;max-width:820px;">
+        Six store visits across Mall of the Emirates and Dubai Outlet Mall.
+        Three-and-a-half hours of shadowing on the H&amp;M and COS floor.
+        Two-hours-forty on the VS and BBW counter.
+        One conclusion — every store has built the dashboard themselves, by hand.
       </p>
 
       <div class="cover-meta">
         <div class="m">
-          <div class="l">Source docs</div>
-          <div class="v">30</div>
+          <div class="l">Brands shadowed</div>
+          <div class="v">6 · in-store</div>
+        </div>
+        <div class="m">
+          <div class="l">Transcripts read</div>
+          <div class="v">4 · verbatim</div>
         </div>
         <div class="m">
           <div class="l">Evidence items</div>
-          <div class="v">112</div>
-        </div>
-        <div class="m">
-          <div class="l">Brands modelled</div>
-          <div class="v">6 · live</div>
+          <div class="v">112 · mapped</div>
         </div>
         <div class="m">
           <div class="l">Roles wired</div>
@@ -903,21 +1109,21 @@
   </section>
 
   <!-- ═══════════════ 02 · WHY WE'RE HERE ═══════════════ -->
-  <section class="slide cream" data-slide="2">
+  <section class="slide paper" data-slide="2">
     <div class="inner center">
-      <span class="eyebrow">Why we're here</span>
-      <h1 class="hero" style="font-size:64px;">
+      <span class="eyebrow soft">Why we're here</span>
+      <h1 class="hero" style="font-size:60px;">
         Alshaya runs 50+ brands on a stack that<br/>
         <em>can't answer the simplest question:</em>
       </h1>
-      <p class="sub" style="font-size:22px;max-width:840px;margin-top:8px;">
+      <p class="sub" style="font-size:22px;max-width:880px;margin-top:8px;color:var(--ink);">
         <em style="font-family:'Fraunces',serif;font-style:italic;font-weight:500;">
           "How am I tracking versus my target — right now?"
         </em>
       </p>
-      <p class="sub" style="margin-top:36px;font-family:'JetBrains Mono', monospace;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3);">
-        A discovery brief reconciling thirty source documents,
-        one hundred-and-twelve evidence items, and one production prototype.
+      <p class="footnote" style="margin-top:34px;">
+        A discovery brief reconciling 30 source documents, 112 evidence items,
+        4 store-visit transcripts and one production prototype.
       </p>
     </div>
     <div class="chrome">
@@ -927,17 +1133,14 @@
   </section>
 
   <!-- ═══════════════ 03 · SECTION · THE FIELD ═══════════════ -->
-  <section class="slide dark" data-slide="3">
-    <div class="cover-bg">
-      <div class="grid"></div>
-      <div class="orb o1" style="opacity:.3"></div>
-    </div>
+  <section class="slide warm" data-slide="3">
     <div class="inner center">
-      <div class="section-num">PART ONE · THE FIELD</div>
+      <div class="section-num">Part one · the field</div>
       <h1 class="section-h">The store before<br/>the customer <em>walks in.</em></h1>
       <p class="section-sub">
-        Before opening, a Store Manager loses three hours.
-        Not to customers. To screens, PDFs, WhatsApp threads, and a whiteboard.
+        Before opening, a store manager loses three hours.
+        Not to customers. To PDFs, WhatsApp threads, Excel trackers, and a whiteboard.
+        We watched it happen — in four different brands.
       </p>
     </div>
     <div class="chrome">
@@ -946,11 +1149,63 @@
     </div>
   </section>
 
-  <!-- ═══════════════ 04 · A DAY IN THE LIFE ═══════════════ -->
-  <section class="slide dark" data-slide="4">
+  <!-- ═══════════════ 04 · DISCOVERY FOOTPRINT ═══════════════ -->
+  <section class="slide cream" data-slide="4">
     <div class="inner">
-      <span class="eyebrow">A morning · Sara · Store Manager · AME Dubai Outlet</span>
-      <h2 class="hero" style="font-size:50px;max-width:1000px;">
+      <span class="eyebrow soft">Discovery footprint · in-store</span>
+      <h2 class="hero" style="max-width:1000px;">
+        Six brands. Three-and-a-half hours on the H&amp;M floor.<br/>
+        Two-and-three-quarters on the <em>VS &amp; BBW counter.</em>
+      </h2>
+
+      <div class="brands-row">
+        <div class="b-chip hm">
+          <div class="nm">H&amp;M</div>
+          <div class="code">HM · Mall of Emirates</div>
+          <div class="loc"><b>Tharak</b> · 07 May 2026<br/>Combined narrative</div>
+        </div>
+        <div class="b-chip cos">
+          <div class="nm">COS</div>
+          <div class="code">COS · Mall of Emirates</div>
+          <div class="loc"><b>Tharak</b> · same visit<br/>Reporting workflows</div>
+        </div>
+        <div class="b-chip vs">
+          <div class="nm">Victoria's Secret</div>
+          <div class="code">VS · Mall of Emirates</div>
+          <div class="loc"><b>Sales Mgr</b> · 04 Jun<br/>Hadrin SLT lead</div>
+        </div>
+        <div class="b-chip bbw">
+          <div class="nm">Bath &amp; Body Works</div>
+          <div class="code">BBW · Mall of Emirates</div>
+          <div class="loc"><b>Hagar</b> · 04 Jun<br/>Store Manager · 5 yrs</div>
+        </div>
+        <div class="b-chip ame">
+          <div class="nm">American Eagle</div>
+          <div class="code">AME · Dubai Outlet Mall</div>
+          <div class="loc"><b>Roel</b> · 09 Jun<br/>Outlet store mgr</div>
+        </div>
+        <div class="b-chip ulta">
+          <div class="nm">ULTA</div>
+          <div class="code">ULTA · scoping</div>
+          <div class="loc"><b>Srijana</b> · 22 May<br/>Reporting scoping</div>
+        </div>
+      </div>
+
+      <p class="footnote" style="margin-top:32px;">
+        Field tools observed · ARIS · Vault · Power BI · Arise · OneDrive · SFA · Hadrin · Quick&nbsp;Up · Assist&nbsp;App · MPOS · Teams · WhatsApp · Excel · PDF · RFID handheld · paper whiteboard
+      </p>
+    </div>
+    <div class="chrome">
+      <span class="l"><span class="dot"></span>Where we went</span>
+      <span class="r">04 · discovery footprint</span>
+    </div>
+  </section>
+
+  <!-- ═══════════════ 05 · A DAY IN THE LIFE ═══════════════ -->
+  <section class="slide paper" data-slide="5">
+    <div class="inner">
+      <span class="eyebrow">A morning · Hagar · BBW · Mall of Emirates</span>
+      <h2 class="hero" style="max-width:1040px;">
         Three hours of <em>mental-math</em> before her first customer.
       </h2>
 
@@ -958,233 +1213,301 @@
         <div class="tl">
           <div class="dot"></div>
           <div class="t">07:30</div>
-          <h4>Open the PDF</h4>
-          <p>Bolt/Arise daily report lands in email. Read line-by-line. Transcribe what matters into Excel.</p>
+          <h4>Open Vault</h4>
+          <p>"Sometimes Vault loads very slow." Hagar copies last-day, WTD, MTD, QTD, YTD figures into an Excel by hand "in case the system shuts down."
+            <span class="src">BBW · transcript 04 Jun</span></p>
         </div>
         <div class="tl">
           <div class="dot"></div>
           <div class="t">08:15</div>
           <h4>WhatsApp pulses</h4>
-          <p>Area Mgr asks for last-night actuals. Sara hand-types from the Vault dashboard into WhatsApp.</p>
+          <p>H&amp;M collector store pings the group every <b>3 hours</b> — 12pm, 3pm, 6pm, 9pm, close. Numbers re-typed, forwarded onward.
+            <span class="src">H&amp;M · combined narrative</span></p>
         </div>
         <div class="tl">
           <div class="dot"></div>
           <div class="t">09:00</div>
-          <h4>Whiteboard, again</h4>
-          <p>Wipe yesterday's plan. Re-write today's target by category — from memory, off the PDF.</p>
+          <h4>Re-derive the target</h4>
+          <p>"Target is unrealistic. I'm copying last week, not last year — SAS didn't launch on time." Hagar overrides the system target before DCO.
+            <span class="src">BBW · transcript</span></p>
+        </div>
+        <div class="tl">
+          <div class="dot"></div>
+          <div class="t">09:30</div>
+          <h4>Receive + count</h4>
+          <p>1,000 boxes in. Boxes opened, displayed, never scanned one-by-one — "We are not counting one by one. We cannot."
+            <span class="src">BBW · transcript</span></p>
         </div>
         <div class="tl">
           <div class="dot"></div>
           <div class="t">10:00</div>
-          <h4>The RFID hunt</h4>
-          <p>Best-sellers gone from floor. Vault says in-stock. Run a manual count in the back.</p>
-        </div>
-        <div class="tl">
-          <div class="dot"></div>
-          <div class="t">10:30</div>
-          <h4>Logout loop</h4>
-          <p>Assist app expired mid-sale. Customer at till waiting. Sign in again. Apologise.</p>
+          <h4>DCO · brief the floor</h4>
+          <p>Targets, conversion, IPC, focus-of-the-week, sales strategy. Segments 1–4, every 2 hours. SLT lead per segment.
+            <span class="src">BBW · transcript</span></p>
         </div>
       </div>
 
-      <p class="sub" style="margin-top:38px;font-size:14.5px;color:rgba(255,255,255,.55);max-width:none;font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.16em;font-size:11px;">
-        Source · field shadow EZ001–EZ006 · AME visit sheet EZ101–EZ102
+      <p class="footnote" style="margin-top:34px;">
+        Source · BBW &amp; H&amp;M transcripts · field shadow EZ001–EZ006 · AME visit sheet EZ101–EZ102
       </p>
     </div>
     <div class="chrome">
       <span class="l"><span class="dot"></span>Field evidence</span>
-      <span class="r">04 · a day in the life</span>
+      <span class="r">05 · a day in the life</span>
     </div>
   </section>
 
-  <!-- ═══════════════ 05 · THE THREE TRUTHS ═══════════════ -->
-  <section class="slide dark" data-slide="5">
+  <!-- ═══════════════ 06 · THE FOUR TRUTHS ═══════════════ -->
+  <section class="slide cream" data-slide="6">
     <div class="inner">
-      <span class="eyebrow danger">The three truths · field</span>
-      <h2 class="hero" style="font-size:52px;max-width:980px;">
-        Three problems repeat in every store,<br/>across every brand we shadowed.
+      <span class="eyebrow danger">The four truths · field</span>
+      <h2 class="hero" style="max-width:1040px;">
+        Four pains repeat in every store,<br/>
+        across every brand we shadowed.
       </h2>
 
       <div class="truths">
         <div class="truth t-red">
-          <div class="ix">truth 01 · the pain</div>
+          <div class="ix">truth 01 · pain</div>
           <div class="num">3 hrs</div>
           <h3>Manual reporting<br/>every morning.</h3>
-          <p>
-            PDF to Excel. WhatsApp pulses. Whiteboard re-write.
-            The store opens before the system can answer.
-          </p>
-          <div class="src">source · EZ001–EZ006 · Bolt / Arise / Vault</div>
+          <p>"A lot of manual work." Figures updated every 3 hours into a shared link. A collector store forwards to ops leaders.</p>
+          <div class="src">H&amp;M · combined narrative<br/>EZ001–EZ006</div>
         </div>
         <div class="truth t-amber">
           <div class="ix">truth 02 · inventory</div>
-          <div class="num">20,000</div>
-          <h3>Items counted by<br/>hand every Monday.</h3>
-          <p>
-            RFID trust has collapsed. Vault and ARES are stale or buggy.
-            Teams revert to manual count to trust their floor.
-          </p>
-          <div class="src">source · EZ101–EZ102 · accountability boards</div>
+          <div class="num">8,000</div>
+          <h3>Pieces of shrinkage<br/>per BBW store.</h3>
+          <p>"This is nonsense. Inventory system here, zero — I cannot accept this." Auto-branch ignored. Manual request every Monday.</p>
+          <div class="src">BBW · Hagar · transcript</div>
         </div>
         <div class="truth t-blue">
-          <div class="ix">truth 03 · friction</div>
-          <div class="num">mid-sale</div>
-          <h3>The logout loop hits<br/>at the worst moment.</h3>
-          <p>
-            Personal-shopper apps expire mid-transaction.
-            Customer waits while the associate signs in. Again.
-          </p>
-          <div class="src">source · field shadow · save-the-sale ledgers</div>
+          <div class="ix">truth 03 · trust</div>
+          <div class="num">2 books</div>
+          <h3>Every store keeps a<br/>shadow Excel of Vault.</h3>
+          <p>"Vault is making my life easy — but sometimes there is a system error, data deletion. I have to be on the safe side all the time."</p>
+          <div class="src">BBW · Hagar · transcript</div>
+        </div>
+        <div class="truth t-rose">
+          <div class="ix">truth 04 · targets</div>
+          <div class="num">unreal</div>
+          <h3>System target ignored.<br/>Manager re-derives it.</h3>
+          <p>"I just put the target without analyzing — 15,000 today, first segment without even looking. I'm 5 years in. I know my store."</p>
+          <div class="src">BBW · Hagar · transcript</div>
         </div>
       </div>
     </div>
     <div class="chrome">
       <span class="l"><span class="dot"></span>Pattern across stores</span>
-      <span class="r">05 · the three truths</span>
+      <span class="r">06 · the four truths</span>
     </div>
   </section>
 
-  <!-- ═══════════════ 06 · FIELD EVIDENCE · −29.8% ═══════════════ -->
-  <section class="slide dark" data-slide="6">
+  <!-- ═══════════════ 07 · FIELD EVIDENCE · -29.8% ═══════════════ -->
+  <section class="slide paper" data-slide="7">
     <div class="inner">
       <span class="eyebrow danger">Field evidence · AME · Dubai Outlet Mall · W22</span>
-      <h2 class="hero" style="font-size:50px;max-width:1000px;">
-        Even Alshaya's best read of the day<br/>arrives <em style="background:linear-gradient(180deg,#FF8B7E,#BE3A3A);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;">too late.</em>
+      <h2 class="hero" style="max-width:1040px;">
+        Even Alshaya's best read of the day<br/>arrives <em style="background:linear-gradient(180deg,transparent 62%,var(--neg-soft) 62% 96%,transparent 96%);color:var(--neg);">too late.</em>
       </h2>
 
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:60px;margin-top:40px;align-items:end;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:50px;margin-top:40px;align-items:end;">
         <div>
-          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.2em;margin-bottom:14px;">
-            Actuals · WTD
-          </div>
+          <div class="footnote" style="margin-bottom:14px;">Actuals · WTD</div>
           <div class="big-row">
-            <div class="big" style="font-size:170px;">
-              <span style="font-family:'Fraunces',serif;font-size:60px;font-weight:400;color:rgba(255,255,255,.6);vertical-align:top;margin-right:8px;">AED</span>161,297
+            <div class="big" style="font-size:160px;">
+              <span style="font-family:'Fraunces',serif;font-size:56px;font-weight:400;color:var(--ink-4);vertical-align:top;margin-right:8px;">AED</span>161,297
             </div>
           </div>
-          <div style="margin-top:18px;font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.18em;">
-            of <span style="color:#fff;font-weight:600;">229,736</span> target
+          <div style="margin-top:16px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.18em;">
+            of <span style="color:var(--ink);font-weight:700;">229,736</span> target
           </div>
         </div>
 
-        <div style="text-align:left;padding-left:50px;border-left:1px solid rgba(255,255,255,.1);">
-          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.2em;margin-bottom:14px;">
-            Gap to plan
-          </div>
-          <div style="font-family:'Fraunces',serif;font-size:170px;font-weight:500;line-height:.9;letter-spacing:-.04em;color:#FF8B7E;">−29.8%</div>
-          <div style="margin-top:18px;font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.18em;">
-            Sara didn't know · until she ran the PDF maths
+        <div style="padding-left:50px;border-left:1px solid var(--line-2);">
+          <div class="footnote" style="margin-bottom:14px;">Gap to plan</div>
+          <div style="font-family:'Fraunces',serif;font-size:160px;font-weight:500;line-height:.9;letter-spacing:-.04em;color:var(--neg);">−29.8%</div>
+          <div style="margin-top:16px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.18em;">
+            Roel didn't know — until he ran the Arise &amp; Vault maths
           </div>
         </div>
       </div>
 
-      <p class="sub" style="margin-top:38px;font-size:14px;color:rgba(255,255,255,.5);max-width:none;font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.16em;font-size:11px;">
-        AME visit sheet · transcript EZ101–EZ102 · W22 · 2026
+      <p class="footnote" style="margin-top:38px;">
+        AME · Dubai Outlet · transcript 09 Jun · RFID receiving · Vault · Arise · OneDrive tracker
       </p>
     </div>
     <div class="chrome">
       <span class="l"><span class="dot"></span>Field evidence</span>
-      <span class="r">06 · the gap</span>
+      <span class="r">07 · the gap</span>
     </div>
   </section>
 
-  <!-- ═══════════════ 07 · BEST SELLER AT RISK ═══════════════ -->
-  <section class="slide dark" data-slide="7">
+  <!-- ═══════════════ 08 · BEST SELLER AT RISK ═══════════════ -->
+  <section class="slide cream" data-slide="8">
     <div class="inner">
-      <span class="eyebrow">Best seller · at risk</span>
-      <h2 class="hero" style="font-size:52px;max-width:1000px;">
+      <span class="eyebrow soft">Best seller · at risk</span>
+      <h2 class="hero" style="max-width:1040px;">
         Men's denim drives <span class="num-pill pct" style="font-size:.85em;padding:4px 12px;">69%</span> of sales.<br/>
-        She has <span class="num-pill neg" style="font-size:.85em;padding:4px 12px;">3 weeks cover.</span>
+        Roel has <span class="num-pill neg" style="font-size:.85em;padding:4px 12px;">3 weeks cover.</span>
       </h2>
 
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:60px;margin-top:50px;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:50px;margin-top:42px;">
         <div>
-          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.2em;margin-bottom:14px;">
-            Category mix · AME · today
-          </div>
-          <!-- a small horizontal bar showing 69% denim -->
-          <div style="background:rgba(255,255,255,.06);border-radius:10px;overflow:hidden;height:46px;position:relative;">
+          <div class="footnote" style="margin-bottom:14px;">Category mix · AME · today</div>
+          <div style="background:var(--paper-3);border-radius:10px;overflow:hidden;height:46px;position:relative;border:1px solid var(--line);">
             <div style="position:absolute;left:0;top:0;bottom:0;width:69%;background:linear-gradient(90deg,var(--lime-2),var(--lime));"></div>
-            <div style="position:absolute;left:18px;top:50%;transform:translateY(-50%);font-family:'Fraunces',serif;font-size:22px;font-weight:500;color:var(--lime-ink);">Men's denim · 69%</div>
+            <div style="position:absolute;left:18px;top:50%;transform:translateY(-50%);font-family:'Fraunces',serif;font-size:21px;font-weight:500;color:var(--lime-ink);">Men's denim · 69%</div>
           </div>
-          <div style="margin-top:6px;background:rgba(255,255,255,.04);border-radius:10px;height:30px;position:relative;">
-            <div style="position:absolute;left:0;top:0;bottom:0;width:18%;background:rgba(255,255,255,.18);"></div>
-            <div style="position:absolute;left:14px;top:50%;transform:translateY(-50%);font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(255,255,255,.6);letter-spacing:.12em;text-transform:uppercase;">Tops · 18%</div>
+          <div style="margin-top:6px;background:var(--paper-3);border-radius:10px;height:30px;position:relative;border:1px solid var(--line);">
+            <div style="position:absolute;left:0;top:0;bottom:0;width:18%;background:var(--ink-5);"></div>
+            <div style="position:absolute;left:14px;top:50%;transform:translateY(-50%);font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink-2);letter-spacing:.12em;text-transform:uppercase;">Tops · 18%</div>
           </div>
-          <div style="margin-top:6px;background:rgba(255,255,255,.03);border-radius:10px;height:24px;position:relative;">
-            <div style="position:absolute;left:0;top:0;bottom:0;width:13%;background:rgba(255,255,255,.10);"></div>
-            <div style="position:absolute;left:14px;top:50%;transform:translateY(-50%);font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(255,255,255,.5);letter-spacing:.12em;text-transform:uppercase;">Rest · 13%</div>
+          <div style="margin-top:6px;background:var(--paper-3);border-radius:10px;height:24px;position:relative;border:1px solid var(--line);">
+            <div style="position:absolute;left:0;top:0;bottom:0;width:13%;background:var(--paper-4);"></div>
+            <div style="position:absolute;left:14px;top:50%;transform:translateY(-50%);font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--ink-3);letter-spacing:.12em;text-transform:uppercase;">Rest · 13%</div>
           </div>
         </div>
 
         <div>
-          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.2em;margin-bottom:14px;">
-            Weeks of cover · Men's denim
+          <div class="footnote" style="margin-bottom:14px;">Weeks of cover · Men's denim</div>
+          <div style="font-family:'Fraunces',serif;font-size:120px;font-weight:500;line-height:.9;letter-spacing:-.03em;color:var(--ink);">
+            3 <span style="font-size:50px;color:var(--ink-4);">wks</span>
           </div>
-          <div style="font-family:'Fraunces',serif;font-size:120px;font-weight:500;line-height:.9;letter-spacing:-.03em;color:#fff;">
-            3 <span style="font-size:50px;color:rgba(255,255,255,.4);">wks</span>
-          </div>
-          <p style="margin-top:20px;font-family:'Inter',sans-serif;font-size:15px;line-height:1.55;color:rgba(255,255,255,.7);max-width:380px;">
+          <p style="margin-top:20px;font-family:'Inter',sans-serif;font-size:15px;line-height:1.55;color:var(--ink-2);max-width:380px;">
             The category that pays the rent has barely a sprint of cover left.
-            No alert. No replen flag. Just a whiteboard note and a hope.
+            No alert. No replen flag. Roel learns from the RFID receiving sheet — three deliveries a week.
           </p>
         </div>
       </div>
     </div>
     <div class="chrome">
       <span class="l"><span class="dot"></span>Field evidence</span>
-      <span class="r">07 · best seller at risk</span>
+      <span class="r">08 · best seller at risk</span>
     </div>
   </section>
 
-  <!-- ═══════════════ 08 · THE FRAGMENTED STACK ═══════════════ -->
-  <section class="slide dark" data-slide="8">
+  <!-- ═══════════════ 09 · THE PARALLEL UNIVERSE ═══════════════ -->
+  <section class="slide warm" data-slide="9">
     <div class="inner">
-      <span class="eyebrow">The store's stack · today</span>
-      <h2 class="hero" style="font-size:50px;max-width:1000px;">
+      <span class="eyebrow">A pattern · every store rebuilt the dashboard</span>
+      <h2 class="hero" style="max-width:1040px;">
+        Every store has its own <em>shadow Vault.</em><br/>
+        Built by hand. Kept on OneDrive.
+      </h2>
+      <p class="sub muted" style="max-width:880px;margin-top:4px;">
+        The pattern is uncanny — four different brands, four different store managers,
+        all keeping a parallel hand-typed copy of the same data, "just in case".
+      </p>
+
+      <div class="pu-grid">
+        <div class="pu bbw">
+          <div class="badge">BBW · Hagar</div>
+          <div class="name">A weekly Excel + DCO sheet</div>
+          <p class="what">
+            Manually re-types <b>Last day · WTD · MTD · QTD · YTD</b> from Vault every morning,
+            re-derives segment targets (1–4) before brief.
+            <em>"I have to be on the safe side all the time."</em>
+          </p>
+        </div>
+        <div class="pu vs">
+          <div class="badge">VS · Sales Mgr</div>
+          <div class="name">OneDrive sales tracker · daily &amp; YTD</div>
+          <p class="what">
+            Daily Excel · weekly TY-vs-LY focus pack · VIP appointment list, all hand-built.
+            <em>"Sometimes the Vault is not working — so we track manually."</em>
+          </p>
+        </div>
+        <div class="pu hm">
+          <div class="badge">H&amp;M · Tharak's visit</div>
+          <div class="name">Collector-store shared link · every 3 hrs</div>
+          <p class="what">
+            12pm · 3pm · 6pm · 9pm · close. PDF lines copied into Excel,
+            transactions split by colleague manually.
+            <em>"A lot of manual work."</em>
+          </p>
+        </div>
+        <div class="pu ame">
+          <div class="badge">AME · Roel</div>
+          <div class="name">OneDrive tracker · quarterly BP</div>
+          <p class="what">
+            Outlet store. RFID receiving Sun/Tue/Thu. Own tracker keyed off the brand-team BP Excel,
+            cross-checked against Vault and Arise mobile.
+            <em>"We have our own tracker."</em>
+          </p>
+        </div>
+        <div class="pu cos">
+          <div class="badge">COS · Tharak's visit</div>
+          <div class="name">Till PDF → Excel decomposition</div>
+          <p class="what">
+            "Copy, paste in Excel sheet" — to split transactions by colleague or till.
+            Finance still asks for the manual DSSR even though digital exists.
+          </p>
+        </div>
+        <div class="pu">
+          <div class="badge">Pattern · all six brands</div>
+          <div class="name">"In case the system shuts down."</div>
+          <p class="what">
+            Same workaround, same OneDrive, same anxiety. The dashboard exists —
+            but trust does not, so the shadow book gets the morning, every morning.
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="chrome">
+      <span class="l"><span class="dot"></span>The pattern</span>
+      <span class="r">09 · shadow dashboards</span>
+    </div>
+  </section>
+
+  <!-- ═══════════════ 10 · FRAGMENTED STACK ═══════════════ -->
+  <section class="slide paper" data-slide="10">
+    <div class="inner">
+      <span class="eyebrow soft">The store's stack · today</span>
+      <h2 class="hero" style="max-width:1040px;">
         Fifteen systems. <em>Zero answers.</em>
       </h2>
-      <p class="sub" style="max-width:820px;margin-top:6px;">
-        Every metric Sara needs lives somewhere — just never in the same place.
-        Two-hundred-and-thirty-seven features audited across five product lines;
-        a quarter of them duplicate.
+      <p class="sub" style="max-width:840px;margin-top:4px;">
+        Every metric the floor needs lives somewhere — just never in the same place.
+        The names below are real, named in the four transcripts. None of them is the source of truth on its own.
       </p>
 
       <div class="tools">
-        <span class="t strike">Bolt / Arise PDF</span>
-        <span class="t strike">Power BI Vault</span>
-        <span class="t strike">Hadreen app</span>
-        <span class="t strike">Assist app</span>
-        <span class="t strike">OMS</span>
+        <span class="t strike">ARIS</span>
+        <span class="t strike">Vault</span>
+        <span class="t strike">Power BI</span>
+        <span class="t strike">Arise · mobile</span>
+        <span class="t strike">OneDrive Excel</span>
+        <span class="t strike">SFA segment report</span>
+        <span class="t strike">Hadrin</span>
+        <span class="t strike">Quick Up</span>
+        <span class="t strike">Assist App</span>
+        <span class="t strike">MPOS</span>
         <span class="t strike">SIOCS</span>
-        <span class="t strike">Reporting Vault</span>
+        <span class="t strike">OMS</span>
         <span class="t strike">WhatsApp pulses</span>
-        <span class="t strike">Excel exports</span>
+        <span class="t strike">PDF till reports</span>
         <span class="t strike">Whiteboard</span>
-        <span class="t strike">Manual count</span>
-        <span class="t strike">ARES</span>
         <span class="t strike">RFID handheld</span>
-        <span class="t strike">Personal shopper app</span>
-        <span class="t strike">Email chains</span>
         <span class="arrow">→</span>
         <span class="t new">SAWA BOS · one surface</span>
       </div>
 
-      <p class="sub" style="margin-top:36px;font-size:11px;font-family:'JetBrains Mono',monospace;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:.18em;">
-        15-system audit · 237 features × 5 product lines × 12 pillars feature matrix
+      <p class="footnote" style="margin-top:32px;">
+        15-system audit · 237 features × 5 product lines × 12 pillars · MPOS-primary in 220 of 237
       </p>
     </div>
     <div class="chrome">
       <span class="l"><span class="dot"></span>Today's stack</span>
-      <span class="r">08 · the fragmented stack</span>
+      <span class="r">10 · the fragmented stack</span>
     </div>
   </section>
 
-  <!-- ═══════════════ 09 · THE RECEIPTS (STAT GRID) ═══════════════ -->
-  <section class="slide dark" data-slide="9">
+  <!-- ═══════════════ 11 · THE RECEIPTS ═══════════════ -->
+  <section class="slide cream" data-slide="11">
     <div class="inner">
       <span class="eyebrow">The receipts · what we read</span>
-      <h2 class="hero" style="font-size:50px;max-width:980px;">
+      <h2 class="hero" style="max-width:980px;">
         We didn't guess.<br/>
         We <em>counted.</em>
       </h2>
@@ -1192,216 +1515,227 @@
       <div class="stats-grid">
         <div class="stat"><div class="n">30</div><div class="l">Source documents read</div></div>
         <div class="stat"><div class="n">112</div><div class="l">Evidence items mapped</div></div>
-        <div class="stat"><div class="n">34</div><div class="l">Floor photos collected</div></div>
-        <div class="stat"><div class="n">15</div><div class="l">Systems audited end-to-end</div></div>
+        <div class="stat"><div class="n">4</div><div class="l">Store-visit transcripts</div></div>
+        <div class="stat"><div class="n">~6 hrs</div><div class="l">On the shop floor</div></div>
 
-        <div class="stat"><div class="n">237</div><div class="l">Features across 5 product lines</div></div>
-        <div class="stat"><div class="n">12</div><div class="l">Pillars in the feature matrix</div></div>
+        <div class="stat"><div class="n">15</div><div class="l">Systems audited end-to-end</div></div>
+        <div class="stat"><div class="n">237</div><div class="l">Features × 5 product lines</div></div>
         <div class="stat"><div class="n">4</div><div class="l">Roles shadowed in store</div></div>
         <div class="stat"><div class="n"><em>6</em></div><div class="l">Brands modelled in the prototype</div></div>
       </div>
 
-      <p class="sub" style="margin-top:36px;font-size:11px;font-family:'JetBrains Mono',monospace;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:.18em;">
-        Tracks T6 (Usage Data Analysis) · T8 (AI Knowledge Base)
+      <p class="footnote" style="margin-top:34px;">
+        Tracks T6 (Usage Data Analysis) · T8 (AI Knowledge Base) · 34 floor photos · 4 cornerstones
       </p>
     </div>
     <div class="chrome">
       <span class="l"><span class="dot"></span>The receipts</span>
-      <span class="r">09 · what we read</span>
+      <span class="r">11 · what we read</span>
     </div>
   </section>
 
-  <!-- ═══════════════ 10 · TRANSCRIPTS SPEAK ═══════════════ -->
-  <section class="slide cream" data-slide="10">
-    <div class="inner center">
-      <span class="eyebrow">Transcripts speak · EZ101–EZ102</span>
+  <!-- ═══════════════ 12 · TRANSCRIPTS SPEAK ═══════════════ -->
+  <section class="slide warm" data-slide="12">
+    <div class="inner">
+      <span class="eyebrow">Transcripts speak · verbatim</span>
+      <h2 class="hero" style="font-size:46px;max-width:1040px;">
+        The floor told us — <em>in their own words.</em>
+      </h2>
 
-      <div style="display:grid;grid-template-columns:1fr;gap:30px;margin-top:30px;">
-        <blockquote style="margin:0;border-left:4px solid var(--lime);padding-left:24px;">
-          <p style="font-family:'Fraunces',serif;font-size:38px;font-weight:500;letter-spacing:-.02em;line-height:1.25;color:var(--ink);">
-            "I just need <em style="font-style:italic;">one screen</em> that tells me the weekly plan,
-            actuals, Aura linkage, and where stock is <em style="font-style:italic;">actually</em> on the floor."
-          </p>
-          <footer style="margin-top:14px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.2em;">
-            Sara · Store Mgr · AME · Dubai Outlet Mall · EZ101
-          </footer>
-        </blockquote>
+      <div class="quotes-grid">
+        <div class="qcard brand-bbw">
+          <q>I just put the target without analyzing anything. Today we can do 15,000. First segment, I will write without even looking. I am five years in. I know my store.</q>
+          <div class="who">
+            <div class="nm">Hagar</div>
+            <div class="meta"><b>BBW</b> · Store Manager<br/>Mall of Emirates · 04 Jun</div>
+          </div>
+        </div>
 
-        <blockquote style="margin:0;border-left:4px solid var(--ink);padding-left:24px;">
-          <p style="font-family:'Fraunces',serif;font-size:26px;font-weight:500;letter-spacing:-.01em;line-height:1.35;color:var(--ink-2);">
-            "Every Monday morning the team counts 20,000 items by hand because
-            we can't trust the RFID number."
-          </p>
-          <footer style="margin-top:10px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.2em;">
-            Asst. Store Mgr · EZ102
-          </footer>
-        </blockquote>
+        <div class="qcard brand-bbw">
+          <q>8,000 shrinkage — this is nonsense. The inventory system here, zero. I cannot accept this. So I just trust what I can count.</q>
+          <div class="who">
+            <div class="nm">Hagar</div>
+            <div class="meta"><b>BBW</b> · on the auto-branch report<br/>04 Jun · MOE</div>
+          </div>
+        </div>
+
+        <div class="qcard brand-vs">
+          <q>Sometimes also the Vault is not working — so then we track it manually. We are following from the Vault, but we put it from here.</q>
+          <div class="who">
+            <div class="nm">Sales Manager</div>
+            <div class="meta"><b>VS</b> · Hadrin SLT Lead<br/>Mall of Emirates · 04 Jun</div>
+          </div>
+        </div>
+
+        <div class="qcard brand-hm">
+          <q>A lot of manual work. Figures are updated every three hours. We copy, paste in Excel sheet to split transactions by person.</q>
+          <div class="who">
+            <div class="nm">Combined narrative</div>
+            <div class="meta"><b>H&amp;M / COS</b> · Tharak<br/>Mall of Emirates · 07 May</div>
+          </div>
+        </div>
       </div>
     </div>
     <div class="chrome">
       <span class="l"><span class="dot"></span>What the field asked for</span>
-      <span class="r">10 · transcripts</span>
+      <span class="r">12 · transcripts speak</span>
     </div>
   </section>
 
-  <!-- ═══════════════ 11 · SECTION · THE REBUILD ═══════════════ -->
-  <section class="slide dark" data-slide="11">
-    <div class="cover-bg">
-      <div class="grid"></div>
-      <div class="orb o1" style="opacity:.4"></div>
-      <div class="orb o2" style="opacity:.3"></div>
-    </div>
+  <!-- ═══════════════ 13 · HAGAR'S EQUATION ═══════════════ -->
+  <section class="slide paper" data-slide="13">
     <div class="inner center">
-      <div class="section-num">PART TWO · THE REBUILD</div>
+      <span class="eyebrow">A frame from the floor · BBW · Hagar</span>
+      <h2 class="hero" style="font-size:50px;max-width:1100px;">
+        Hagar runs her store on one equation.<br/>
+        <em>We borrowed it.</em>
+      </h2>
+      <p class="sub muted" style="margin-top:6px;max-width:840px;">
+        "I have a master's in Business Administration. The system is out of my hands.
+        How I respond is on my hands." She wrote this on the whiteboard. It now sits over our backlog.
+      </p>
+
+      <div class="equation">
+        <div class="eq-term"><div class="ch">E</div><div class="l">Event</div><div class="gloss">out of my hands</div></div>
+        <div class="eq-op">+</div>
+        <div class="eq-term r"><div class="ch">R</div><div class="l">Response</div><div class="gloss">on my hands</div></div>
+        <div class="eq-op">=</div>
+        <div class="eq-term o"><div class="ch">O</div><div class="l">Outcome</div><div class="gloss">what we build</div></div>
+      </div>
+
+      <p class="footnote" style="margin-top:50px;text-align:center;">
+        BBW · Hagar · transcript 04 Jun 2026 — "I will not let the broken system define the outcome."
+      </p>
+    </div>
+    <div class="chrome">
+      <span class="l"><span class="dot"></span>The design principle</span>
+      <span class="r">13 · Hagar's equation</span>
+    </div>
+  </section>
+
+  <!-- ═══════════════ 14 · SECTION · THE REBUILD ═══════════════ -->
+  <section class="slide warm" data-slide="14">
+    <div class="inner center">
+      <div class="section-num">Part two · the rebuild</div>
       <h1 class="section-h">One surface.<br/>Tailored by <em>role.</em></h1>
       <p class="section-sub">
-        Four roles, six brands, five channels, nine timeframes — wired to one state engine
-        and one Microsoft Entra sign-in. No PDFs. No pulses. No whiteboard.
+        Four roles, six brands, five channels, nine timeframes —
+        wired to one state engine and one Microsoft Entra sign-in.
+        No PDFs. No pulses. No whiteboard. No shadow Excel.
       </p>
     </div>
     <div class="chrome">
       <span class="l"><span class="dot"></span>Part 2 · the rebuild</span>
-      <span class="r">11 · part 2</span>
+      <span class="r">14 · part 2</span>
     </div>
   </section>
 
-  <!-- ═══════════════ 12 · PROBLEM → SOLUTION MAP ═══════════════ -->
-  <section class="slide dark" data-slide="12">
+  <!-- ═══════════════ 15 · PROBLEM → SOLUTION MAP ═══════════════ -->
+  <section class="slide paper" data-slide="15">
     <div class="inner">
-      <span class="eyebrow">Three truths · three answers</span>
-      <h2 class="hero" style="font-size:50px;max-width:1000px;">
-        Every pain in the field<br/>has a <em>seat</em> in the cockpit.
+      <span class="eyebrow">Four truths · four answers</span>
+      <h2 class="hero" style="max-width:1040px;">
+        Every pain in the field<br/>
+        has a <em>seat in the cockpit.</em>
       </h2>
 
       <div class="map">
         <div class="col-h">
-          <div class="h">field pain</div>
+          <div class="h">field pain · transcript</div>
           <div></div>
           <div class="h right">SAWA BOS answer</div>
         </div>
 
         <div class="pain">
-          <div class="lab">truth 01</div>
-          <div class="t">3 hours of mental-math before opening.</div>
+          <div class="lab">truth 01 · H&amp;M</div>
+          <div class="t">Manual pulses every 3 hours, PDF → Excel by hand.</div>
         </div>
         <div class="arrow"><div class="a"></div></div>
         <div class="fix">
           <div class="lab">live pulse</div>
-          <div class="t">Live revenue · target · pace · refresh — in one card, in one second.</div>
+          <div class="t">Live AED · target · pace · refresh — auto-60s. The shared sheet retires.</div>
         </div>
 
         <div class="pain">
-          <div class="lab">truth 02</div>
-          <div class="t">20,000 items counted by hand on Mondays.</div>
+          <div class="lab">truth 02 · BBW</div>
+          <div class="t">8,000 pieces shrinkage. Auto-branch ignored. Hand-count refused.</div>
         </div>
         <div class="arrow"><div class="a"></div></div>
         <div class="fix">
-          <div class="lab">real-time stock</div>
-          <div class="t">Live-stock card on iPad + mobile, with manual-count fallback for RFID exceptions.</div>
+          <div class="lab">stock + override</div>
+          <div class="t">Real-time stock card on iPad &amp; mobile, with manual-count fallback &amp; mismatch flag.</div>
         </div>
 
         <div class="pain">
-          <div class="lab">truth 03</div>
-          <div class="t">Logout loop · WhatsApp pulses · per-brand login chain.</div>
+          <div class="lab">truth 03 · VS</div>
+          <div class="t">"Vault is not working" → store keeps a parallel Excel.</div>
         </div>
         <div class="arrow"><div class="a"></div></div>
         <div class="fix">
-          <div class="lab">one sign-in</div>
-          <div class="t">Microsoft Entra · trusted store device · sessions outlast the customer queue.</div>
+          <div class="lab">one source · trust visible</div>
+          <div class="t">Refresh stamp · source-of-truth chip on every metric · degrades gracefully when offline.</div>
         </div>
 
         <div class="pain">
-          <div class="lab">truth 04</div>
-          <div class="t">Every brand reads the same metric — even when it's wrong.</div>
+          <div class="lab">truth 04 · BBW · Hagar</div>
+          <div class="t">"System target unrealistic. I re-derive it every morning."</div>
         </div>
         <div class="arrow"><div class="a"></div></div>
         <div class="fix">
-          <div class="lab">brand-personal</div>
-          <div class="t">Aura · Signature · Pink · SCO · Bra-fit — each brand's <em style="font-style:italic;">authentic</em> KPI on its own strip.</div>
+          <div class="lab">ready target · editable</div>
+          <div class="t">Pre-filled target from same-promo last week, editable by Store Mgr — saved into the brief.</div>
         </div>
       </div>
     </div>
     <div class="chrome">
       <span class="l"><span class="dot"></span>Problem to solution</span>
-      <span class="r">12 · the map</span>
+      <span class="r">15 · the map</span>
     </div>
   </section>
 
-  <!-- ═══════════════ 13 · ARCHITECTURE ═══════════════ -->
-  <section class="slide dark" data-slide="13">
+  <!-- ═══════════════ 16 · ARCHITECTURE ═══════════════ -->
+  <section class="slide cream" data-slide="16">
     <div class="inner">
-      <span class="eyebrow">The cockpit · architecture</span>
-      <h2 class="hero" style="font-size:50px;max-width:1000px;">
-        One state engine. <em>Repaints in sync.</em>
+      <span class="eyebrow soft">The cockpit · architecture</span>
+      <h2 class="hero" style="max-width:1040px;">
+        One state engine.<br/><em>Repaints in sync.</em>
       </h2>
-      <p class="sub" style="max-width:880px;">
-        Every <code style="font-family:'JetBrains Mono',monospace;color:var(--lime);">setBrand</code>,
-        <code style="font-family:'JetBrains Mono',monospace;color:var(--lime);">setRole</code>,
-        <code style="font-family:'JetBrains Mono',monospace;color:var(--lime);">setView</code>,
-        <code style="font-family:'JetBrains Mono',monospace;color:var(--lime);">setTab</code>
+      <p class="sub muted" style="max-width:920px;">
+        Every <code style="font-family:'JetBrains Mono',monospace;color:var(--lime-ink);background:var(--lime);padding:1px 6px;border-radius:4px;">setBrand</code>,
+        <code style="font-family:'JetBrains Mono',monospace;color:var(--lime-ink);background:var(--lime);padding:1px 6px;border-radius:4px;">setRole</code>,
+        <code style="font-family:'JetBrains Mono',monospace;color:var(--lime-ink);background:var(--lime);padding:1px 6px;border-radius:4px;">setView</code>,
+        <code style="font-family:'JetBrains Mono',monospace;color:var(--lime-ink);background:var(--lime);padding:1px 6px;border-radius:4px;">setTab</code>
         fires one render — repainting iPad + iPhone in lock-step. Source-of-truth wired:
         sales/till primary · SIOCS for stock · OMS for orders · auto-attributed channels.
       </p>
 
       <div class="arch-grid">
-        <div class="arch">
-          <div class="ix">sign-in</div>
-          <div class="n">1</div>
-          <div class="l">Microsoft Entra · trusted store device. No password UI. No per-brand chain.</div>
-        </div>
-        <div class="arch">
-          <div class="ix">roles</div>
-          <div class="n">4</div>
-          <div class="l">Store Mgr · Asst. Mgr · Sales Assoc. · VM. Each gets its own brief + access.</div>
-        </div>
-        <div class="arch">
-          <div class="ix">brands</div>
-          <div class="n">6</div>
-          <div class="l">AME · BBW · H&amp;M · VS · COS · CT. Brand-personal metrics on every screen.</div>
-        </div>
-        <div class="arch">
-          <div class="ix">channels</div>
-          <div class="n">5</div>
-          <div class="l">SAWA POS · MPOS · Hadreen · Assist Ecom · SCO. Endless Aisle merged in.</div>
-        </div>
+        <div class="arch"><div class="ix">sign-in</div><div class="n">1</div><div class="l">Microsoft Entra · trusted store device. No password UI. No per-brand chain.</div></div>
+        <div class="arch"><div class="ix">roles</div><div class="n">4</div><div class="l">Store Mgr · Asst. Mgr · Sales Assoc. · VM. Each gets its own brief + access.</div></div>
+        <div class="arch"><div class="ix">brands</div><div class="n">6</div><div class="l">AME · BBW · H&amp;M · VS · COS · CT. Brand-personal metrics on every screen.</div></div>
+        <div class="arch"><div class="ix">channels</div><div class="n">5</div><div class="l">SAWA POS · MPOS · Hadrin · Asst. Ecom · SCO. Endless Aisle merged in.</div></div>
 
-        <div class="arch">
-          <div class="ix">timeframes</div>
-          <div class="n">9</div>
-          <div class="l">Today · WTD · Weekly · MTD · Monthly · QTD · Quarter · YTD · Year.</div>
-        </div>
-        <div class="arch">
-          <div class="ix">screens</div>
-          <div class="n">7</div>
-          <div class="l">SSO · Role · Today · Orders · Stock · Team · Me. iPad + iPhone in sync.</div>
-        </div>
-        <div class="arch">
-          <div class="ix">tints</div>
-          <div class="n">6</div>
-          <div class="l">Light brand accent per chip. Subtle. Authentic to each banner.</div>
-        </div>
-        <div class="arch">
-          <div class="ix">cornerstones</div>
-          <div class="n">4</div>
-          <div class="l">Sales/till · SIOCS · OMS · Hadreen — the four sources we trust.</div>
-        </div>
+        <div class="arch"><div class="ix">timeframes</div><div class="n">9</div><div class="l">Today · WTD · Weekly · MTD · Monthly · QTD · Quarter · YTD · Year.</div></div>
+        <div class="arch"><div class="ix">screens</div><div class="n">7</div><div class="l">SSO · Role · Today · Orders · Stock · Team · Me. iPad + iPhone in sync.</div></div>
+        <div class="arch"><div class="ix">tints</div><div class="n">6</div><div class="l">Light brand accent per chip. Subtle. Authentic to each banner.</div></div>
+        <div class="arch"><div class="ix">cornerstones</div><div class="n">4</div><div class="l">Sales/till · SIOCS · OMS · Hadrin — the four sources we trust.</div></div>
       </div>
     </div>
     <div class="chrome">
       <span class="l"><span class="dot"></span>The cockpit</span>
-      <span class="r">13 · architecture</span>
+      <span class="r">16 · architecture</span>
     </div>
   </section>
 
-  <!-- ═══════════════ 14 · SOLUTION · ONE SIGN-IN ═══════════════ -->
-  <section class="slide dark" data-slide="14">
+  <!-- ═══════════════ 17 · SOLUTION · ONE SIGN-IN ═══════════════ -->
+  <section class="slide paper" data-slide="17">
     <div class="inner">
       <span class="eyebrow">Solution · one sign-in</span>
-      <div class="feature-split" style="margin-top:18px;">
+      <div class="feature-split" style="margin-top:14px;">
         <div class="desc">
           <h2>One sign-in.<br/><em>Every brand.</em></h2>
           <p>
-            One Microsoft Entra session — and the cockpit picks up where Sara left off.
+            One Microsoft Entra session — and the cockpit picks up where Hagar left off.
             Trusted store device. No password copy. Sessions designed to outlive a fitting-room queue.
           </p>
           <ul class="feature-bullets">
@@ -1418,29 +1752,27 @@
     </div>
     <div class="chrome">
       <span class="l"><span class="dot"></span>Solution 1</span>
-      <span class="r">14 · one sign-in</span>
+      <span class="r">17 · one sign-in</span>
     </div>
   </section>
 
-  <!-- ═══════════════ 15 · SOLUTION · LIVE PULSE ═══════════════ -->
-  <section class="slide cream" data-slide="15">
+  <!-- ═══════════════ 18 · SOLUTION · LIVE PULSE ═══════════════ -->
+  <section class="slide cream" data-slide="18">
     <div class="inner">
       <span class="eyebrow">Solution · live pulse</span>
-      <div class="feature-split" style="margin-top:18px;">
+      <div class="feature-split" style="margin-top:14px;">
         <div class="desc">
           <h2>One pulse.<br/><em>Real time.</em></h2>
           <p>
-            The live revenue card answers Sara's morning question — and never collapses.
+            The live revenue card answers the morning question — and never collapses.
             AED, target, progress, pace, refresh time — all in one read.
+            The shared collector-store Excel retires the moment this card goes live.
           </p>
           <ul class="feature-bullets">
-            <li>
-              <b>AED 161,297 of 229,736 · 70% pace · -29.8%</b> —
-              the W22 truth, decorated in colour
-            </li>
+            <li><b>AED 161,297 of 229,736 · 70% pace · -29.8%</b> — colour-decorated</li>
             <li><b>Editable target</b> — Store Mgr only; pencil hidden for everyone else</li>
-            <li><b>Refresh stamp</b> — never collapses, auto 60s, mono ink</li>
-            <li><b>Hourly bars</b> with labelled axis — AED (y) × time (x), LIVE pip on the now-bar</li>
+            <li><b>Refresh stamp</b> · auto-60s · never collapses · degrades gracefully if offline</li>
+            <li><b>Hourly bars</b> labelled — AED (y) × time (x), LIVE pip on the now-bar</li>
             <li><b>Colour-coded AI brief</b> — priority red · channel blue · attach amber · your-day lime</li>
           </ul>
         </div>
@@ -1451,15 +1783,15 @@
     </div>
     <div class="chrome">
       <span class="l"><span class="dot"></span>Solution 2</span>
-      <span class="r">15 · live pulse</span>
+      <span class="r">18 · live pulse</span>
     </div>
   </section>
 
-  <!-- ═══════════════ 16 · SOLUTION · FOUR ROLES ═══════════════ -->
-  <section class="slide dark" data-slide="16">
+  <!-- ═══════════════ 19 · SOLUTION · FOUR ROLES ═══════════════ -->
+  <section class="slide paper" data-slide="19">
     <div class="inner">
       <span class="eyebrow">Solution · four roles · four briefs</span>
-      <h2 class="hero" style="font-size:50px;max-width:1000px;">
+      <h2 class="hero" style="max-width:1040px;">
         Same data.<br/>
         Four very different <em>mornings.</em>
       </h2>
@@ -1470,15 +1802,16 @@
             <div class="ic">
               <svg width="20" height="20" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8.5 L4 4 L6 11 L8 2 L10 13 L12 5 L14 9"/></svg>
             </div>
-            <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--lime-ink);background:var(--lime);padding:3px 8px;border-radius:5px;letter-spacing:.2em;font-weight:700;">primary</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--lime);background:var(--ink);padding:3px 8px;border-radius:5px;letter-spacing:.2em;font-weight:700;">primary</div>
           </div>
           <div class="name">Store Mgr</div>
           <div class="focus"><em>P&amp;L</em> · edit targets · all metrics</div>
           <p class="brief">WTD pace <b>70%</b> · need <b>AED 68k</b> Fri–Sat to close gap.</p>
+          <div class="role-quote">"I need a ready target and break down for the segment." — Hagar</div>
           <div class="access">
-            <span class="ax k">edit target</span>
-            <span class="ax k">team-wide</span>
-            <span class="ax k">all KPIs</span>
+            <span class="ax">edit target</span>
+            <span class="ax">team-wide</span>
+            <span class="ax">all KPIs</span>
           </div>
         </div>
 
@@ -1489,6 +1822,7 @@
           <div class="name">Asst. Mgr</div>
           <div class="focus">team · floor · monitor</div>
           <p class="brief">Move <b>Diana</b> to till 1 at <b>18:30</b>. Fitting load drops after 18:00.</p>
+          <div class="role-quote">"Segment 1 we did 1,000 vs 1,200 target. Push S2." — VS SLT lead</div>
           <div class="access">
             <span class="ax">team</span>
             <span class="ax">floor</span>
@@ -1503,6 +1837,7 @@
           <div class="name">Sales Assoc.</div>
           <div class="focus">my saves · my ATV · my target</div>
           <p class="brief">You're <b>+20%</b> vs store ATV. Push <b>denim + tee</b> attach to close 1.8 bundle ask.</p>
+          <div class="role-quote">"Best at bras — bras per transaction is our core KPI." — VS</div>
           <div class="access">
             <span class="ax">own only</span>
             <span class="ax">loyalty cues</span>
@@ -1516,6 +1851,7 @@
           <div class="name">Visual Merch.</div>
           <div class="focus">zone heatmap · floor sets</div>
           <p class="brief">Window <b>W3</b> refresh by <b>14:00</b>. Candle wall conversion strong — refill <b>3-wick</b>.</p>
+          <div class="role-quote">"Best at bras display restock 4× per shift." — VS</div>
           <div class="access">
             <span class="ax">VM tasks</span>
             <span class="ax">floor cues</span>
@@ -1524,27 +1860,28 @@
         </div>
       </div>
 
-      <p class="sub" style="margin-top:24px;font-size:11px;font-family:'JetBrains Mono',monospace;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:.18em;">
-        Same Today screen · same brand · 4 entirely different AI briefs · 4 access matrices
+      <p class="footnote" style="margin-top:18px;">
+        Same Today screen · same brand · 4 entirely different AI briefs · 4 access matrices · quotes verbatim from transcripts
       </p>
     </div>
     <div class="chrome">
       <span class="l"><span class="dot"></span>Solution 3</span>
-      <span class="r">16 · four roles</span>
+      <span class="r">19 · four roles</span>
     </div>
   </section>
 
-  <!-- ═══════════════ 17 · SOLUTION · SIX BRANDS ═══════════════ -->
-  <section class="slide dark" data-slide="17">
+  <!-- ═══════════════ 20 · SOLUTION · SIX BRANDS ═══════════════ -->
+  <section class="slide cream" data-slide="20">
     <div class="inner">
       <span class="eyebrow">Solution · six brands · authentic metrics</span>
-      <h2 class="hero" style="font-size:50px;max-width:1000px;">
+      <h2 class="hero" style="max-width:1040px;">
         Six brands.<br/>
         Six <em>brand-personal</em> KPI strips.
       </h2>
-      <p class="sub" style="max-width:880px;margin-top:6px;">
+      <p class="sub muted" style="max-width:880px;margin-top:4px;">
         "Bra penetration" never appears on a BBW screen again.
-        Each brand's authentic metric — Aura · Signature · SCO · Pink · Quiet-luxe · Tilbury — sits on its own strip.
+        Each brand's authentic metric — Aura · Signature · Pink · SCO · Quiet-luxe · Tilbury — sits on its own strip.
+        Numbers verified against the VS transcript and BBW DCO.
       </p>
 
       <div class="brand-grid">
@@ -1560,11 +1897,11 @@
 
         <div class="brand-card bbw">
           <div class="nm">Bath &amp; Body Works</div>
-          <div class="code">BBW · Dubai Hills</div>
+          <div class="code">BBW · Mall of Emirates</div>
           <div class="kpis">
             <div class="k"><div class="v">58%</div><div class="l">Signature<br/>mix</div></div>
             <div class="k"><div class="v">42%</div><div class="l">3-for-2<br/>attach</div></div>
-            <div class="k"><div class="v">22</div><div class="l">BBW<br/>loyalty</div></div>
+            <div class="k"><div class="v">17K</div><div class="l">Aura<br/>linkage AED</div></div>
           </div>
         </div>
 
@@ -1582,7 +1919,7 @@
           <div class="nm">Victoria's Secret</div>
           <div class="code">VS · Mall of Emirates</div>
           <div class="kpis">
-            <div class="k"><div class="v">48%</div><div class="l">Bra<br/>penetration</div></div>
+            <div class="k"><div class="v">2.1</div><div class="l">BPT<br/>bras/txn</div></div>
             <div class="k"><div class="v">34%</div><div class="l">Pink<br/>mix</div></div>
             <div class="k"><div class="v">8.4</div><div class="l">fitting<br/>→ buy</div></div>
           </div>
@@ -1590,7 +1927,7 @@
 
         <div class="brand-card cos">
           <div class="nm">COS</div>
-          <div class="code">COS · Dubai Mall</div>
+          <div class="code">COS · Mall of Emirates</div>
           <div class="kpis">
             <div class="k"><div class="v">2.6×</div><div class="l">quiet-luxe<br/>ATV</div></div>
             <div class="k"><div class="v">58%</div><div class="l">wool<br/>mix</div></div>
@@ -1611,24 +1948,56 @@
     </div>
     <div class="chrome">
       <span class="l"><span class="dot"></span>Solution 4</span>
-      <span class="r">17 · brand-personal</span>
+      <span class="r">20 · brand-personal</span>
     </div>
   </section>
 
-  <!-- ═══════════════ 18 · SOLUTION · CHANNELS MERGED ═══════════════ -->
-  <section class="slide cream" data-slide="18">
+  <!-- ═══════════════ 21 · SOLUTION · READY TARGET ═══════════════ -->
+  <section class="slide paper" data-slide="21">
+    <div class="inner">
+      <span class="eyebrow">Solution · ready target · break-down by segment</span>
+      <div class="feature-split" style="margin-top:14px;">
+        <div class="desc">
+          <h2>Hagar asked for a ready target.<br/><em>So we built one.</em></h2>
+          <p>
+            The system target was unrealistic — last year's SAS, this year's empty port.
+            Hagar overrides every morning anyway. The cockpit pre-fills the override —
+            same promotion, same weekday, last comparable week — and lets her tweak in one tap.
+          </p>
+          <ul class="feature-bullets">
+            <li><b>Same-promo, last-comparable-week</b> baseline — not last year</li>
+            <li><b>Segment break-down auto-derived</b> — segments 1–4 (every 2 hrs)</li>
+            <li><b>One-tap edit</b> by Store Mgr — saved into the morning DCO</li>
+            <li><b>Promotion calendar aware</b> — flags SAS, BOGO, 5-for-150 conflicts</li>
+            <li><b>Footfall trend</b> · not money trend — Hagar's exact ask</li>
+          </ul>
+        </div>
+        <div class="device-shot">
+          <img src="img/07-final-ame.png" alt="Editable target with segment break-down" />
+        </div>
+      </div>
+    </div>
+    <div class="chrome">
+      <span class="l"><span class="dot"></span>Solution 5 · Hagar's ask</span>
+      <span class="r">21 · ready target</span>
+    </div>
+  </section>
+
+  <!-- ═══════════════ 22 · SOLUTION · CHANNELS MERGED ═══════════════ -->
+  <section class="slide cream" data-slide="22">
     <div class="inner">
       <span class="eyebrow">Solution · drillable channels</span>
-      <div class="feature-split" style="margin-top:18px;">
+      <div class="feature-split" style="margin-top:14px;">
         <div class="desc">
           <h2>Five channels.<br/><em>One funnel.</em></h2>
           <p>
             Endless Aisle was a metric in search of an owner —
             we merged it into <b>Assisted Ecom</b> across all six brands.
-            The funnel reads cleaner. The data is auto-attributed. Sara stops scanning manually.
+            The funnel reads cleaner. Hadrin orders, MPOS sales, SAWA POS receipts —
+            all attributed without copy-paste.
           </p>
           <ul class="feature-bullets">
-            <li><b>SAWA POS</b> · <b>MPOS</b> · <b>Hadreen</b> · <b>Asst. Ecom</b> · <b>SCO</b></li>
+            <li><b>SAWA POS</b> · <b>MPOS</b> · <b>Hadrin</b> · <b>Asst. Ecom</b> · <b>SCO</b></li>
             <li><b>Tap a card to drill</b> — every channel opens its own deeper view</li>
             <li><b>Auto-attribution</b> — no manual scanning, zero data conflicts</li>
             <li><b>Endless Aisle merged</b> — its volume rolls into Assisted Ecom</li>
@@ -1641,21 +2010,17 @@
       </div>
     </div>
     <div class="chrome">
-      <span class="l"><span class="dot"></span>Solution 5</span>
-      <span class="r">18 · channels merged</span>
+      <span class="l"><span class="dot"></span>Solution 6</span>
+      <span class="r">22 · channels merged</span>
     </div>
   </section>
 
-  <!-- ═══════════════ 19 · OUTCOME ═══════════════ -->
-  <section class="slide dark" data-slide="19">
-    <div class="cover-bg">
-      <div class="grid"></div>
-      <div class="orb o1" style="opacity:.5"></div>
-    </div>
+  <!-- ═══════════════ 23 · OUTCOME ═══════════════ -->
+  <section class="slide warm" data-slide="23">
     <div class="inner center">
       <span class="eyebrow">The outcome</span>
-      <h1 class="hero" style="font-size:64px;max-width:1000px;">
-        Sara's morning compresses<br/>
+      <h1 class="hero" style="font-size:58px;max-width:1040px;">
+        Hagar's morning compresses<br/>
         from <em>three hours</em> to <em>thirty seconds.</em>
       </h1>
 
@@ -1663,27 +2028,28 @@
         <div class="from">
           <div class="lab">today · 15 systems</div>
           <div class="num">3 hrs</div>
-          <p class="sub2">PDF → Excel → WhatsApp → Whiteboard → Vault → Manual count → Repeat.</p>
+          <p class="sub2">Vault → Excel → WhatsApp → Whiteboard → Arise → PDF → Manual count → Re-derive target.</p>
         </div>
         <div class="to">
           <div class="lab">with SAWA BOS</div>
           <div class="num"><em>30s</em></div>
-          <p class="sub2">Microsoft sign-in · pick role · read pulse · acknowledge AI brief · open the door.</p>
+          <p class="sub2">Microsoft sign-in · pick role · read pulse · accept the ready target · open the door.</p>
         </div>
       </div>
     </div>
     <div class="chrome">
       <span class="l"><span class="dot"></span>Outcome</span>
-      <span class="r">19 · 3 hours → 30 seconds</span>
+      <span class="r">23 · 3 hours → 30 seconds</span>
     </div>
   </section>
 
-  <!-- ═══════════════ 20 · WHAT SHIPS ═══════════════ -->
-  <section class="slide dark" data-slide="20">
+  <!-- ═══════════════ 24 · WHAT SHIPS ═══════════════ -->
+  <section class="slide paper" data-slide="24">
     <div class="inner">
       <span class="eyebrow">What ships today · v5.3</span>
-      <h2 class="hero" style="font-size:50px;max-width:1000px;">
-        A live prototype<br/>you can <em>open right now.</em>
+      <h2 class="hero" style="max-width:1040px;">
+        A live prototype<br/>
+        you can <em>open right now.</em>
       </h2>
 
       <div class="links-grid">
@@ -1705,51 +2071,55 @@
         <a class="lk" href="../sawa-bos-prototype.zip" target="_blank" rel="noopener">
           <div class="lab">download · runs offline</div>
           <div class="t">Get the zip →</div>
-          <div class="u">sawa-bos-prototype.zip · 35 KB · README + start.sh + start.bat</div>
+          <div class="u">sawa-bos-prototype.zip · README + start.sh + start.bat</div>
         </a>
       </div>
 
-      <p class="sub" style="margin-top:30px;font-size:13px;color:rgba(255,255,255,.55);max-width:880px;">
-        Six brands. Four roles. Five channels. Nine timeframes. Real-time stock.
-        Colour-coded AI brief. iPhone 14 Pro Max + iPad Pro 11", auto-fit to any browser.
+      <p class="sub muted" style="margin-top:24px;font-size:13px;max-width:880px;">
+        Six brands. Four roles. Five channels. Nine timeframes. Real-time stock with manual override.
+        Colour-coded AI brief tailored per role. iPhone 14 Pro Max + iPad Pro 11", auto-fit to any browser.
         Single HTML file. No build. No backend. No install.
       </p>
     </div>
     <div class="chrome">
       <span class="l"><span class="dot"></span>What ships</span>
-      <span class="r">20 · links</span>
+      <span class="r">24 · links</span>
     </div>
   </section>
 
-  <!-- ═══════════════ 21 · THANK YOU ═══════════════ -->
-  <section class="slide dark" data-slide="21">
+  <!-- ═══════════════ 25 · THANK YOU ═══════════════ -->
+  <section class="slide cream" data-slide="25">
     <div class="cover-bg">
       <div class="grid"></div>
       <div class="orb o1"></div>
       <div class="orb o2"></div>
     </div>
-    <div class="inner center" style="text-align:center;align-items:center;">
+    <div class="inner center center-x">
       <span class="eyebrow">Thank you</span>
-      <h1 class="hero" style="font-size:96px;max-width:1100px;">
+      <h1 class="hero" style="font-size:84px;max-width:1100px;">
         Built for the floor.<br/>
         <em>By someone who shadowed it.</em>
       </h1>
-      <p class="sub" style="font-size:16px;margin-top:24px;max-width:680px;text-align:center;">
-        SAWA BOS · v5.3 · Discovery Sprint
+      <p class="sub muted" style="font-size:15px;margin-top:20px;max-width:760px;text-align:center;">
+        SAWA BOS · v5.3 · Discovery Sprint · 02–12 Jun 2026
         <br/>
         Project owner · Tharakeswara Reddy &nbsp;·&nbsp; Sponsor · Kalai Selvam
         <br/>
-        Sprint window · 02–12 Jun 2026
+        Fieldwork · Mall of the Emirates · Dubai Outlet Mall · 6 brands · 4 transcripts
       </p>
 
-      <div style="margin-top:42px;display:inline-flex;gap:20px;align-items:center;padding:14px 22px 14px 16px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);">
-        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(255,255,255,.55);text-transform:uppercase;letter-spacing:.2em;">scan / open</div>
-        <div style="font-family:'Fraunces',serif;font-size:18px;font-weight:500;color:var(--lime);">tharakeshua.github.io/sawa-bos-prototype</div>
+      <div class="scan-card">
+        <div class="lab">scan / open</div>
+        <div class="url">tharakeshua.github.io/sawa-bos-prototype</div>
       </div>
+
+      <p class="footnote" style="margin-top:32px;text-align:center;">
+        With thanks to Hagar (BBW), the VS Sales Manager, Roel (AME), and the H&amp;M / COS colleagues who told the truth.
+      </p>
     </div>
     <div class="chrome">
       <span class="l"><span class="dot"></span>End of deck</span>
-      <span class="r">21 · thank you</span>
+      <span class="r">25 · thank you</span>
     </div>
   </section>
 
@@ -1770,7 +2140,6 @@
 
   function setSlide(n) {
     n = Math.max(0, Math.min(slides.length - 1, n));
-    const prev = idx;
     idx = n;
     slides.forEach((s, i) => {
       s.classList.toggle('active', i === idx);
@@ -1778,14 +2147,12 @@
     });
     document.getElementById('progBar').style.width =
       Math.round(((idx + 1) / slides.length) * 100) + '%';
-    // Update URL hash for shareable deep links
     history.replaceState(null, '', '#' + (idx + 1));
   }
 
   function next() { setSlide(idx + 1); }
   function prev() { setSlide(idx - 1); }
 
-  // Keyboard
   window.addEventListener('keydown', (e) => {
     if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
     switch (e.key) {
@@ -1812,13 +2179,11 @@
     }
   });
 
-  // Click on a slide to advance
   slides.forEach(s => s.addEventListener('click', (e) => {
-    if (e.target.closest('a')) return; // don't intercept links
+    if (e.target.closest('a')) return;
     next();
   }));
 
-  // Open deep link by hash
   function bootFromHash() {
     const m = location.hash.match(/^#(\d+)$/);
     if (m) setSlide(parseInt(m[1], 10) - 1);
@@ -1827,7 +2192,6 @@
   window.addEventListener('hashchange', bootFromHash);
   bootFromHash();
 
-  // Fit slide stage to viewport
   function fit() {
     const stage = document.getElementById('stage');
     const sw = 1280, sh = 800;
