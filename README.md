@@ -7,6 +7,18 @@ Boots into a full-screen animated SSO → role picker → dual-device cockpit (i
 
 ---
 
+## Two artifacts in one package
+
+| Artifact | URL                                                              | What it is                                                     |
+|----------|------------------------------------------------------------------|----------------------------------------------------------------|
+| Prototype | <https://tharakeshua.github.io/sawa-bos-prototype/>             | The live iPad + iPhone 14 Pro Max cockpit                       |
+| Slide deck | <https://tharakeshua.github.io/sawa-bos-prototype/slides/>      | 21-slide Discovery Sprint narrative (problem → field → solution → outcome) |
+
+Locally, run **`./start.sh`** from the root to launch the prototype, or
+**`./slides/start.sh`** to launch the slide deck on its own port.
+
+---
+
 ## Run it (any machine, no install)
 
 ### macOS / Linux
