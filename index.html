@@ -915,10 +915,10 @@
   .hourly-chart {
     position: relative;
     display: grid;
-    grid-template-columns: 30px 1fr;
-    grid-template-rows: 1fr 18px;
+    grid-template-columns: 32px 1fr;
+    grid-template-rows: 1fr 22px;
     gap: 4px;
-    height: 150px;
+    height: 158px;
   }
   .y-axis, .hourly-chart .y {
     display: flex; flex-direction: column; justify-content: space-between;
@@ -966,12 +966,26 @@
     padding: 2px 5px; border-radius: 4px; letter-spacing: .14em; font-weight: 700;
   }
   .bar.dim { background: var(--paper-2); }
-  .x-axis {
+  .x-axis,
+  .hourly-chart .x {
     grid-column: 2;
     display: grid; grid-template-columns: repeat(13, 1fr); gap: 4px;
-    font-family: 'JetBrains Mono', monospace; font-size: 8.5px;
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
     color: var(--ink-4); text-align: center;
-    letter-spacing: .04em; padding: 0 4px;
+    letter-spacing: .02em; padding: 0 4px;
+    align-items: start;
+  }
+  .x-axis span,
+  .hourly-chart .x span {
+    display: block; line-height: 1;
+  }
+  /* tick marks under each bar */
+  .x-axis span::before,
+  .hourly-chart .x span::before {
+    content: "";
+    display: block; width: 1px; height: 4px;
+    background: var(--line-2);
+    margin: 0 auto 3px;
   }
   .axis-corner {
     font-family: 'JetBrains Mono', monospace; font-size: 8.5px;
@@ -1685,9 +1699,9 @@
   .ph-hourly .h .r { color: var(--ink-4); }
   .ph-hourly .chart {
     display: grid;
-    grid-template-columns: 24px 1fr;
-    grid-template-rows: 1fr 14px;
-    gap: 3px; height: 110px;
+    grid-template-columns: 26px 1fr;
+    grid-template-rows: 1fr 18px;
+    gap: 3px; height: 118px;
   }
   .ph-hourly .y {
     display: flex; flex-direction: column; justify-content: space-between;
@@ -1721,9 +1735,16 @@
   .ph-hourly .x {
     grid-column: 2;
     display: grid; grid-template-columns: repeat(13, 1fr); gap: 2px;
-    font-family: 'JetBrains Mono', monospace; font-size: 7.5px;
+    font-family: 'JetBrains Mono', monospace; font-size: 8px;
     color: var(--ink-4); text-align: center; padding: 0 2px;
-    letter-spacing: .02em;
+    align-items: start;
+  }
+  .ph-hourly .x span { display: block; line-height: 1; }
+  .ph-hourly .x span::before {
+    content: "";
+    display: block; width: 1px; height: 3px;
+    background: var(--line-2);
+    margin: 0 auto 2.5px;
   }
   .ph-hourly .axis-corner {
     font-family: 'JetBrains Mono', monospace; font-size: 7.5px;
