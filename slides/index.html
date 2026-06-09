@@ -384,19 +384,20 @@
   .truth.t-rose::before { background: var(--rose); }
   .truth.t-rose .ix, .truth.t-rose .num  { color: var(--rose); }
 
-  /* ── Six brands footprint ────────────────────────────────────── */
+  /* ── Brands footprint row (4-col by default) ─────────────────── */
   .brands-row {
-    display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px;
-    margin-top: 36px;
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
   }
   .b-chip {
     background: var(--paper);
     border: 1px solid var(--line);
-    border-radius: 14px; padding: 14px 12px 12px;
+    border-radius: 14px; padding: 14px 14px 12px;
     position: relative; overflow: hidden;
+    box-shadow: 0 3px 10px -6px rgba(35,40,30,.08);
   }
   .b-chip::before {
     content: ""; position: absolute; left: 0; right: 0; top: 0; height: 3px;
+    background: var(--brand, var(--ink-4));
   }
   .b-chip.ame::before { background: var(--b-ame); }
   .b-chip.bbw::before { background: var(--b-bbw); }
@@ -404,7 +405,7 @@
   .b-chip.vs::before  { background: var(--b-vs); }
   .b-chip.cos::before { background: var(--b-cos); }
   .b-chip.ct::before  { background: var(--b-ct); }
-  .b-chip.ulta::before{ background: var(--b-vs); }
+  .b-chip.ulta::before{ background: #4A6B7F; }
   .b-chip .nm {
     font-family: 'Fraunces', serif; font-size: 16px; font-weight: 500;
     letter-spacing: -.01em; color: var(--ink); line-height: 1.1;
@@ -650,8 +651,8 @@
 
   /* ── Brand showcase grid ─────────────────────────────────────── */
   .brand-grid {
-    display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
-    margin-top: 26px;
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
+    margin-top: 24px;
   }
   .brand-card {
     background: var(--paper);
@@ -667,6 +668,7 @@
   .brand-card.vs::before  { background: var(--b-vs); }
   .brand-card.cos::before { background: var(--b-cos); }
   .brand-card.ct::before  { background: var(--b-ct); }
+  .brand-card.pri::before { background: #1A3DAA; }
   .brand-card .nm {
     font-family: 'Fraunces', serif; font-size: 19px; font-weight: 500;
     letter-spacing: -.01em; color: var(--ink); line-height: 1.1;
@@ -1075,25 +1077,26 @@
     <div class="inner center">
       <span class="eyebrow">Discovery Sprint · May–Jun 2026</span>
       <h1 class="hero">Run your floor in <em>real time.</em><br/>One sign-in. Every brand.</h1>
-      <p class="sub" style="margin-top:6px;font-size:18px;max-width:820px;">
-        Six store visits across Mall of the Emirates and Dubai Outlet Mall.
-        Three-and-a-half hours of shadowing on the H&amp;M and COS floor.
-        Two-hours-forty on the VS and BBW counter.
+      <p class="sub" style="margin-top:6px;font-size:18px;max-width:840px;">
+        Eight store visits — half at Mall of the Emirates, half at Dubai Hills,
+        plus the American Eagle outlet at Dubai Outlet Mall.
+        Three-and-a-half hours on the H&amp;M and COS floor.
+        Two-hours-forty on Hagar's Bath &amp; Body Works counter.
         One conclusion — every store has built the dashboard themselves, by hand.
       </p>
 
       <div class="cover-meta">
         <div class="m">
+          <div class="l">Stores shadowed</div>
+          <div class="v">8 · in-store</div>
+        </div>
+        <div class="m">
           <div class="l">Brands shadowed</div>
-          <div class="v">6 · in-store</div>
+          <div class="v">7 · MOE + DH</div>
         </div>
         <div class="m">
           <div class="l">Transcripts read</div>
           <div class="v">4 · verbatim</div>
-        </div>
-        <div class="m">
-          <div class="l">Evidence items</div>
-          <div class="v">112 · mapped</div>
         </div>
         <div class="m">
           <div class="l">Roles wired</div>
@@ -1153,46 +1156,77 @@
   <section class="slide cream" data-slide="4">
     <div class="inner">
       <span class="eyebrow soft">Discovery footprint · in-store</span>
-      <h2 class="hero" style="max-width:1000px;">
-        Six brands. Three-and-a-half hours on the H&amp;M floor.<br/>
-        Two-and-three-quarters on the <em>VS &amp; BBW counter.</em>
+      <h2 class="hero" style="font-size:46px;max-width:1080px;">
+        Eight stores. Two malls. Seven brands.<br/>
+        <em>One pattern</em> in every aisle.
       </h2>
+      <p class="sub muted" style="max-width:880px;margin-top:4px;font-size:14.5px;">
+        Half the visits at Mall of the Emirates, half at Dubai Hills,
+        plus Roel's American Eagle outlet — every team is rebuilding the same dashboard
+        in their own Excel, every morning.
+      </p>
 
+      <!-- Mall of the Emirates row -->
+      <div style="display:flex;align-items:center;gap:14px;margin:24px 0 10px;">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--lime-ink);background:var(--lime);padding:4px 10px;border-radius:4px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;">Mall of Emirates · MOE</span>
+        <span style="flex:1;height:1px;background:var(--line-2);"></span>
+        <span class="footnote" style="font-size:10px;">4 stores · ~6 hrs combined</span>
+      </div>
       <div class="brands-row">
         <div class="b-chip hm">
           <div class="nm">H&amp;M</div>
-          <div class="code">HM · Mall of Emirates</div>
-          <div class="loc"><b>Tharak</b> · 07 May 2026<br/>Combined narrative</div>
+          <div class="code">HM · MOE</div>
+          <div class="loc"><b>Tharak</b> · 07 May<br/>Combined narrative</div>
         </div>
         <div class="b-chip cos">
           <div class="nm">COS</div>
-          <div class="code">COS · Mall of Emirates</div>
+          <div class="code">COS · MOE</div>
           <div class="loc"><b>Tharak</b> · same visit<br/>Reporting workflows</div>
         </div>
         <div class="b-chip vs">
           <div class="nm">Victoria's Secret</div>
-          <div class="code">VS · Mall of Emirates</div>
+          <div class="code">VS · MOE</div>
           <div class="loc"><b>Sales Mgr</b> · 04 Jun<br/>Hadrin SLT lead</div>
         </div>
-        <div class="b-chip bbw">
-          <div class="nm">Bath &amp; Body Works</div>
-          <div class="code">BBW · Mall of Emirates</div>
-          <div class="loc"><b>Hagar</b> · 04 Jun<br/>Store Manager · 5 yrs</div>
-        </div>
-        <div class="b-chip ame">
-          <div class="nm">American Eagle</div>
-          <div class="code">AME · Dubai Outlet Mall</div>
-          <div class="loc"><b>Roel</b> · 09 Jun<br/>Outlet store mgr</div>
-        </div>
-        <div class="b-chip ulta">
-          <div class="nm">ULTA</div>
-          <div class="code">ULTA · scoping</div>
-          <div class="loc"><b>Srijana</b> · 22 May<br/>Reporting scoping</div>
+        <div class="b-chip ct">
+          <div class="nm">Charlotte Tilbury</div>
+          <div class="code">CT · MOE</div>
+          <div class="loc"><b>Counter walk</b> · 04 Jun<br/>Personal-shopper flow</div>
         </div>
       </div>
 
-      <p class="footnote" style="margin-top:32px;">
-        Field tools observed · ARIS · Vault · Power BI · Arise · OneDrive · SFA · Hadrin · Quick&nbsp;Up · Assist&nbsp;App · MPOS · Teams · WhatsApp · Excel · PDF · RFID handheld · paper whiteboard
+      <!-- Dubai Hills row -->
+      <div style="display:flex;align-items:center;gap:14px;margin:20px 0 10px;">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--paper);background:var(--ink);padding:4px 10px;border-radius:4px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;">Dubai Hills · DH</span>
+        <span style="flex:1;height:1px;background:var(--line-2);"></span>
+        <span class="footnote" style="font-size:10px;">3 stores · Hagar's home base</span>
+      </div>
+      <div class="brands-row" style="grid-template-columns:repeat(4,1fr);">
+        <div class="b-chip bbw">
+          <div class="nm">Bath &amp; Body Works</div>
+          <div class="code">BBW · Dubai Hills</div>
+          <div class="loc"><b>Hagar</b> · 04 Jun<br/>Store Mgr · 5 yrs</div>
+        </div>
+        <div class="b-chip" style="--brand:#5B7380;">
+          <div class="nm">Primark</div>
+          <div class="code">PRI · Dubai Hills</div>
+          <div class="loc"><b>Floor walk</b> · 06 Jun<br/>SCO · IPC focus</div>
+        </div>
+        <div class="b-chip ulta">
+          <div class="nm">ULTA</div>
+          <div class="code">ULTA · Dubai Hills</div>
+          <div class="loc"><b>Srijana</b> · 22 May<br/>Reporting scoping</div>
+        </div>
+        <!-- AME outlet — separately marked -->
+        <div class="b-chip ame" style="border-style:dashed;">
+          <div class="nm">American Eagle</div>
+          <div class="code">AME · Dubai Outlet</div>
+          <div class="loc"><b>Roel</b> · 09 Jun<br/>Outlet store mgr</div>
+        </div>
+      </div>
+
+      <p class="footnote" style="margin-top:22px;">
+        Field tools observed · ARES · Vault · Power BI · Arise · OneDrive · SFA · Hadrin · Quick&nbsp;Up · Assist&nbsp;App · MPOS · SIOCS · OMS · Teams · WhatsApp · Excel · PDF · RFID handheld
       </p>
     </div>
     <div class="chrome">
@@ -1204,7 +1238,7 @@
   <!-- ═══════════════ 05 · A DAY IN THE LIFE ═══════════════ -->
   <section class="slide paper" data-slide="5">
     <div class="inner">
-      <span class="eyebrow">A morning · Hagar · BBW · Mall of Emirates</span>
+      <span class="eyebrow">A morning · Hagar · BBW · Dubai Hills</span>
       <h2 class="hero" style="max-width:1040px;">
         Three hours of <em>mental-math</em> before her first customer.
       </h2>
@@ -1278,8 +1312,8 @@
           <div class="ix">truth 02 · inventory</div>
           <div class="num">8,000</div>
           <h3>Pieces of shrinkage<br/>per BBW store.</h3>
-          <p>"This is nonsense. Inventory system here, zero — I cannot accept this." Auto-branch ignored. Manual request every Monday.</p>
-          <div class="src">BBW · Hagar · transcript</div>
+          <p>"This is nonsense. Inventory system here, zero — I cannot accept this. I heard MOE 15,000." Manual request every Monday.</p>
+          <div class="src">BBW · Hagar · Dubai Hills</div>
         </div>
         <div class="truth t-blue">
           <div class="ix">truth 03 · trust</div>
@@ -1445,7 +1479,7 @@
           </p>
         </div>
         <div class="pu">
-          <div class="badge">Pattern · all six brands</div>
+          <div class="badge">Pattern · all seven brands</div>
           <div class="name">"In case the system shuts down."</div>
           <p class="what">
             Same workaround, same OneDrive, same anxiety. The dashboard exists —
@@ -1473,7 +1507,7 @@
       </p>
 
       <div class="tools">
-        <span class="t strike">ARIS</span>
+        <span class="t strike">ARES</span>
         <span class="t strike">Vault</span>
         <span class="t strike">Power BI</span>
         <span class="t strike">Arise · mobile</span>
@@ -1516,12 +1550,12 @@
         <div class="stat"><div class="n">30</div><div class="l">Source documents read</div></div>
         <div class="stat"><div class="n">112</div><div class="l">Evidence items mapped</div></div>
         <div class="stat"><div class="n">4</div><div class="l">Store-visit transcripts</div></div>
-        <div class="stat"><div class="n">~6 hrs</div><div class="l">On the shop floor</div></div>
+        <div class="stat"><div class="n">8</div><div class="l">Stores shadowed · MOE + DH + Outlet</div></div>
 
         <div class="stat"><div class="n">15</div><div class="l">Systems audited end-to-end</div></div>
         <div class="stat"><div class="n">237</div><div class="l">Features × 5 product lines</div></div>
         <div class="stat"><div class="n">4</div><div class="l">Roles shadowed in store</div></div>
-        <div class="stat"><div class="n"><em>6</em></div><div class="l">Brands modelled in the prototype</div></div>
+        <div class="stat"><div class="n"><em>7</em></div><div class="l">Brands modelled in the prototype</div></div>
       </div>
 
       <p class="footnote" style="margin-top:34px;">
@@ -1547,7 +1581,7 @@
           <q>I just put the target without analyzing anything. Today we can do 15,000. First segment, I will write without even looking. I am five years in. I know my store.</q>
           <div class="who">
             <div class="nm">Hagar</div>
-            <div class="meta"><b>BBW</b> · Store Manager<br/>Mall of Emirates · 04 Jun</div>
+            <div class="meta"><b>BBW</b> · Store Manager<br/>Dubai Hills · 04 Jun</div>
           </div>
         </div>
 
@@ -1563,7 +1597,7 @@
           <q>Sometimes also the Vault is not working — so then we track it manually. We are following from the Vault, but we put it from here.</q>
           <div class="who">
             <div class="nm">Sales Manager</div>
-            <div class="meta"><b>VS</b> · Hadrin SLT Lead<br/>Mall of Emirates · 04 Jun</div>
+            <div class="meta"><b>VS</b> · Hadrin SLT Lead<br/>MOE · 04 Jun</div>
           </div>
         </div>
 
@@ -1571,7 +1605,7 @@
           <q>A lot of manual work. Figures are updated every three hours. We copy, paste in Excel sheet to split transactions by person.</q>
           <div class="who">
             <div class="nm">Combined narrative</div>
-            <div class="meta"><b>H&amp;M / COS</b> · Tharak<br/>Mall of Emirates · 07 May</div>
+            <div class="meta"><b>H&amp;M / COS</b> · Tharak<br/>MOE · 07 May</div>
           </div>
         </div>
       </div>
@@ -1619,7 +1653,7 @@
       <div class="section-num">Part two · the rebuild</div>
       <h1 class="section-h">One surface.<br/>Tailored by <em>role.</em></h1>
       <p class="section-sub">
-        Four roles, six brands, five channels, nine timeframes —
+        Four roles, seven brands, five channels, nine timeframes —
         wired to one state engine and one Microsoft Entra sign-in.
         No PDFs. No pulses. No whiteboard. No shadow Excel.
       </p>
@@ -1712,7 +1746,7 @@
       <div class="arch-grid">
         <div class="arch"><div class="ix">sign-in</div><div class="n">1</div><div class="l">Microsoft Entra · trusted store device. No password UI. No per-brand chain.</div></div>
         <div class="arch"><div class="ix">roles</div><div class="n">4</div><div class="l">Store Mgr · Asst. Mgr · Sales Assoc. · VM. Each gets its own brief + access.</div></div>
-        <div class="arch"><div class="ix">brands</div><div class="n">6</div><div class="l">AME · BBW · H&amp;M · VS · COS · CT. Brand-personal metrics on every screen.</div></div>
+        <div class="arch"><div class="ix">brands</div><div class="n">7</div><div class="l">AME · BBW · H&amp;M · VS · COS · CT · Primark. Brand-personal strip on every screen.</div></div>
         <div class="arch"><div class="ix">channels</div><div class="n">5</div><div class="l">SAWA POS · MPOS · Hadrin · Asst. Ecom · SCO. Endless Aisle merged in.</div></div>
 
         <div class="arch"><div class="ix">timeframes</div><div class="n">9</div><div class="l">Today · WTD · Weekly · MTD · Monthly · QTD · Quarter · YTD · Year.</div></div>
@@ -1870,18 +1904,18 @@
     </div>
   </section>
 
-  <!-- ═══════════════ 20 · SOLUTION · SIX BRANDS ═══════════════ -->
+  <!-- ═══════════════ 20 · SOLUTION · SEVEN BRANDS ═══════════════ -->
   <section class="slide cream" data-slide="20">
     <div class="inner">
-      <span class="eyebrow">Solution · six brands · authentic metrics</span>
-      <h2 class="hero" style="max-width:1040px;">
-        Six brands.<br/>
-        Six <em>brand-personal</em> KPI strips.
+      <span class="eyebrow">Solution · seven brands · authentic metrics</span>
+      <h2 class="hero" style="font-size:46px;max-width:1040px;">
+        Seven brands.<br/>
+        Seven <em>brand-personal</em> KPI strips.
       </h2>
-      <p class="sub muted" style="max-width:880px;margin-top:4px;">
-        "Bra penetration" never appears on a BBW screen again.
-        Each brand's authentic metric — Aura · Signature · Pink · SCO · Quiet-luxe · Tilbury — sits on its own strip.
-        Numbers verified against the VS transcript and BBW DCO.
+      <p class="sub muted" style="max-width:920px;margin-top:4px;font-size:14.5px;">
+        "Bra penetration" never appears on a BBW screen again. Each brand's authentic metric —
+        Aura linkage · Signature mix · BPT · SCO · Quiet-luxe · Magic-Cream attach · Primark IPC —
+        sits on its own strip. Numbers verified against the VS, BBW and AME transcripts.
       </p>
 
       <div class="brand-grid">
@@ -1897,7 +1931,7 @@
 
         <div class="brand-card bbw">
           <div class="nm">Bath &amp; Body Works</div>
-          <div class="code">BBW · Mall of Emirates</div>
+          <div class="code">BBW · Dubai Hills</div>
           <div class="kpis">
             <div class="k"><div class="v">58%</div><div class="l">Signature<br/>mix</div></div>
             <div class="k"><div class="v">42%</div><div class="l">3-for-2<br/>attach</div></div>
@@ -1907,7 +1941,7 @@
 
         <div class="brand-card hm">
           <div class="nm">H&amp;M</div>
-          <div class="code">HM · Mall of Emirates</div>
+          <div class="code">HM · MOE</div>
           <div class="kpis">
             <div class="k"><div class="v">47%</div><div class="l">SCO<br/>mix</div></div>
             <div class="k"><div class="v">3.1</div><div class="l">IPC<br/>(items/cart)</div></div>
@@ -1917,7 +1951,7 @@
 
         <div class="brand-card vs">
           <div class="nm">Victoria's Secret</div>
-          <div class="code">VS · Mall of Emirates</div>
+          <div class="code">VS · MOE</div>
           <div class="kpis">
             <div class="k"><div class="v">2.1</div><div class="l">BPT<br/>bras/txn</div></div>
             <div class="k"><div class="v">34%</div><div class="l">Pink<br/>mix</div></div>
@@ -1927,7 +1961,7 @@
 
         <div class="brand-card cos">
           <div class="nm">COS</div>
-          <div class="code">COS · Mall of Emirates</div>
+          <div class="code">COS · MOE</div>
           <div class="kpis">
             <div class="k"><div class="v">2.6×</div><div class="l">quiet-luxe<br/>ATV</div></div>
             <div class="k"><div class="v">58%</div><div class="l">wool<br/>mix</div></div>
@@ -1937,11 +1971,31 @@
 
         <div class="brand-card ct">
           <div class="nm">Charlotte Tilbury</div>
-          <div class="code">CT · Mall of Emirates</div>
+          <div class="code">CT · MOE</div>
           <div class="kpis">
             <div class="k"><div class="v">71%</div><div class="l">Magic-Cream<br/>attach</div></div>
             <div class="k"><div class="v">62%</div><div class="l">colour<br/>match</div></div>
             <div class="k"><div class="v">18</div><div class="l">masterclass<br/>bookings</div></div>
+          </div>
+        </div>
+
+        <div class="brand-card pri">
+          <div class="nm">Primark</div>
+          <div class="code">PRI · Dubai Hills</div>
+          <div class="kpis">
+            <div class="k"><div class="v">64%</div><div class="l">SCO<br/>mix</div></div>
+            <div class="k"><div class="v">6.2</div><div class="l">IPC<br/>(items/cart)</div></div>
+            <div class="k"><div class="v">71%</div><div class="l">basics<br/>linkage</div></div>
+          </div>
+        </div>
+
+        <div class="brand-card" style="border-style:dashed;background:rgba(199,251,85,.08);">
+          <div class="nm" style="color:var(--ink-3);">+ v6 roadmap</div>
+          <div class="code">Aldo · Mango · iWest</div>
+          <div class="kpis">
+            <div class="k"><div class="v" style="color:var(--ink-4);">3</div><div class="l">brands<br/>queued</div></div>
+            <div class="k"><div class="v" style="color:var(--ink-4);">Q3</div><div class="l">target<br/>cohort</div></div>
+            <div class="k"><div class="v" style="color:var(--ink-4);">∞</div><div class="l">same<br/>shape</div></div>
           </div>
         </div>
       </div>
@@ -1992,7 +2046,7 @@
           <h2>Five channels.<br/><em>One funnel.</em></h2>
           <p>
             Endless Aisle was a metric in search of an owner —
-            we merged it into <b>Assisted Ecom</b> across all six brands.
+            we merged it into <b>Assisted Ecom</b> across all seven brands.
             The funnel reads cleaner. Hadrin orders, MPOS sales, SAWA POS receipts —
             all attributed without copy-paste.
           </p>
@@ -2076,7 +2130,7 @@
       </div>
 
       <p class="sub muted" style="margin-top:24px;font-size:13px;max-width:880px;">
-        Six brands. Four roles. Five channels. Nine timeframes. Real-time stock with manual override.
+        Seven brands. Four roles. Five channels. Nine timeframes. Real-time stock with manual override.
         Colour-coded AI brief tailored per role. iPhone 14 Pro Max + iPad Pro 11", auto-fit to any browser.
         Single HTML file. No build. No backend. No install.
       </p>
@@ -2105,7 +2159,7 @@
         <br/>
         Project owner · Tharakeswara Reddy &nbsp;·&nbsp; Sponsor · Kalai Selvam
         <br/>
-        Fieldwork · Mall of the Emirates · Dubai Outlet Mall · 6 brands · 4 transcripts
+        Fieldwork · Mall of the Emirates · Dubai Hills · Dubai Outlet · 7 brands · 4 transcripts
       </p>
 
       <div class="scan-card">
