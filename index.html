@@ -1,0 +1,3793 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>SAWA BOS · v5.3 — iPad + iPhone Live Prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --paper:        #FBFAF7;
+    --paper-2:      #F4F2EC;
+    --paper-3:      #ECE9DF;
+    --line:         #E6E3D9;
+    --line-2:       #D5D1C2;
+    --ink:          #0E1714;
+    --ink-2:        #1F2A26;
+    --ink-3:        #5B7380;
+    --ink-4:        #8B9B97;
+    --ink-5:        #B1BDB8;
+    --lime:         #C7FB55;
+    --lime-2:       #B3F03A;
+    --lime-ink:     #1A2A05;
+    --pos:          #0F6B4E;
+    --neg:          #BE3A3A;
+    --neg-soft:     #F6D8D5;
+    --warn:         #B07309;
+    --warn-soft:    #F7E6BA;
+    --blue:         #2D6CDF;
+    --blue-soft:    #DFEAFB;
+    --amber:        #D6A21E;
+    --amber-soft:   #F5E5B6;
+    --rose:         #D8527C;
+    --rose-soft:    #F8DDE6;
+    --slate:        #3E5867;
+    --slate-soft:   #DCE3E7;
+    --hover:        rgba(14,23,20,.04);
+
+    --brand:        #0E1714;
+    --brand-soft:   #F0EEE3;
+
+    --shadow-card:  0 4px 12px rgba(15,20,23,.03);
+    --shadow-card-2:0 1px 0 rgba(15,20,23,.04), 0 12px 28px rgba(15,20,23,.06);
+    --shadow-dev:   0 30px 60px rgba(15,20,23,.22), 0 4px 12px rgba(15,20,23,.10);
+  }
+  /* per-brand tints applied via [data-brand] on .stage */
+  .stage[data-brand="ame"]  { --brand:#0E2D71; --brand-soft:#E4ECFB; }
+  .stage[data-brand="bbw"]  { --brand:#7A1F47; --brand-soft:#F8E2EB; }
+  .stage[data-brand="hm"]   { --brand:#BE2424; --brand-soft:#FBE0DE; }
+  .stage[data-brand="vs"]   { --brand:#2A0F1A; --brand-soft:#F1DCE3; }
+  .stage[data-brand="cos"]  { --brand:#1A1A1A; --brand-soft:#EEEDE8; }
+  .stage[data-brand="ct"]   { --brand:#8B1B3E; --brand-soft:#F6DDE5; }
+
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    background:
+      radial-gradient(900px 600px at 10% 0%, #F4F2EA 0%, transparent 70%),
+      radial-gradient(700px 500px at 100% 30%, #EEEBE0 0%, transparent 70%),
+      #ECEAE2;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  ::selection { background: var(--lime); color: var(--lime-ink); }
+
+  /* ═════════════════ LOGIN STAGE ═════════════════ */
+  .login-stage {
+    position: fixed; inset: 0;
+    background:
+      radial-gradient(60% 50% at 18% 10%, rgba(199,251,85,.10) 0%, transparent 60%),
+      radial-gradient(70% 60% at 100% 100%, rgba(64,120,255,.08) 0%, transparent 65%),
+      linear-gradient(180deg, #0B100E 0%, #0F1614 40%, #11181A 100%);
+    color: #ECF1EE;
+    overflow: hidden;
+    z-index: 100;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    transition: opacity .6s ease, transform .6s ease;
+  }
+  .login-stage.gone {
+    opacity: 0;
+    transform: scale(1.04);
+    pointer-events: none;
+  }
+  .motion-bg {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 1;
+  }
+  .motion-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: radial-gradient(closest-side at 50% 40%, #000 30%, transparent 80%);
+    -webkit-mask-image: radial-gradient(closest-side at 50% 40%, #000 30%, transparent 80%);
+    z-index: 1;
+    animation: gridDrift 30s linear infinite;
+  }
+  @keyframes gridDrift {
+    0%   { background-position: 0 0, 0 0; }
+    100% { background-position: 64px 0, 0 64px; }
+  }
+  .motion-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(72px);
+    opacity: .55;
+    z-index: 1;
+    pointer-events: none;
+  }
+  .orb-1 { width: 480px; height: 480px; left: -120px; top: -120px;
+    background: radial-gradient(closest-side, rgba(199,251,85,.55), transparent 70%);
+    animation: orbDrift1 22s ease-in-out infinite; }
+  .orb-2 { width: 540px; height: 540px; right: -160px; bottom: -120px;
+    background: radial-gradient(closest-side, rgba(64,140,255,.42), transparent 70%);
+    animation: orbDrift2 26s ease-in-out infinite; }
+  .orb-3 { width: 380px; height: 380px; left: 50%; top: 55%;
+    background: radial-gradient(closest-side, rgba(216,82,124,.30), transparent 70%);
+    transform: translate(-50%, -50%);
+    animation: orbDrift3 30s ease-in-out infinite; }
+  @keyframes orbDrift1 {
+    0%,100% { transform: translate(0,0) scale(1); }
+    50%     { transform: translate(120px, 80px) scale(1.1); }
+  }
+  @keyframes orbDrift2 {
+    0%,100% { transform: translate(0,0) scale(1); }
+    50%     { transform: translate(-100px, -60px) scale(.9); }
+  }
+  @keyframes orbDrift3 {
+    0%,100% { transform: translate(-50%, -50%) scale(1); }
+    50%     { transform: translate(-30%, -40%) scale(1.1); }
+  }
+
+  .login-head {
+    position: relative; z-index: 5;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 26px 36px;
+  }
+  .login-brand { display: flex; align-items: center; gap: 14px; }
+  .sawa-mono-lg {
+    width: 44px; height: 44px; border-radius: 12px;
+    background: #fff; color: #0B100E;
+    display: grid; place-items: center;
+    font-family: 'Fraunces', serif; font-weight: 500; font-size: 22px;
+    letter-spacing: -.02em; position: relative;
+    box-shadow: 0 8px 24px rgba(199,251,85,.25);
+  }
+  .sawa-mono-lg::after {
+    content: ""; position: absolute; right: -3px; top: -3px;
+    width: 11px; height: 11px; border-radius: 50%;
+    background: var(--lime); border: 2.5px solid #0B100E;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  .lh-t {
+    font-family: 'Fraunces', serif; font-weight: 500;
+    font-size: 22px; letter-spacing: -.02em; line-height: 1; color: #fff;
+  }
+  .lh-t em { font-style: italic; color: rgba(255,255,255,.55); font-weight: 400; }
+  .lh-s {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    color: rgba(255,255,255,.55); text-transform: uppercase; letter-spacing: .18em;
+    margin-top: 5px;
+  }
+  .login-secure {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    color: rgba(255,255,255,.65); text-transform: uppercase; letter-spacing: .18em;
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 8px 14px;
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 999px;
+    backdrop-filter: blur(10px);
+  }
+  .login-secure .dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--lime);
+    box-shadow: 0 0 8px var(--lime);
+    animation: pulse 1.6s ease-in-out infinite;
+  }
+
+  .login-panel {
+    position: relative; z-index: 5;
+    align-self: center; justify-self: center;
+    max-width: 720px;
+    padding: 0 36px;
+    text-align: center;
+    transition: opacity .45s ease, transform .45s ease;
+  }
+  .login-panel.gone {
+    opacity: 0; transform: translateY(-12px) scale(.98);
+    pointer-events: none; position: absolute;
+  }
+  .login-panel.entering {
+    animation: enterUp .55s cubic-bezier(.22,.61,.36,1) both;
+  }
+  @keyframes enterUp {
+    from { opacity: 0; transform: translateY(20px) scale(.98); }
+    to   { opacity: 1; transform: none; }
+  }
+  .login-pre {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    color: var(--lime); text-transform: uppercase; letter-spacing: .22em;
+    padding: 7px 14px; border-radius: 999px;
+    background: rgba(199,251,85,.08);
+    border: 1px solid rgba(199,251,85,.22);
+    margin-bottom: 22px;
+  }
+  .login-pre em { font-style: italic; color: #fff; font-weight: 500; }
+  .login-pre::before {
+    content: ""; width: 6px; height: 6px; border-radius: 50%;
+    background: var(--lime); box-shadow: 0 0 6px var(--lime);
+    animation: pulse 1.4s ease-in-out infinite;
+  }
+  .login-hero {
+    font-family: 'Fraunces', serif; font-weight: 500;
+    font-size: clamp(40px, 5vw, 64px);
+    letter-spacing: -.035em;
+    line-height: 1.05;
+    color: #fff;
+    margin: 0 0 18px;
+  }
+  .login-hero em {
+    font-style: italic; font-weight: 500;
+    background: linear-gradient(180deg, var(--lime), #98D935);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .login-sub {
+    font-family: 'Inter', sans-serif; font-size: 15px;
+    line-height: 1.6;
+    color: rgba(255,255,255,.7);
+    margin: 0 0 32px;
+  }
+  .login-btn {
+    appearance: none; border: 0; cursor: pointer;
+    background: #fff; color: #0B100E;
+    padding: 16px 22px; border-radius: 14px;
+    font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 600;
+    display: inline-flex; align-items: center; gap: 12px;
+    box-shadow:
+      0 10px 30px rgba(0,0,0,.4),
+      0 0 0 0 rgba(199,251,85,.4);
+    transition: transform .15s ease, box-shadow .25s ease;
+    position: relative;
+    animation: btnGlow 2.4s ease-in-out infinite;
+  }
+  @keyframes btnGlow {
+    0%,100% { box-shadow: 0 10px 30px rgba(0,0,0,.4), 0 0 0 0 rgba(199,251,85,.45); }
+    50%     { box-shadow: 0 14px 38px rgba(0,0,0,.5), 0 0 0 14px rgba(199,251,85,0); }
+  }
+  .login-btn:hover { transform: translateY(-2px); }
+  .login-btn:active { transform: translateY(0); }
+  .login-btn .ms-grid {
+    display: grid; grid-template-columns: 9px 9px; grid-template-rows: 9px 9px;
+    gap: 2px; width: 20px; height: 20px;
+  }
+  .login-btn .ms-grid span { width: 9px; height: 9px; }
+  .login-btn .ms-grid span:nth-child(1) { background: #F25022; }
+  .login-btn .ms-grid span:nth-child(2) { background: #7FBA00; }
+  .login-btn .ms-grid span:nth-child(3) { background: #00A4EF; }
+  .login-btn .ms-grid span:nth-child(4) { background: #FFB900; }
+  .login-btn .arr { margin-left: 4px; }
+
+  .login-meta {
+    margin-top: 20px;
+    display: inline-flex; flex-wrap: wrap; justify-content: center; gap: 8px;
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    color: rgba(255,255,255,.45); text-transform: uppercase; letter-spacing: .16em;
+  }
+  .login-tickers {
+    margin-top: 44px;
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
+    max-width: 620px; margin-left: auto; margin-right: auto;
+  }
+  .tk {
+    padding: 14px 12px;
+    background: rgba(255,255,255,.03);
+    border: 1px solid rgba(255,255,255,.07);
+    border-radius: 14px;
+    backdrop-filter: blur(10px);
+    text-align: center;
+  }
+  .tk-l {
+    display: block;
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    color: rgba(255,255,255,.5); text-transform: uppercase; letter-spacing: .18em;
+    margin-bottom: 6px;
+  }
+  .tk-v {
+    font-family: 'Fraunces', serif; font-weight: 500;
+    font-size: 26px; letter-spacing: -.02em; color: #fff;
+  }
+  .tk-u {
+    font-family: 'Fraunces', serif; font-size: 16px; color: rgba(255,255,255,.5);
+    margin-left: 1px;
+  }
+
+  /* role panel */
+  .role-panel { max-width: 880px; }
+  .role-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;
+    margin-top: 8px;
+  }
+  .login-role-card {
+    appearance: none; cursor: pointer;
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 16px;
+    padding: 20px 22px;
+    text-align: left; color: #fff;
+    transition: transform .15s ease, border-color .15s, background .15s;
+    display: flex; flex-direction: column; gap: 10px;
+    backdrop-filter: blur(10px);
+  }
+  .login-role-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(199,251,85,.45);
+    background: rgba(199,251,85,.05);
+  }
+  .login-role-card.primary {
+    background: linear-gradient(160deg, rgba(199,251,85,.18), rgba(255,255,255,.04));
+    border-color: rgba(199,251,85,.35);
+  }
+  .rc-h { display: flex; justify-content: space-between; align-items: center; }
+  .rc-ic {
+    width: 42px; height: 42px; border-radius: 12px;
+    background: rgba(255,255,255,.08);
+    color: var(--lime);
+    display: grid; place-items: center;
+  }
+  .login-role-card.primary .rc-ic {
+    background: var(--lime); color: var(--lime-ink);
+  }
+  .rc-tag {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    color: var(--lime); text-transform: uppercase; letter-spacing: .18em;
+    padding: 3px 8px; border-radius: 999px;
+    background: rgba(199,251,85,.12); border: 1px solid rgba(199,251,85,.3);
+  }
+  .rc-nm {
+    font-family: 'Fraunces', serif; font-size: 22px; font-weight: 500;
+    letter-spacing: -.02em; line-height: 1;
+  }
+  .rc-meta {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    color: rgba(255,255,255,.55); text-transform: uppercase; letter-spacing: .14em;
+  }
+  .login-back {
+    margin-top: 24px;
+    appearance: none; background: transparent; border: 0; cursor: pointer;
+    color: rgba(255,255,255,.55);
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    text-transform: uppercase; letter-spacing: .18em;
+    padding: 8px 12px;
+  }
+  .login-back:hover { color: #fff; }
+
+  .login-foot {
+    position: relative; z-index: 5;
+    display: flex; justify-content: center; align-items: center; gap: 12px;
+    padding: 22px 36px 28px;
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    color: rgba(255,255,255,.45); text-transform: uppercase; letter-spacing: .16em;
+  }
+  .login-foot .dot {
+    width: 4px; height: 4px; border-radius: 50%; background: rgba(255,255,255,.3);
+  }
+  .login-foot .live-dot {
+    display: inline-flex; align-items: center; gap: 6px;
+    color: var(--lime);
+  }
+  .login-foot .live-dot::before {
+    content: ""; width: 6px; height: 6px; border-radius: 50%;
+    background: var(--lime); box-shadow: 0 0 6px var(--lime);
+    animation: pulse 1.6s ease-in-out infinite;
+  }
+
+  /* sign-out chip in app */
+  .sign-out {
+    appearance: none; cursor: pointer;
+    border: 1px solid var(--line); background: var(--paper);
+    color: var(--ink-3);
+    padding: 6px 10px 6px 9px; border-radius: 8px;
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    text-transform: uppercase; letter-spacing: .14em;
+    display: inline-flex; align-items: center; gap: 6px;
+    margin-left: 10px;
+    transition: color .15s, border-color .15s;
+  }
+  .sign-out:hover { color: var(--ink); border-color: var(--ink); }
+
+  /* ───────── outer stage ───────── */
+  .stage {
+    min-height: 100vh; padding: 20px 24px 60px;
+    display: flex; flex-direction: column; gap: 18px;
+    opacity: 0; pointer-events: none;
+    transition: opacity .55s ease;
+  }
+  .stage.live { opacity: 1; pointer-events: auto; }
+  .stage-head {
+    max-width: 1680px; margin: 0 auto; width: 100%;
+    display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 24px;
+  }
+  .logo-wrap {
+    display: flex; align-items: center; gap: 12px;
+  }
+  .sawa-mono {
+    width: 38px; height: 38px;
+    border-radius: 10px;
+    background: var(--ink);
+    color: #fff;
+    display: grid; place-items: center;
+    font-family: 'Fraunces', serif; font-weight: 500;
+    font-size: 18px; letter-spacing: -.02em;
+    position: relative;
+  }
+  .sawa-mono::after {
+    content: ""; position: absolute; right: -3px; top: -3px;
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--lime); border: 2px solid var(--paper);
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50%      { transform: scale(1.25); opacity: .8; }
+  }
+  .brand-text {
+    font-family: 'Fraunces', serif;
+    font-size: 24px; letter-spacing: -.02em; font-weight: 500;
+    line-height: 1;
+  }
+  .brand-text .it { font-style: italic; color: var(--ink-3); font-weight: 400; }
+  .brand-text .sub {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    text-transform: uppercase;
+    font-size: 9.5px; letter-spacing: .18em;
+    color: var(--ink-3); margin-top: 5px; font-weight: 500;
+  }
+  .head-mid {
+    display: flex; justify-content: center; gap: 8px;
+    flex-wrap: wrap;
+  }
+  .head-mid .crumb {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; text-transform: uppercase; letter-spacing: .14em;
+    color: var(--ink-3);
+    background: var(--paper);
+    border: 1px solid var(--line);
+    padding: 6px 12px; border-radius: 999px;
+  }
+  .head-mid .crumb b { color: var(--ink); font-weight: 600; }
+  .head-right {
+    display: flex; align-items: center; gap: 12px;
+  }
+  .pill-live {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--lime); color: var(--lime-ink);
+    padding: 6px 12px; border-radius: 999px;
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    text-transform: uppercase; letter-spacing: .14em; font-weight: 600;
+  }
+  .pill-live::before {
+    content: ""; width: 6px; height: 6px; border-radius: 50%;
+    background: var(--lime-ink); animation: pulse 1.4s ease-in-out infinite;
+  }
+
+  /* role + brand bar */
+  .control-bar {
+    max-width: 1680px; margin: 0 auto; width: 100%;
+    display: grid; grid-template-columns: 1fr auto; gap: 16px;
+    align-items: center;
+  }
+  .brand-chips {
+    display: flex; gap: 8px; align-items: center; flex-wrap: wrap;
+  }
+  .brand-chips .lbl, .role-bar .lbl {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    color: var(--ink-3); text-transform: uppercase; letter-spacing: .18em;
+    margin-right: 4px;
+  }
+  .chip {
+    appearance: none; border: 1px solid var(--line); background: var(--paper);
+    color: var(--ink);
+    padding: 7px 12px; border-radius: 999px;
+    font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 500;
+    cursor: pointer; transition: all .15s;
+    display: inline-flex; align-items: center; gap: 7px;
+  }
+  .chip .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--brand);
+  }
+  .chip:hover {
+    border-color: var(--ink); transform: translateY(-1px);
+    box-shadow: 0 4px 12px -8px rgba(0,0,0,.4);
+  }
+  .chip.active {
+    background: var(--ink); color: #fff; border-color: var(--ink);
+    box-shadow: 0 4px 14px -6px rgba(0,0,0,.45);
+  }
+  .chip.active .dot {
+    background: var(--lime);
+    box-shadow: 0 0 0 2px rgba(199,251,85,.25);
+  }
+  .chip.more {
+    appearance: none; border: 1px solid var(--line); background: transparent;
+    padding: 7px 12px;
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    color: var(--ink-3); letter-spacing: .14em; text-transform: uppercase;
+  }
+  .brand-select {
+    appearance: none;
+    border: 1px solid var(--line-2);
+    background: var(--paper) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'><path d='M3 4.5 L6 7.5 L9 4.5' fill='none' stroke='%235B7380' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/></svg>") no-repeat right 10px center;
+    padding: 7px 28px 7px 12px;
+    border-radius: 999px;
+    font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 500;
+    color: var(--ink);
+    cursor: pointer;
+  }
+  .role-bar {
+    display: flex; gap: 6px; align-items: center;
+  }
+  .role-pill {
+    appearance: none; border: 1px solid var(--line); background: var(--paper);
+    padding: 6px 10px; border-radius: 8px;
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    text-transform: uppercase; letter-spacing: .14em;
+    color: var(--ink-3); cursor: pointer;
+    transition: all .15s;
+  }
+  .role-pill:hover {
+    color: var(--ink); border-color: var(--ink-3);
+  }
+  .role-pill.active {
+    background: var(--ink); color: #fff; border-color: var(--ink);
+    box-shadow: 0 4px 12px -8px rgba(0,0,0,.4);
+  }
+
+  /* devices */
+  .fit-wrap {
+    /* JS sets --fit-scale based on viewport. Layout = devices * scale. */
+    width: 100%;
+    display: flex; justify-content: center;
+    overflow: visible;
+  }
+  .fit-wrap > .devices {
+    transform: scale(var(--fit-scale, 1));
+    transform-origin: top center;
+    transition: transform .35s cubic-bezier(.22,.61,.36,1);
+  }
+  .devices {
+    display: grid;
+    grid-template-columns: 1180px 430px;
+    gap: 40px;
+    justify-content: center;
+    align-items: start;
+  }
+
+  /* ───────── iPad ───────── */
+  .ipad {
+    position: relative;
+    width: 1180px; height: 836px;
+    background: #14181A;
+    border-radius: 44px;
+    padding: 16px;
+    box-shadow: var(--shadow-dev);
+  }
+  .ipad::after {
+    content: ""; position: absolute; top: 50%; right: -3px;
+    transform: translateY(-50%);
+    width: 3px; height: 64px; background: #2A2E31; border-radius: 0 2px 2px 0;
+  }
+  .ipad-screen {
+    width: 100%; height: 100%;
+    background: var(--paper);
+    border-radius: 30px;
+    overflow: hidden;
+    display: grid; grid-template-columns: 220px 1fr;
+  }
+
+  /* sidebar */
+  .pad-side {
+    border-right: 1px solid var(--line);
+    padding: 20px 16px;
+    display: flex; flex-direction: column; gap: 18px;
+    background: linear-gradient(180deg, var(--paper) 0%, var(--paper-2) 100%);
+  }
+  .pad-side .logo-row {
+    display: flex; align-items: center; gap: 10px;
+  }
+  .pad-side .logo-row .mono {
+    width: 30px; height: 30px; border-radius: 8px;
+    background: var(--ink); color: #fff;
+    display: grid; place-items: center;
+    font-family: 'Fraunces', serif; font-weight: 500;
+    font-size: 14px; letter-spacing: -.02em; position: relative;
+  }
+  .pad-side .logo-row .mono::after {
+    content: ""; position: absolute; right: -2px; top: -2px;
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--lime); border: 2px solid var(--paper);
+  }
+  .pad-side .logo-row .t {
+    font-family: 'Fraunces', serif; font-size: 17px;
+    letter-spacing: -.02em; font-weight: 500; line-height: 1;
+  }
+  .pad-side .logo-row .s {
+    font-family: 'JetBrains Mono', monospace; font-size: 8.5px;
+    color: var(--ink-3); text-transform: uppercase; letter-spacing: .18em;
+    margin-top: 2px;
+  }
+  .pad-user {
+    border: 1px solid var(--line);
+    background: #fff; border-radius: 12px;
+    padding: 11px 12px;
+    box-shadow: var(--shadow-card);
+  }
+  .pad-user .name {
+    font-family: 'Fraunces', serif; font-size: 15px; font-weight: 500;
+    letter-spacing: -.01em;
+  }
+  .pad-user .role {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    color: var(--ink-3); text-transform: uppercase; letter-spacing: .14em;
+    margin-top: 3px;
+  }
+  .pad-user .role .brand-name { color: var(--brand); font-weight: 600; }
+
+  .pad-group-h {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    color: var(--ink-4); text-transform: uppercase; letter-spacing: .22em;
+    padding: 0 6px 0 4px; margin-top: 2px;
+  }
+  .pad-nav { display: flex; flex-direction: column; gap: 1px; }
+  .pad-nav button {
+    appearance: none; border: 0; background: transparent;
+    text-align: left; padding: 9px 10px; border-radius: 9px;
+    font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500;
+    color: var(--ink-2); cursor: pointer;
+    display: flex; align-items: center; gap: 9px;
+    transition: background .15s;
+  }
+  .pad-nav button .ic {
+    width: 15px; height: 15px; color: var(--ink-3); flex: 0 0 15px;
+  }
+  .pad-nav button:hover { background: var(--hover); }
+  .pad-nav button.active {
+    background: var(--ink); color: #fff;
+    box-shadow: var(--shadow-card);
+  }
+  .pad-nav button.active .ic { color: var(--lime); }
+
+  .pad-foot {
+    margin-top: auto;
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    color: var(--ink-4); text-transform: uppercase; letter-spacing: .14em;
+    line-height: 1.7; padding: 0 6px;
+  }
+  .pad-foot .live::before {
+    content: ""; display: inline-block; width: 6px; height: 6px;
+    border-radius: 50%; background: var(--lime); margin-right: 6px;
+    transform: translateY(-1px);
+    animation: pulse 1.6s ease-in-out infinite;
+  }
+
+  /* main */
+  .pad-main {
+    overflow: auto;
+    padding: 20px 24px 24px;
+  }
+  .pad-head {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 16px; padding-bottom: 14px;
+    border-bottom: 1px solid var(--line);
+  }
+  .pad-head .t {
+    font-family: 'Fraunces', serif; font-size: 34px;
+    letter-spacing: -.025em; font-weight: 500; line-height: 1;
+  }
+  .pad-head .t em { font-style: italic; color: var(--brand); }
+  .pad-head .s {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    text-transform: uppercase; letter-spacing: .16em;
+    color: var(--ink-3); margin-top: 6px;
+  }
+  .pad-head .s .b { color: var(--brand); font-weight: 600; }
+  .pad-head .filters { display: flex; gap: 8px; align-items: center; }
+  .pad-head .filters .grp {
+    display: grid;
+    grid-template-columns: minmax(170px,1.4fr) minmax(110px,1fr);
+    gap: 8px;
+  }
+  .sel {
+    appearance: none;
+    border: 1px solid var(--line-2);
+    background: #fff;
+    padding: 8px 28px 8px 12px;
+    border-radius: 9px;
+    font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 500;
+    color: var(--ink); cursor: pointer; min-width: 0;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'><path d='M3 4.5 L6 7.5 L9 4.5' fill='none' stroke='%235B7380' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+  }
+  .sel:focus { outline: 2px solid var(--ink); outline-offset: 1px; }
+
+  /* iPad coloured common-metric boxes */
+  .common-boxes {
+    margin-top: 16px;
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr 1fr;
+    gap: 12px;
+  }
+  .cb {
+    border-radius: 16px; padding: 16px 18px;
+    border: 1px solid transparent;
+    box-shadow: var(--shadow-card);
+    position: relative; overflow: hidden;
+  }
+  .cb.live    { background: linear-gradient(160deg, #FBFAF6, #F6F2E2); border-color: #E6E0CB; }
+  .cb.atv     { background: var(--blue-soft);  }
+  .cb.chan    { background: var(--amber-soft); }
+  .cb.tx      { background: var(--rose-soft);  }
+  .cb .l {
+    font-family: 'JetBrains Mono', monospace; font-size: 9.5px;
+    color: var(--ink-3); text-transform: uppercase; letter-spacing: .14em;
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 8px; flex-wrap: nowrap;
+  }
+  .cb .l > span:first-child { white-space: nowrap; }
+  .cb .l .refresh {
+    font-family: 'JetBrains Mono', monospace; font-size: 8.5px;
+    color: var(--ink-3); display: inline-flex; align-items: center; gap: 4px;
+    background: rgba(255,255,255,.7); padding: 3px 7px; border-radius: 6px;
+    letter-spacing: .08em;
+    white-space: nowrap; flex: 0 0 auto;
+  }
+  .cb .l .refresh::before {
+    content:""; width:5px; height:5px; border-radius:50%; background: var(--lime);
+    animation: pulse 1.6s ease-in-out infinite;
+  }
+  .cb .n {
+    font-family: 'Fraunces', serif; font-size: 40px;
+    letter-spacing: -.03em; font-weight: 500; line-height: 1;
+    margin: 12px 0 6px;
+  }
+  .cb .n .u { font-size: 14px; color: var(--ink-3); margin-left: 4px; letter-spacing: 0; }
+  .cb .f {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    color: var(--ink-2); line-height: 1.55;
+  }
+  .cb .f b { font-weight: 700; color: var(--ink); }
+  .cb .delta-neg { color: var(--neg); font-weight: 700; }
+  .cb .delta-pos { color: var(--pos); font-weight: 700; }
+  .cb .progress {
+    margin-top: 10px;
+    height: 8px; background: rgba(0,0,0,.05); border-radius: 6px;
+    position: relative; overflow: hidden;
+    box-shadow: inset 0 1px 0 rgba(0,0,0,.04);
+  }
+  .cb .progress i {
+    position: absolute; left: 0; top: 0; bottom: 0;
+    background: linear-gradient(90deg, var(--lime-2) 0%, var(--lime) 100%);
+    border-radius: 6px;
+    transition: width .4s ease;
+    box-shadow: 0 0 10px rgba(199,251,85,.55);
+  }
+  .cb .progress i::after {
+    content: "";
+    position: absolute; inset: 0;
+    background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,.55) 50%, transparent 100%);
+    transform: translateX(-100%);
+    animation: shimmer 2.6s linear infinite;
+  }
+  .cb .edit-target {
+    appearance: none; border: 0; background: var(--ink); color: #fff;
+    padding: 4px 9px; border-radius: 6px; cursor: pointer;
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    text-transform: uppercase; letter-spacing: .14em; font-weight: 600;
+    display: inline-flex; align-items: center; gap: 4px;
+  }
+  .cb .edit-target::before { content: "✎"; font-size: 10px; }
+  body.no-edit .edit-target { display: none; }
+
+  /* brand-personal strip */
+  .bp-strip {
+    margin-top: 12px;
+    background: linear-gradient(160deg, var(--brand-soft), #fff);
+    border: 1px solid var(--line);
+    border-radius: 16px; padding: 14px 18px;
+    display: grid;
+    grid-template-columns: auto repeat(3, 1fr);
+    gap: 18px; align-items: center;
+    box-shadow: var(--shadow-card);
+  }
+  .bp-strip .lab {
+    font-family: 'JetBrains Mono', monospace; font-size: 9.5px;
+    color: var(--ink-3); text-transform: uppercase; letter-spacing: .18em;
+  }
+  .bp-strip .lab b { color: var(--brand); font-weight: 700; }
+  .bp-strip .m { display: flex; flex-direction: column; gap: 2px; }
+  .bp-strip .m .n {
+    font-family: 'Fraunces', serif; font-size: 22px;
+    font-weight: 500; letter-spacing: -.02em; line-height: 1;
+  }
+  .bp-strip .m .l {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    color: var(--ink-3); text-transform: uppercase; letter-spacing: .14em;
+  }
+
+  /* orders strip */
+  .channels-wrap {
+    margin-top: 12px;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 14px 18px 16px;
+    box-shadow: var(--shadow-card);
+  }
+  .channels-wrap .head {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 12px;
+  }
+  .channels-wrap .head .l {
+    font-family: 'JetBrains Mono', monospace; font-size: 9.5px;
+    color: var(--ink-3); text-transform: uppercase; letter-spacing: .18em;
+  }
+  .channels-wrap .head .hint {
+    font-family: 'JetBrains Mono', monospace; font-size: 9.5px;
+    color: var(--ink-4); text-transform: uppercase; letter-spacing: .12em;
+  }
+  .channels {
+    display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px;
+  }
+  .ch {
+    appearance: none; text-align: left;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 13px;
+    padding: 12px;
+    cursor: pointer;
+    transition: transform .14s, box-shadow .14s, border-color .14s;
+    display: flex; flex-direction: column; gap: 8px;
+    font-family: 'Inter', sans-serif; color: var(--ink);
+  }
+  .ch:hover { transform: translateY(-2px); border-color: var(--ink); box-shadow: var(--shadow-card-2); }
+  .ch.off { opacity: .55; cursor: not-allowed; }
+  .ch.off:hover { transform: none; border-color: var(--line); box-shadow: none; }
+  .ch .top { display: flex; justify-content: space-between; align-items: center; }
+  .ch .badge {
+    width: 30px; height: 30px; border-radius: 9px;
+    display: grid; place-items: center;
+    font-family: 'Fraunces', serif; font-weight: 500; font-size: 15px;
+    color: #fff; letter-spacing: -.02em;
+  }
+  .ch.p .badge { background: var(--pos); }
+  .ch.m .badge { background: var(--slate); }
+  .ch.h .badge { background: var(--amber); color: var(--ink); }
+  .ch.a .badge { background: var(--rose); }
+  .ch.s .badge { background: #C4C0B3; }
+  .ch .live {
+    font-family: 'JetBrains Mono', monospace; font-size: 8.5px;
+    text-transform: uppercase; letter-spacing: .16em;
+    color: var(--lime-ink); background: var(--lime);
+    padding: 3px 7px; border-radius: 999px; font-weight: 700;
+  }
+  .ch .off-tag {
+    font-family: 'JetBrains Mono', monospace; font-size: 8.5px;
+    text-transform: uppercase; letter-spacing: .16em;
+    color: var(--ink-4); background: var(--paper-2);
+    padding: 3px 7px; border-radius: 999px;
+  }
+  .ch .name { font-weight: 600; font-size: 13px; }
+  .ch .meta {
+    font-family: 'JetBrains Mono', monospace; font-size: 9.5px;
+    color: var(--ink-3); letter-spacing: .04em; line-height: 1.5;
+  }
+  .ch .val {
+    font-family: 'Fraunces', serif; font-size: 20px;
+    font-weight: 500; letter-spacing: -.02em; line-height: 1;
+  }
+
+  /* hourly + AI brief on iPad */
+  .strip {
+    margin-top: 12px; display: grid;
+    grid-template-columns: 1.5fr 1fr; gap: 12px;
+  }
+  .pulse-card, .ai-card, .stock-card-ipad {
+    background: #fff; border: 1px solid var(--line);
+    border-radius: 16px; padding: 14px 18px;
+    box-shadow: var(--shadow-card);
+  }
+  .pulse-card .head, .ai-card .head, .stock-card-ipad .head {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 12px;
+  }
+  .pulse-card .head .l, .ai-card .head .l, .stock-card-ipad .head .l {
+    font-family: 'JetBrains Mono', monospace; font-size: 9.5px;
+    text-transform: uppercase; letter-spacing: .18em; color: var(--ink-3);
+  }
+  .pulse-card .head .r, .ai-card .head .r, .stock-card-ipad .head .r {
+    font-family: 'JetBrains Mono', monospace; font-size: 9.5px;
+    color: var(--ink-4); letter-spacing: .12em;
+  }
+  .hourly-chart {
+    position: relative;
+    display: grid;
+    grid-template-columns: 30px 1fr;
+    grid-template-rows: 1fr 18px;
+    gap: 4px;
+    height: 150px;
+  }
+  .y-axis, .hourly-chart .y {
+    display: flex; flex-direction: column; justify-content: space-between;
+    font-family: 'JetBrains Mono', monospace; font-size: 8.5px;
+    color: var(--ink-4); text-align: right; padding-right: 4px;
+    letter-spacing: .04em;
+    height: 100%;
+  }
+  .hourly-chart .y span { display: block; }
+  .bars-wrap {
+    position: relative;
+    border-left: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    overflow: hidden;
+  }
+  .bars-wrap::before,
+  .bars-wrap::after {
+    content: ""; position: absolute; left: 0; right: 0;
+    height: 1px; background: var(--paper-2);
+  }
+  .bars-wrap::before { top: 33%; }
+  .bars-wrap::after  { top: 66%; }
+  .bars {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(13, 1fr);
+    align-items: end;
+    gap: 4px;
+    height: 100%; padding: 4px;
+  }
+  .bar {
+    position: relative;
+    background: var(--ink-5); border-radius: 4px 4px 2px 2px;
+    transition: background .2s, transform .2s;
+  }
+  .bar.now {
+    background: var(--lime);
+    box-shadow: 0 0 0 2px rgba(199,251,85,.25);
+  }
+  .bar.now::after {
+    content: "LIVE";
+    position: absolute; top: -16px; left: 50%; transform: translateX(-50%);
+    font-family: 'JetBrains Mono', monospace; font-size: 8px;
+    background: var(--ink); color: var(--lime);
+    padding: 2px 5px; border-radius: 4px; letter-spacing: .14em; font-weight: 700;
+  }
+  .bar.dim { background: var(--paper-2); }
+  .x-axis {
+    grid-column: 2;
+    display: grid; grid-template-columns: repeat(13, 1fr); gap: 4px;
+    font-family: 'JetBrains Mono', monospace; font-size: 8.5px;
+    color: var(--ink-4); text-align: center;
+    letter-spacing: .04em; padding: 0 4px;
+  }
+  .axis-corner {
+    font-family: 'JetBrains Mono', monospace; font-size: 8.5px;
+    color: var(--ink-4); text-align: right; padding-right: 4px;
+    align-self: end; letter-spacing: .04em;
+  }
+
+  /* AI brief (iPad) — molecular polish */
+  .ai-card { display: flex; flex-direction: column; }
+  .ai-body {
+    max-height: 260px; overflow: auto;
+    display: flex; flex-direction: column; gap: 10px;
+    padding-right: 4px;
+  }
+  .ai-body::-webkit-scrollbar { width: 4px; }
+  .ai-body::-webkit-scrollbar-thumb { background: var(--line-2); border-radius: 4px; }
+  .ai-item {
+    border: 1px solid var(--line);
+    border-radius: 13px; padding: 12px 14px 13px;
+    background: linear-gradient(180deg, #FFFEFA 0%, #FAF7EE 100%);
+    transition: transform .15s ease, box-shadow .25s ease;
+  }
+  .ai-item:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 22px -16px rgba(0,0,0,.25);
+  }
+  .ai-item .h {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 7px;
+  }
+  .ai-item .h .time {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    color: var(--ink-4); text-transform: uppercase; letter-spacing: .16em;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .ai-item .msg {
+    font-family: 'Fraunces', serif; font-size: 15px; line-height: 1.45;
+    letter-spacing: -.005em; color: var(--ink);
+  }
+  .ai-item .msg b {
+    font-weight: 600; color: var(--ink);
+    background: linear-gradient(180deg, transparent 60%, rgba(199,251,85,.45) 60% 95%, transparent 95%);
+    padding: 0 1px;
+  }
+
+  /* PRIORITY card on dark — the action item */
+  .ai-item.action {
+    background:
+      radial-gradient(140% 100% at 0% 0%, rgba(199,251,85,.10) 0%, transparent 50%),
+      linear-gradient(180deg, #14201C 0%, #0B100E 100%);
+    color: #fff; border-color: #1F2A26;
+    box-shadow: 0 10px 30px -22px rgba(11,16,14,.7);
+  }
+  .ai-item.action .h .time { color: rgba(255,255,255,.55); }
+  .ai-item.action .msg { color: #F5F7F4; }
+  .ai-item.action .msg b {
+    color: #fff;
+    background: linear-gradient(180deg, transparent 60%, rgba(199,251,85,.30) 60% 95%, transparent 95%);
+  }
+  .ai-item .cta {
+    margin-top: 10px;
+    appearance: none; border: 0; cursor: pointer;
+    background: var(--lime); color: var(--lime-ink);
+    padding: 8px 12px 8px 9px; border-radius: 8px;
+    font-family: 'Inter', sans-serif; font-size: 11.5px; font-weight: 600;
+    display: inline-flex; align-items: center; gap: 6px;
+    box-shadow: 0 8px 20px -10px rgba(199,251,85,.55);
+    transition: transform .15s ease, box-shadow .25s ease;
+  }
+  .ai-item .cta:hover { transform: translateY(-1px); }
+  .ai-item .cta .cta-tick {
+    width: 14px; height: 14px; border-radius: 50%;
+    background: var(--lime-ink); color: var(--lime);
+    display: inline-grid; place-items: center;
+    font-size: 9px; font-weight: 700;
+  }
+  .ai-item .cta .cta-arr { margin-left: 2px; }
+
+  /* ── Coloured role tags (label pill at top of each brief) ── */
+  .role-tag {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    text-transform: uppercase; letter-spacing: .16em; font-weight: 700;
+    padding: 3px 8px 3px 7px; border-radius: 6px;
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(15,107,78,.08); color: var(--pos);
+    border: 1px solid rgba(15,107,78,.18);
+  }
+  .role-tag::before {
+    content: ""; width: 5px; height: 5px; border-radius: 50%;
+    background: currentColor;
+  }
+  .role-tag.t-priority {
+    background: rgba(190,58,58,.10); color: var(--neg);
+    border-color: rgba(190,58,58,.25);
+  }
+  .role-tag.t-channel  {
+    background: rgba(45,108,223,.10); color: var(--blue);
+    border-color: rgba(45,108,223,.25);
+  }
+  .role-tag.t-attach   {
+    background: rgba(176,115,9,.10); color: var(--warn);
+    border-color: rgba(176,115,9,.28);
+  }
+  .role-tag.t-yourday  {
+    background: rgba(199,251,85,.18); color: var(--lime-ink);
+    border-color: rgba(199,251,85,.45);
+  }
+  .role-tag.t-team     {
+    background: rgba(91,115,128,.10); color: var(--ink-2);
+    border-color: rgba(91,115,128,.22);
+  }
+  .role-tag.t-save     {
+    background: rgba(216,82,124,.10); color: #B8345B;
+    border-color: rgba(216,82,124,.22);
+  }
+  .role-tag.t-stock    {
+    background: rgba(176,115,9,.10); color: var(--warn);
+    border-color: rgba(176,115,9,.28);
+  }
+  .role-tag.t-action   {
+    background: var(--lime); color: var(--lime-ink);
+    border-color: var(--lime-2);
+  }
+
+  /* on-dark variants (PRIORITY action card) */
+  .ai-item.action .role-tag {
+    background: rgba(255,255,255,.06); color: var(--lime);
+    border-color: rgba(199,251,85,.35);
+  }
+  .ai-item.action .role-tag.t-priority {
+    background: rgba(255,93,93,.14); color: #FF8B7E;
+    border-color: rgba(255,93,93,.40);
+  }
+  .ai-item.action .role-tag.t-attach {
+    background: rgba(255,184,77,.14); color: #FFCE74;
+    border-color: rgba(255,184,77,.40);
+  }
+  .ai-item.action .role-tag.t-yourday {
+    background: var(--lime); color: var(--lime-ink);
+    border-color: var(--lime);
+  }
+
+  /* live pip (small pulsing dot before time stamps) */
+  .live-pip {
+    width: 5px; height: 5px; border-radius: 50%;
+    background: var(--lime);
+    box-shadow: 0 0 5px var(--lime);
+    animation: pulse 1.6s ease-in-out infinite;
+  }
+
+  /* ── Decorated tokens inside .msg ── */
+  .ai-item .msg em.num,
+  .ph-ai  .item .msg em.num {
+    font-style: normal;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+    font-size: .88em;
+    padding: 1px 5px;
+    border-radius: 5px;
+    letter-spacing: -.01em;
+    white-space: nowrap;
+  }
+  .ai-item .msg em.num.pos,
+  .ph-ai  .item .msg em.num.pos {
+    color: var(--pos); background: rgba(15,107,78,.10);
+  }
+  .ai-item .msg em.num.neg,
+  .ph-ai  .item .msg em.num.neg {
+    color: var(--neg); background: rgba(190,58,58,.10);
+  }
+  .ai-item .msg em.num.pct,
+  .ph-ai  .item .msg em.num.pct {
+    color: var(--ink); background: rgba(199,251,85,.28);
+  }
+  .ai-item .msg em.num.aed,
+  .ph-ai  .item .msg em.num.aed {
+    color: var(--ink); background: rgba(45,108,223,.10);
+    font-weight: 700;
+  }
+  .ai-item .msg em.num.aed .cur,
+  .ph-ai  .item .msg em.num.aed .cur {
+    color: var(--blue); font-weight: 600; font-size: .82em;
+    margin-right: 1px;
+  }
+  .ai-item .msg em.num.t,
+  .ph-ai  .item .msg em.num.t {
+    color: var(--ink-3); background: var(--paper-3);
+    font-size: .82em; padding: 0 4px;
+  }
+  /* On-dark token variants */
+  .ai-item.action .msg em.num.pos {
+    color: #9BF09A; background: rgba(155,240,154,.14);
+  }
+  .ai-item.action .msg em.num.neg {
+    color: #FF8B7E; background: rgba(255,93,93,.16);
+  }
+  .ai-item.action .msg em.num.pct {
+    color: var(--lime); background: rgba(199,251,85,.16);
+  }
+  .ai-item.action .msg em.num.aed {
+    color: #fff; background: rgba(255,255,255,.08);
+  }
+  .ai-item.action .msg em.num.aed .cur { color: #9DC1FF; }
+  .ai-item.action .msg em.num.t {
+    color: rgba(255,255,255,.55); background: rgba(255,255,255,.06);
+  }
+
+  /* iPad stock card */
+  .stock-card-ipad {
+    margin-top: 12px;
+  }
+  .stock-card-ipad .grid {
+    display: grid; grid-template-columns: 1fr 1fr 1fr 1.4fr; gap: 12px;
+  }
+  .stock-mini {
+    border: 1px solid var(--line);
+    border-radius: 11px; padding: 11px 13px;
+    background: #fff;
+  }
+  .stock-mini .l {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    color: var(--ink-3); text-transform: uppercase; letter-spacing: .16em;
+  }
+  .stock-mini .n {
+    font-family: 'Fraunces', serif; font-size: 24px;
+    font-weight: 500; letter-spacing: -.02em; margin-top: 4px; line-height: 1;
+  }
+  .stock-mini .f {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    color: var(--ink-3); margin-top: 4px; letter-spacing: .04em;
+  }
+  .stock-mini.warn { background: var(--neg-soft); border-color: rgba(190,58,58,.3); }
+  .stock-mini.warn .n { color: var(--neg); }
+  .stock-list .row {
+    display: grid; grid-template-columns: 1.4fr .5fr 1fr .8fr;
+    align-items: center;
+    padding: 8px 0; border-top: 1px solid var(--line);
+    gap: 10px;
+  }
+  .stock-list .row:first-child { border-top: 0; }
+  .stock-list .nm { font-size: 12px; font-weight: 500; }
+  .stock-list .nm small {
+    font-family: 'JetBrains Mono', monospace; font-size: 8.5px;
+    color: var(--ink-4); display: block; letter-spacing: .08em; margin-top: 2px;
+  }
+  .stock-list .ct {
+    font-family: 'Fraunces', serif; font-size: 16px; font-weight: 500;
+  }
+  .stock-list .b {
+    height: 5px; background: var(--paper-2); border-radius: 3px;
+    position: relative; overflow: hidden;
+  }
+  .stock-list .b i {
+    position: absolute; left:0; top:0; bottom:0; background: var(--ink);
+    border-radius: 3px;
+  }
+  .stock-list .b.low i { background: var(--neg); }
+  .stock-list .act {
+    font-family: 'JetBrains Mono', monospace; font-size: 9.5px;
+    text-transform: uppercase; letter-spacing: .14em;
+    color: var(--ink-2); font-weight: 600; text-align: right;
+  }
+  .stock-list .act .danger { color: var(--neg); }
+
+  /* views (pad) */
+  .pad-view { display: none; }
+  .pad-view.active { display: block; }
+
+  /* ───────── iPhone 14 Pro Max ───────── */
+  .iphone {
+    position: relative;
+    width: 430px; height: 880px;
+    background: linear-gradient(160deg, #1A1F22 0%, #0B0E10 100%);
+    border-radius: 58px;
+    padding: 11px;
+    box-shadow:
+      var(--shadow-dev),
+      inset 0 0 0 1.5px rgba(255,255,255,.06);
+  }
+  /* titanium side rail accent */
+  .iphone::before {
+    content: ""; position: absolute;
+    inset: 4px;
+    border-radius: 56px;
+    background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(0,0,0,0) 40%);
+    pointer-events: none;
+  }
+  /* mute switch + volume + power button hints (subtle, on left/right) */
+  .iphone::after {
+    content: ""; position: absolute;
+    top: 130px; right: -3px;
+    width: 3px; height: 100px;
+    background: #1A1F22; border-radius: 0 2px 2px 0;
+  }
+  .iphone-screen {
+    width: 100%; height: 100%;
+    background: var(--paper);
+    border-radius: 47px;
+    overflow: hidden;
+    position: relative;
+    display: flex; flex-direction: column;
+  }
+  /* Dynamic Island */
+  .notch {
+    position: absolute; top: 13px; left: 50%;
+    transform: translateX(-50%);
+    width: 124px; height: 37px;
+    background: #000;
+    border-radius: 20px; z-index: 5;
+    box-shadow:
+      inset 0 0 0 1px rgba(255,255,255,.04),
+      0 1px 3px rgba(0,0,0,.4);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 12px;
+  }
+  .notch::before {
+    content: ""; width: 6px; height: 6px;
+    border-radius: 50%; background: #1A2A05; box-shadow: 0 0 0 2px #0B0E10 inset;
+  }
+  .notch::after {
+    content: ""; width: 6px; height: 6px; border-radius: 50%;
+    background: var(--lime);
+    box-shadow: 0 0 8px var(--lime), 0 0 0 2px #0B0E10 inset;
+    animation: pulse 1.8s ease-in-out infinite;
+  }
+  .status {
+    position: relative; z-index: 4;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 14px 24px 0;
+    font-family: 'SF Pro Display', 'Inter', sans-serif; font-size: 14px;
+    font-weight: 600; color: var(--ink);
+  }
+  .status .icons { display: inline-flex; gap: 6px; align-items: center; }
+  .status .ic-signal,
+  .status .ic-wifi,
+  .status .ic-batt { display: inline-block; color: var(--ink); }
+  .status .ic-batt {
+    width: 26px; height: 12px;
+    border: 1.3px solid var(--ink); border-radius: 3px;
+    position: relative; padding: 1px;
+    box-sizing: content-box;
+  }
+  .status .ic-batt::after {
+    content: ""; position: absolute; right: -3.5px; top: 3px;
+    width: 1.5px; height: 4px; background: var(--ink);
+    border-radius: 0 1px 1px 0;
+  }
+  .status .ic-batt i {
+    display: block; height: 100%; width: 84%;
+    background: var(--ink); border-radius: 1px;
+  }
+  .ph-body {
+    flex: 1; overflow: auto;
+    padding: 16px 20px 100px;
+  }
+  .ph-body::-webkit-scrollbar { width: 4px; }
+  .ph-body::-webkit-scrollbar-thumb { background: var(--line-2); border-radius: 4px; }
+  .ph-view { display: none; animation: fadein .25s ease; }
+  .ph-view.active { display: block; }
+  .ph-view.active.sso { display: flex; flex-direction: column; }
+  @keyframes fadein { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+
+  /* SSO screen */
+  .sso { padding: 40px 4px; min-height: 540px; }
+  .sso .logo-big {
+    width: 64px; height: 64px; border-radius: 18px;
+    background: var(--ink); color: #fff;
+    display: grid; place-items: center;
+    font-family: 'Fraunces', serif; font-weight: 500;
+    font-size: 28px; letter-spacing: -.02em;
+    margin: 16px auto 28px;
+    position: relative;
+    box-shadow: var(--shadow-card-2);
+  }
+  .sso .logo-big::after {
+    content: ""; position: absolute; right: -2px; top: -2px;
+    width: 12px; height: 12px; border-radius: 50%;
+    background: var(--lime); border: 3px solid var(--paper);
+    animation: pulse 2s ease-in-out infinite;
+  }
+  .sso .greet {
+    font-family: 'Fraunces', serif; font-size: 32px; font-weight: 500;
+    letter-spacing: -.025em; line-height: 1.1; text-align: center;
+  }
+  .sso .greet em { font-style: italic; color: var(--ink-3); }
+  .sso .sub {
+    font-family: 'Inter', sans-serif; font-size: 13px; color: var(--ink-3);
+    text-align: center; margin-top: 10px; line-height: 1.5;
+    padding: 0 16px;
+  }
+  .sso .ms-btn {
+    margin: 28px 8px 0;
+    appearance: none; border: 0; background: var(--ink); color: #fff;
+    padding: 15px 16px; border-radius: 14px; cursor: pointer;
+    font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600;
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    box-shadow: var(--shadow-card-2);
+  }
+  .sso .ms-btn .ms-grid {
+    display: grid; grid-template-columns: 8px 8px; grid-template-rows: 8px 8px;
+    gap: 2px; flex: 0 0 18px; width: 18px; height: 18px;
+  }
+  .sso .ms-btn .ms-grid div { width: 8px; height: 8px; }
+  .sso .ms-btn .ms-grid div:nth-child(1) { background: #F25022; }
+  .sso .ms-btn .ms-grid div:nth-child(2) { background: #7FBA00; }
+  .sso .ms-btn .ms-grid div:nth-child(3) { background: #00A4EF; }
+  .sso .ms-btn .ms-grid div:nth-child(4) { background: #FFB900; }
+  .sso .ms-btn::after { content: "→"; margin-left: 4px; }
+  .sso .alt {
+    text-align: center; margin-top: 14px;
+    font-family: 'JetBrains Mono', monospace; font-size: 9.5px;
+    color: var(--ink-4); text-transform: uppercase; letter-spacing: .14em;
+  }
+  .sso .secure {
+    margin-top: auto;
+    border-top: 1px solid var(--line); padding-top: 16px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: 'JetBrains Mono', monospace; font-size: 9.5px;
+    color: var(--ink-3); text-transform: uppercase; letter-spacing: .14em;
+  }
+  .sso .secure .l::before {
+    content: ""; display: inline-block; width: 6px; height: 6px;
+    border-radius: 50%; background: var(--lime); margin-right: 6px;
+  }
+
+  /* Role picker */
+  .roles-wrap { padding-top: 8px; }
+  .role-hello {
+    font-family: 'Fraunces', serif; font-size: 26px; letter-spacing: -.02em; font-weight: 500;
+    line-height: 1.15; margin-top: 24px;
+  }
+  .role-hello em { font-style: italic; }
+  .role-sub {
+    font-family: 'Inter', sans-serif; font-size: 12.5px; color: var(--ink-3);
+    margin-top: 8px; line-height: 1.5;
+  }
+  .role-list {
+    margin-top: 22px; display: flex; flex-direction: column; gap: 8px;
+  }
+  .role-tile {
+    appearance: none; text-align: left; cursor: pointer;
+    background: #fff; border: 1px solid var(--line);
+    border-radius: 14px; padding: 14px 16px;
+    display: flex; align-items: center; gap: 12px;
+    color: var(--ink); transition: transform .12s, border-color .12s;
+    box-shadow: var(--shadow-card);
+  }
+  .role-tile:hover { transform: translateY(-1px); border-color: var(--ink); }
+  .role-tile.primary { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .role-tile .ic {
+    width: 36px; height: 36px; border-radius: 11px;
+    background: var(--brand-soft); color: var(--brand);
+    display: grid; place-items: center; flex: 0 0 36px;
+  }
+  .role-tile.primary .ic { background: rgba(255,255,255,.12); color: var(--lime); }
+  .role-tile .info { flex: 1; }
+  .role-tile .nm {
+    font-family: 'Fraunces', serif; font-size: 15px; font-weight: 500;
+    letter-spacing: -.01em;
+  }
+  .role-tile .meta {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    color: var(--ink-3); text-transform: uppercase; letter-spacing: .14em;
+    margin-top: 3px;
+  }
+  .role-tile.primary .meta { color: rgba(255,255,255,.65); }
+  .role-tile .arr { color: var(--ink-3); }
+  .role-tile.primary .arr { color: var(--lime); }
+
+  /* iPhone main app header */
+  .ph-app-head {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 12px; gap: 8px;
+  }
+  .ph-app-head .l { display: flex; align-items: center; gap: 9px; min-width: 0; }
+  .ph-app-head .l .mono {
+    width: 28px; height: 28px; border-radius: 8px;
+    background: var(--ink); color: #fff;
+    display: grid; place-items: center; flex: 0 0 28px;
+    font-family: 'Fraunces', serif; font-size: 13px; font-weight: 500;
+    position: relative;
+  }
+  .ph-app-head .l .mono::after {
+    content: ""; position: absolute; top: -2px; right: -2px;
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--lime); border: 2px solid var(--paper);
+  }
+  .ph-app-head .l .txt { min-width: 0; }
+  .ph-app-head .l .t {
+    font-family: 'Fraunces', serif; font-size: 17px; font-weight: 500;
+    letter-spacing: -.01em; line-height: 1;
+  }
+  .ph-app-head .l .s {
+    font-family: 'JetBrains Mono', monospace; font-size: 8.5px;
+    color: var(--ink-3); text-transform: uppercase; letter-spacing: .14em;
+    margin-top: 4px; max-width: 200px;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .ph-app-head .l .s .b { color: var(--brand); font-weight: 600; }
+  .ph-app-head .r { display: flex; gap: 6px; flex: 0 0 auto; }
+  .ph-icon {
+    width: 30px; height: 30px;
+    border: 1px solid var(--line); border-radius: 9px;
+    background: #fff; display: grid; place-items: center;
+    color: var(--ink-2); cursor: pointer;
+  }
+
+  /* Brand chips mobile */
+  .ph-chips {
+    display: flex; gap: 6px; margin-bottom: 12px; align-items: center;
+    overflow-x: auto; padding-bottom: 2px;
+  }
+  .ph-chips::-webkit-scrollbar { display: none; }
+  .ph-chip {
+    appearance: none; border: 1px solid var(--line); background: #fff;
+    padding: 6px 10px; border-radius: 999px;
+    font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 500;
+    color: var(--ink); cursor: pointer; flex: 0 0 auto;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .ph-chip .dot {
+    width: 7px; height: 7px; border-radius: 50%; background: var(--brand);
+  }
+  .ph-chip.active { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .ph-chip.active .dot { background: var(--lime); }
+  .ph-chip-more {
+    flex: 0 0 auto;
+  }
+  .ph-chip-more select {
+    appearance: none;
+    border: 1px solid var(--line); background: transparent;
+    padding: 6px 22px 6px 10px;
+    border-radius: 999px;
+    font-family: 'JetBrains Mono', monospace; font-size: 9.5px;
+    text-transform: uppercase; letter-spacing: .14em; color: var(--ink-3);
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 12 12'><path d='M3 4.5 L6 7.5 L9 4.5' fill='none' stroke='%235B7380' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+    background-repeat: no-repeat; background-position: right 8px center;
+    cursor: pointer;
+  }
+
+  /* View selector mobile */
+  .ph-view-row {
+    display: grid; grid-template-columns: 1.5fr 1fr; gap: 8px; margin-bottom: 14px;
+  }
+
+  /* Today: live revenue card */
+  .live-card {
+    background: linear-gradient(160deg, var(--ink) 0%, #1A2826 100%);
+    color: #fff;
+    border-radius: 16px; padding: 16px 18px;
+    box-shadow: var(--shadow-card-2);
+    position: relative; overflow: hidden;
+  }
+  .live-card::before {
+    content: ""; position: absolute; top: -20px; right: -20px;
+    width: 160px; height: 160px;
+    background: radial-gradient(closest-side, var(--lime) 0%, transparent 70%);
+    opacity: .22; pointer-events: none;
+  }
+  .live-card .h {
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: 'JetBrains Mono', monospace; font-size: 9.5px;
+    text-transform: uppercase; letter-spacing: .16em; color: rgba(255,255,255,.7);
+    margin-bottom: 10px;
+  }
+  .live-card .h .live-pill {
+    background: var(--lime); color: var(--lime-ink);
+    padding: 3px 8px; border-radius: 999px; font-weight: 700;
+    display: inline-flex; align-items: center; gap: 5px;
+  }
+  .live-card .h .live-pill::before {
+    content: ""; width: 5px; height: 5px; border-radius: 50%;
+    background: var(--lime-ink); animation: pulse 1.4s ease-in-out infinite;
+  }
+  .live-card .row {
+    display: flex; justify-content: space-between; align-items: flex-end; gap: 8px;
+  }
+  .live-card .n {
+    font-family: 'Fraunces', serif;
+    font-size: 36px; letter-spacing: -.03em; font-weight: 500; line-height: 1;
+  }
+  .live-card .n .cur {
+    font-size: 13px; color: rgba(255,255,255,.6); font-weight: 400; margin-right: 4px;
+  }
+  .live-card .trend {
+    background: var(--neg-soft); color: var(--neg);
+    padding: 4px 9px; border-radius: 8px;
+    font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700;
+    letter-spacing: .04em;
+  }
+  .live-card .trend.up { background: rgba(199,251,85,.18); color: var(--lime); }
+  .live-card .target-row {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-top: 6px;
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    color: rgba(255,255,255,.7); letter-spacing: .04em;
+  }
+  .live-card .target-row b { color: #fff; font-weight: 700; }
+  .live-card .edit-target {
+    appearance: none; border: 1px solid rgba(255,255,255,.2);
+    background: rgba(255,255,255,.08); color: #fff;
+    padding: 3px 8px; border-radius: 6px; cursor: pointer;
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    text-transform: uppercase; letter-spacing: .14em; font-weight: 600;
+    display: inline-flex; align-items: center; gap: 5px;
+  }
+  .live-card .edit-target::before { content: "✎"; font-size: 10px; }
+  body.no-edit .live-card .edit-target { display: none; }
+  .live-card .pbar {
+    margin-top: 10px;
+    height: 8px; background: rgba(255,255,255,.10); border-radius: 6px;
+    overflow: hidden; position: relative;
+    box-shadow: inset 0 1px 0 rgba(0,0,0,.18);
+  }
+  .live-card .pbar i {
+    position: absolute; left: 0; top: 0; bottom: 0;
+    background: linear-gradient(90deg, var(--lime-2) 0%, var(--lime) 100%);
+    border-radius: 6px;
+    transition: width .5s ease;
+    box-shadow: 0 0 12px rgba(199,251,85,.45);
+  }
+  .live-card .pbar i::after {
+    content: "";
+    position: absolute; inset: 0;
+    background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(255,255,255,.0) 30%,
+      rgba(255,255,255,.55) 50%,
+      rgba(255,255,255,.0) 70%,
+      transparent 100%);
+    transform: translateX(-100%);
+    animation: shimmer 2.6s linear infinite;
+  }
+  @keyframes shimmer {
+    0%   { transform: translateX(-100%); }
+    100% { transform: translateX(110%); }
+  }
+  .live-card .pace {
+    display: flex; justify-content: space-between;
+    margin-top: 7px;
+    font-family: 'JetBrains Mono', monospace; font-size: 9.5px;
+    color: rgba(255,255,255,.7); letter-spacing: .04em;
+  }
+  .live-card .pace .refresh {
+    display: inline-flex; align-items: center; gap: 5px;
+  }
+  .live-card .pace .refresh::before {
+    content: ""; width: 5px; height: 5px; border-radius: 50%;
+    background: var(--lime); animation: pulse 1.6s ease-in-out infinite;
+  }
+
+  /* Common metric strip mobile */
+  .common-mini {
+    margin-top: 10px;
+    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 7px;
+  }
+  .common-mini .c {
+    background: #fff; border: 1px solid var(--line); border-radius: 12px;
+    padding: 10px 12px; box-shadow: var(--shadow-card);
+  }
+  .common-mini .c .l {
+    font-family: 'JetBrains Mono', monospace; font-size: 8.5px;
+    color: var(--ink-3); text-transform: uppercase; letter-spacing: .16em;
+  }
+  .common-mini .c .n {
+    font-family: 'Fraunces', serif; font-size: 19px;
+    font-weight: 500; letter-spacing: -.02em; line-height: 1; margin-top: 4px;
+  }
+  .common-mini .c .u {
+    font-family: 'JetBrains Mono', monospace; font-size: 8.5px;
+    color: var(--ink-3); margin-top: 2px; letter-spacing: .14em; text-transform: uppercase;
+  }
+
+  /* Brand personal strip mobile */
+  .bp-mini {
+    margin-top: 10px;
+    background: linear-gradient(160deg, var(--brand-soft) 0%, #fff 100%);
+    border: 1px solid var(--line);
+    border-radius: 14px; padding: 12px 14px;
+    box-shadow: var(--shadow-card);
+  }
+  .bp-mini .h {
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: 'JetBrains Mono', monospace; font-size: 8.5px;
+    color: var(--ink-3); text-transform: uppercase; letter-spacing: .16em;
+    margin-bottom: 8px;
+  }
+  .bp-mini .h b { color: var(--brand); font-weight: 700; }
+  .bp-mini .grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+  .bp-mini .grid .m .n {
+    font-family: 'Fraunces', serif; font-size: 18px; font-weight: 500;
+    letter-spacing: -.02em; line-height: 1;
+  }
+  .bp-mini .grid .m .l {
+    font-family: 'JetBrains Mono', monospace; font-size: 8.5px;
+    color: var(--ink-3); margin-top: 3px; letter-spacing: .04em;
+  }
+
+  /* Hourly mobile */
+  .ph-hourly {
+    margin-top: 10px;
+    background: #fff; border: 1px solid var(--line); border-radius: 14px;
+    padding: 12px 14px; box-shadow: var(--shadow-card);
+  }
+  .ph-hourly .h {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 10px;
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    color: var(--ink-3); text-transform: uppercase; letter-spacing: .16em;
+  }
+  .ph-hourly .h .r { color: var(--ink-4); }
+  .ph-hourly .chart {
+    display: grid;
+    grid-template-columns: 24px 1fr;
+    grid-template-rows: 1fr 14px;
+    gap: 3px; height: 110px;
+  }
+  .ph-hourly .y {
+    display: flex; flex-direction: column; justify-content: space-between;
+    font-family: 'JetBrains Mono', monospace; font-size: 8px;
+    color: var(--ink-4); text-align: right; padding-right: 3px;
+    letter-spacing: .04em;
+  }
+  .ph-hourly .bw {
+    position: relative;
+    border-left: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+  .ph-hourly .bw::before, .ph-hourly .bw::after {
+    content: ""; position: absolute; left:0; right:0;
+    height: 1px; background: var(--paper-2);
+  }
+  .ph-hourly .bw::before { top: 33%; }
+  .ph-hourly .bw::after { top: 66%; }
+  .ph-hourly .bars {
+    position: relative;
+    display: grid; grid-template-columns: repeat(13, 1fr);
+    align-items: end; gap: 2px; height: 100%; padding: 3px 2px;
+  }
+  .ph-hourly .bars .b {
+    background: var(--ink-5); border-radius: 3px 3px 1px 1px;
+  }
+  .ph-hourly .bars .b.now {
+    background: var(--lime);
+  }
+  .ph-hourly .bars .b.dim { background: var(--paper-2); }
+  .ph-hourly .x {
+    grid-column: 2;
+    display: grid; grid-template-columns: repeat(13, 1fr); gap: 2px;
+    font-family: 'JetBrains Mono', monospace; font-size: 7.5px;
+    color: var(--ink-4); text-align: center; padding: 0 2px;
+    letter-spacing: .02em;
+  }
+  .ph-hourly .axis-corner {
+    font-family: 'JetBrains Mono', monospace; font-size: 7.5px;
+    color: var(--ink-4); text-align: right; padding-right: 3px;
+    align-self: end; letter-spacing: .04em;
+  }
+
+  /* AI brief mobile — molecular polish */
+  .ph-ai {
+    margin-top: 10px;
+    background:
+      radial-gradient(120% 60% at 100% 0%, rgba(199,251,85,.06) 0%, transparent 60%),
+      linear-gradient(180deg, #FFFFFF 0%, #FAF7EE 100%);
+    border: 1px solid var(--line); border-radius: 16px;
+    padding: 13px 14px 14px; box-shadow: var(--shadow-card);
+    max-height: 460px; overflow: auto;
+  }
+  .ph-ai::-webkit-scrollbar { width: 4px; }
+  .ph-ai::-webkit-scrollbar-thumb { background: var(--line-2); border-radius: 4px; }
+  .ph-ai .h {
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    text-transform: uppercase; letter-spacing: .16em; color: var(--ink-3);
+    margin-bottom: 10px;
+    padding-bottom: 9px; border-bottom: 1px dashed var(--line-2);
+  }
+  .ph-ai .h .role-tag { color: var(--brand); font-weight: 700; }
+  /* Header role-tag override for "AI brief · store mgr" line — keep small, no pip */
+  .ph-ai .h > span > span.role-tag,
+  .ai-card .head .role-tag {
+    background: transparent; border: 0; padding: 0;
+    color: var(--brand);
+  }
+  .ph-ai .h > span > span.role-tag::before,
+  .ai-card .head .role-tag::before { display: none; }
+
+  .ph-ai .item {
+    padding: 10px 0 11px;
+    border-top: 1px solid var(--line);
+  }
+  .ph-ai .item:first-of-type { border-top: 0; padding-top: 0; }
+  .ph-ai .item .label {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 6px;
+  }
+  .ph-ai .item .label .when {
+    font-family: 'JetBrains Mono', monospace; font-size: 8.5px;
+    color: var(--ink-4); text-transform: uppercase; letter-spacing: .14em;
+    display: inline-flex; align-items: center; gap: 5px;
+  }
+  /* Make ph-ai use the same colored .tag = role-tag visual */
+  .ph-ai .item .label .tag {
+    font-family: 'JetBrains Mono', monospace; font-size: 8.5px;
+    text-transform: uppercase; letter-spacing: .16em; font-weight: 700;
+    padding: 3px 7px; border-radius: 6px;
+    display: inline-flex; align-items: center; gap: 5px;
+    background: rgba(15,107,78,.08); color: var(--pos);
+    border: 1px solid rgba(15,107,78,.18);
+  }
+  .ph-ai .item .label .tag::before {
+    content: ""; width: 4.5px; height: 4.5px; border-radius: 50%;
+    background: currentColor;
+  }
+  .ph-ai .item .label .tag.t-priority { background: rgba(190,58,58,.10); color: var(--neg); border-color: rgba(190,58,58,.25); }
+  .ph-ai .item .label .tag.t-channel  { background: rgba(45,108,223,.10); color: var(--blue); border-color: rgba(45,108,223,.25); }
+  .ph-ai .item .label .tag.t-attach   { background: rgba(176,115,9,.10); color: var(--warn); border-color: rgba(176,115,9,.28); }
+  .ph-ai .item .label .tag.t-yourday  { background: rgba(199,251,85,.18); color: var(--lime-ink); border-color: rgba(199,251,85,.45); }
+  .ph-ai .item .label .tag.t-team     { background: rgba(91,115,128,.10); color: var(--ink-2); border-color: rgba(91,115,128,.22); }
+  .ph-ai .item .label .tag.t-save     { background: rgba(216,82,124,.10); color: #B8345B; border-color: rgba(216,82,124,.22); }
+  .ph-ai .item .label .tag.t-stock    { background: rgba(176,115,9,.10); color: var(--warn); border-color: rgba(176,115,9,.28); }
+  .ph-ai .item .label .tag.t-action   { background: var(--lime); color: var(--lime-ink); border-color: var(--lime-2); }
+
+  .ph-ai .item .msg {
+    font-family: 'Fraunces', serif; font-size: 14px; line-height: 1.45;
+    letter-spacing: -.005em; color: var(--ink);
+  }
+  .ph-ai .item .msg b {
+    font-weight: 600;
+    background: linear-gradient(180deg, transparent 60%, rgba(199,251,85,.42) 60% 95%, transparent 95%);
+    padding: 0 1px;
+  }
+  /* The first item gets a subtle priority emphasis */
+  .ph-ai .item.lead {
+    background: linear-gradient(180deg, rgba(199,251,85,.04) 0%, transparent 80%);
+    margin: -3px -8px 0;
+    padding: 12px 8px 11px;
+    border-radius: 10px;
+    border-top: 0;
+  }
+  .ph-ai .item.lead + .item { border-top: 1px solid var(--line); }
+
+  /* Orders mobile */
+  .ph-orders-sum {
+    background: linear-gradient(160deg, var(--ink) 0%, #1A2826 100%);
+    color: #fff;
+    border-radius: 14px; padding: 14px 16px;
+    box-shadow: var(--shadow-card-2);
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 10px;
+  }
+  .ph-orders-sum .l {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    color: rgba(255,255,255,.65); text-transform: uppercase; letter-spacing: .16em;
+  }
+  .ph-orders-sum .v {
+    font-family: 'Fraunces', serif; font-size: 22px; font-weight: 500;
+    letter-spacing: -.02em;
+  }
+  .ph-ch-list {
+    background: #fff; border: 1px solid var(--line); border-radius: 14px;
+    padding: 0 14px; box-shadow: var(--shadow-card);
+  }
+  .ph-ch-list .head {
+    display: flex; justify-content: space-between; padding: 12px 0 8px;
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    color: var(--ink-3); text-transform: uppercase; letter-spacing: .16em;
+  }
+  .ph-ch-list .head .r { color: var(--ink-4); }
+  .ph-ch-item {
+    display: flex; align-items: center; gap: 11px;
+    padding: 11px 0;
+    border-top: 1px solid var(--line);
+    cursor: pointer;
+  }
+  .ph-ch-item .badge {
+    width: 34px; height: 34px; border-radius: 10px;
+    display: grid; place-items: center; flex: 0 0 34px;
+    font-family: 'Fraunces', serif; font-size: 14px; font-weight: 500;
+    color: #fff;
+  }
+  .ph-ch-item.p .badge { background: var(--pos); }
+  .ph-ch-item.m .badge { background: var(--slate); }
+  .ph-ch-item.h .badge { background: var(--amber); color: var(--ink); }
+  .ph-ch-item.a .badge { background: var(--rose); }
+  .ph-ch-item.s .badge { background: #C4C0B3; }
+  .ph-ch-item .info { flex: 1; min-width: 0; }
+  .ph-ch-item .nm { font-weight: 600; font-size: 13.5px; }
+  .ph-ch-item .meta {
+    font-family: 'JetBrains Mono', monospace; font-size: 9.5px;
+    color: var(--ink-3); margin-top: 2px; letter-spacing: .04em;
+  }
+  .ph-ch-item .right { text-align: right; }
+  .ph-ch-item .val {
+    font-family: 'Fraunces', serif; font-size: 17px; font-weight: 500;
+    letter-spacing: -.02em;
+  }
+  .ph-ch-item .live-tag {
+    font-family: 'JetBrains Mono', monospace; font-size: 8.5px;
+    text-transform: uppercase; letter-spacing: .14em;
+    color: var(--lime-ink); background: var(--lime);
+    padding: 2px 6px; border-radius: 999px; font-weight: 700;
+    margin-top: 3px; display: inline-block;
+  }
+  .ph-ch-item.s { opacity: .5; }
+  .ph-ch-item.s .val { color: var(--ink-4); }
+  .ph-ch-item.s .live-tag {
+    background: var(--paper-2); color: var(--ink-4);
+  }
+
+  /* Stock mobile */
+  .ph-stock-sum {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+    margin-bottom: 10px;
+  }
+  .ph-stock-sum .c {
+    background: #fff; border: 1px solid var(--line); border-radius: 12px;
+    padding: 12px 14px;
+  }
+  .ph-stock-sum .c.warn { background: var(--neg-soft); border-color: rgba(190,58,58,.25); }
+  .ph-stock-sum .c .l {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    color: var(--ink-3); text-transform: uppercase; letter-spacing: .16em;
+  }
+  .ph-stock-sum .c.warn .l { color: var(--neg); }
+  .ph-stock-sum .c .n {
+    font-family: 'Fraunces', serif; font-size: 22px; font-weight: 500;
+    letter-spacing: -.02em; line-height: 1; margin-top: 4px;
+  }
+  .ph-stock-sum .c.warn .n { color: var(--neg); }
+  .ph-stock-sum .c .f {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    color: var(--ink-3); margin-top: 3px; letter-spacing: .04em;
+  }
+  .sku-list {
+    background: #fff; border: 1px solid var(--line); border-radius: 14px;
+    padding: 12px 14px; box-shadow: var(--shadow-card);
+  }
+  .sku-list .head {
+    display: flex; justify-content: space-between; margin-bottom: 8px;
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    color: var(--ink-3); text-transform: uppercase; letter-spacing: .16em;
+  }
+  .sku-row {
+    padding: 9px 0;
+    border-top: 1px solid var(--line);
+  }
+  .sku-row:first-of-type { border-top: 0; padding-top: 0; }
+  .sku-row .r1 {
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .sku-row .nm { font-weight: 600; font-size: 13px; }
+  .sku-row .ct {
+    font-family: 'Fraunces', serif; font-size: 17px; font-weight: 500; letter-spacing: -.02em;
+  }
+  .sku-row .meta {
+    font-family: 'JetBrains Mono', monospace; font-size: 8.5px;
+    color: var(--ink-3); margin-top: 3px; letter-spacing: .08em;
+  }
+  .sku-row .meta .danger { color: var(--neg); font-weight: 700; }
+  .sku-row .b {
+    margin-top: 7px; height: 4px; background: var(--paper-2); border-radius: 3px;
+    position: relative; overflow: hidden;
+  }
+  .sku-row .b i {
+    position: absolute; left:0; top:0; bottom:0;
+    background: var(--ink); border-radius: 3px;
+  }
+  .sku-row.low .b i { background: var(--neg); }
+
+  /* Team mobile */
+  .team-pulse-bar {
+    background: linear-gradient(160deg, var(--ink) 0%, #1A2826 100%);
+    color: #fff; border-radius: 14px; padding: 12px 14px;
+    margin-bottom: 10px;
+    display: flex; justify-content: space-between; align-items: center;
+    box-shadow: var(--shadow-card-2);
+  }
+  .team-pulse-bar .l {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    color: rgba(255,255,255,.7); text-transform: uppercase; letter-spacing: .16em;
+  }
+  .team-pulse-bar .v {
+    font-family: 'Fraunces', serif; font-size: 17px; font-weight: 500;
+    letter-spacing: -.02em;
+  }
+  .team-pulse-bar .live-tag {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    color: var(--lime); text-transform: uppercase; letter-spacing: .14em; font-weight: 700;
+  }
+  .team-list {
+    background: #fff; border: 1px solid var(--line); border-radius: 14px;
+    padding: 0 14px; box-shadow: var(--shadow-card);
+  }
+  .team-row {
+    display: flex; align-items: center; gap: 11px;
+    padding: 12px 0;
+    border-top: 1px solid var(--line);
+  }
+  .team-row:first-of-type { border-top: 0; }
+  .team-row .av {
+    width: 34px; height: 34px; border-radius: 10px;
+    display: grid; place-items: center; flex: 0 0 34px;
+    font-family: 'Fraunces', serif; font-size: 13px; font-weight: 500;
+    color: #fff;
+  }
+  .team-row .info { flex: 1; min-width: 0; }
+  .team-row .nm { font-weight: 600; font-size: 13.5px; }
+  .team-row .rl {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    color: var(--ink-3); text-transform: uppercase; letter-spacing: .14em;
+    margin-top: 2px;
+  }
+  .team-row .right { text-align: right; }
+  .team-row .val {
+    font-family: 'Fraunces', serif; font-size: 14.5px; font-weight: 500;
+    letter-spacing: -.02em;
+  }
+  .team-row .tag {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    color: var(--lime-ink); background: var(--lime);
+    padding: 2px 6px; border-radius: 999px; font-weight: 700;
+    margin-top: 2px; display: inline-block;
+    letter-spacing: .12em;
+  }
+  .team-row.me { background: var(--brand-soft); border-radius: 10px; padding: 12px 10px; margin: 4px 0; }
+  .team-row.me .rl { color: var(--brand); }
+
+  /* Me screen */
+  .me-card {
+    background: #fff; border: 1px solid var(--line); border-radius: 14px;
+    padding: 14px; margin-bottom: 10px; box-shadow: var(--shadow-card);
+  }
+  .me-head {
+    display: flex; align-items: center; gap: 14px; margin-bottom: 8px;
+  }
+  .me-head .av {
+    width: 56px; height: 56px; border-radius: 16px;
+    background: var(--brand); color: #fff;
+    display: grid; place-items: center;
+    font-family: 'Fraunces', serif; font-size: 24px; font-weight: 500;
+    letter-spacing: -.02em;
+  }
+  .me-head .nm {
+    font-family: 'Fraunces', serif; font-size: 18px; font-weight: 500;
+    letter-spacing: -.01em;
+  }
+  .me-head .rl {
+    font-family: 'JetBrains Mono', monospace; font-size: 9.5px;
+    color: var(--ink-3); text-transform: uppercase; letter-spacing: .14em; margin-top: 3px;
+  }
+  .me-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+  .me-grid .c {
+    border: 1px solid var(--line); border-radius: 12px; padding: 11px 13px;
+  }
+  .me-grid .c .l {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    color: var(--ink-3); text-transform: uppercase; letter-spacing: .16em;
+  }
+  .me-grid .c .n {
+    font-family: 'Fraunces', serif; font-size: 20px; font-weight: 500;
+    letter-spacing: -.02em; margin-top: 5px; line-height: 1;
+  }
+  .me-grid .c .f {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    color: var(--ink-3); margin-top: 3px; letter-spacing: .04em;
+  }
+  .me-list .row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 11px 0; border-top: 1px solid var(--line);
+    font-family: 'Inter', sans-serif; font-size: 13px;
+  }
+  .me-list .row:first-of-type { border-top: 0; }
+  .me-list .row .l {
+    font-family: 'JetBrains Mono', monospace; font-size: 9.5px;
+    color: var(--ink-3); text-transform: uppercase; letter-spacing: .14em;
+  }
+  .me-list .row .v {
+    font-family: 'Fraunces', serif; font-size: 14px; font-weight: 500;
+    letter-spacing: -.01em;
+  }
+
+  /* Bottom tab bar */
+  .tabbar {
+    position: absolute;
+    left: 12px; right: 12px; bottom: 14px;
+    background: rgba(251,250,247,.92);
+    backdrop-filter: saturate(180%) blur(18px);
+    -webkit-backdrop-filter: saturate(180%) blur(18px);
+    border: 1px solid var(--line);
+    border-radius: 26px; padding: 10px 6px 14px;
+    display: grid; grid-template-columns: repeat(5, 1fr);
+    z-index: 3;
+    box-shadow:
+      var(--shadow-card),
+      0 1px 0 rgba(255,255,255,.6) inset;
+  }
+  /* iOS home indicator */
+  .tabbar::after {
+    content: ""; position: absolute;
+    left: 50%; bottom: 4px;
+    transform: translateX(-50%);
+    width: 105px; height: 4px;
+    border-radius: 2px;
+    background: var(--ink);
+    opacity: .85;
+  }
+  .tab {
+    appearance: none; border: 0; background: transparent;
+    position: relative;
+    display: flex; flex-direction: column; align-items: center; gap: 3px;
+    padding: 6px 0 8px; cursor: pointer;
+    font-family: 'JetBrains Mono', monospace; font-size: 8.5px;
+    text-transform: uppercase; letter-spacing: .14em; color: var(--ink-4);
+    transition: color .15s;
+  }
+  .tab .ic { width: 20px; height: 20px; color: var(--ink-4); transition: color .15s, transform .2s; }
+  .tab:hover .ic { color: var(--ink-2); }
+  .tab.active { color: var(--ink); }
+  .tab.active .ic { color: var(--ink); transform: translateY(-1px); }
+  .tab.active::after {
+    content: ""; position: absolute; bottom: -1px;
+    width: 5px; height: 5px; border-radius: 50%;
+    background: var(--lime);
+    box-shadow: 0 0 6px var(--lime);
+  }
+
+  /* footer caption */
+  .cap {
+    margin-top: 10px;
+    display: inline-flex; align-self: center; align-items: center; gap: 8px;
+    padding: 7px 14px; border-radius: 999px;
+    background: var(--paper); border: 1px solid var(--line);
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    color: var(--ink-3); text-transform: uppercase; letter-spacing: .18em;
+  }
+  .cap .cap-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--lime);
+    box-shadow: 0 0 6px var(--lime);
+    animation: pulse 1.6s ease-in-out infinite;
+  }
+
+  .pad-main::-webkit-scrollbar { width: 5px; }
+  .pad-main::-webkit-scrollbar-thumb { background: var(--line-2); border-radius: 4px; }
+</style>
+</head>
+<body>
+
+<!-- ═════════════════ LOGIN STAGE (full-screen motion) ═════════════════ -->
+<div class="login-stage" id="loginStage">
+  <canvas class="motion-bg" id="motionCanvas"></canvas>
+  <div class="motion-grid"></div>
+  <div class="motion-orb orb-1"></div>
+  <div class="motion-orb orb-2"></div>
+  <div class="motion-orb orb-3"></div>
+
+  <header class="login-head">
+    <div class="login-brand">
+      <div class="sawa-mono-lg">S</div>
+      <div>
+        <div class="lh-t">SAWA <em>BOS</em></div>
+        <div class="lh-s">back office system · v5.3</div>
+      </div>
+    </div>
+    <div class="login-secure">
+      <span class="dot"></span>secure channel · entra id
+    </div>
+  </header>
+
+  <!-- SSO panel -->
+  <section class="login-panel" id="loginSSO">
+    <div class="login-pre">live · real-time retail intelligence</div>
+    <h1 class="login-hero">
+      Run your floor in <em>real time.</em><br/>
+      One sign-in. Every brand.
+    </h1>
+    <p class="login-sub">
+      Replace the daily PDF, the Power BI vault, the WhatsApp pulses.<br/>
+      A role-tailored live brief — in seconds.
+    </p>
+    <button class="login-btn" id="loginSignIn">
+      <span class="ms-grid"><span></span><span></span><span></span><span></span></span>
+      Continue with Microsoft
+      <span class="arr">→</span>
+    </button>
+    <div class="login-meta">
+      <span>SSO only · no password UI</span>
+      <span>·</span>
+      <span>trusted store device</span>
+      <span>·</span>
+      <span>Entra ID</span>
+    </div>
+    <div class="login-tickers">
+      <div class="tk"><span class="tk-l">staff</span><span class="tk-v" data-target="1743">0</span></div>
+      <div class="tk"><span class="tk-l">brands in scope</span><span class="tk-v" data-target="50">0</span><span class="tk-u">+</span></div>
+      <div class="tk"><span class="tk-l">ratings</span><span class="tk-v" data-target="4232">0</span></div>
+      <div class="tk"><span class="tk-l">channels</span><span class="tk-v" data-target="5">0</span></div>
+    </div>
+  </section>
+
+  <!-- Role picker (hidden initially) -->
+  <section class="login-panel role-panel gone" id="loginRoles">
+    <div class="login-pre">welcome back, <em id="loginName">Sara</em></div>
+    <h1 class="login-hero">Pick your <em>role.</em></h1>
+    <p class="login-sub">Last shift closed Tue 22:14 · 4 roles wired with role-aware access.</p>
+    <div class="role-grid">
+      <button class="login-role-card primary" data-role="mgr">
+        <div class="rc-h">
+          <div class="rc-ic"><svg width="22" height="22" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8.5 L4 4 L6 11 L8 2 L10 13 L12 5 L14 9"/></svg></div>
+          <div class="rc-tag">primary</div>
+        </div>
+        <div class="rc-nm">Store Manager</div>
+        <div class="rc-meta">P&amp;L · edit targets · all metrics · team-wide</div>
+      </button>
+      <button class="login-role-card" data-role="asst">
+        <div class="rc-h">
+          <div class="rc-ic"><svg width="22" height="22" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="5.5" cy="6" r="2.2"/><circle cx="11" cy="7" r="1.7"/><path d="M2 13c0-2 1.5-3.2 3.5-3.2S9 11 9 13M9.5 13c0-1.5 1-2.4 2.5-2.4S14.5 11.5 14.5 13"/></svg></div>
+        </div>
+        <div class="rc-nm">Asst. Store Manager</div>
+        <div class="rc-meta">team · floor · monitor</div>
+      </button>
+      <button class="login-role-card" data-role="assoc">
+        <div class="rc-h">
+          <div class="rc-ic"><svg width="22" height="22" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 13l3-3 3 3 4-7"/></svg></div>
+        </div>
+        <div class="rc-nm">Sales Associate</div>
+        <div class="rc-meta">my saves · my ATV · my target</div>
+      </button>
+      <button class="login-role-card" data-role="vm">
+        <div class="rc-h">
+          <div class="rc-ic"><svg width="22" height="22" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="12" height="10" rx="1.5"/><path d="M5 6h6M5 9h4"/></svg></div>
+        </div>
+        <div class="rc-nm">Visual Merchandiser</div>
+        <div class="rc-meta">VM tasks · floor cues · windows</div>
+      </button>
+    </div>
+    <button class="login-back" id="loginBack">← back</button>
+  </section>
+
+  <footer class="login-foot">
+    <span>© Alshaya Group · live prototype</span>
+    <span class="dot"></span>
+    <span>build v5.3 · production</span>
+    <span class="dot"></span>
+    <span class="live-dot">session live</span>
+  </footer>
+</div>
+
+<!-- ═════════════════ MAIN APP STAGE ═════════════════ -->
+<div class="stage" id="stage" data-brand="ame">
+
+  <!-- Control bar: brand chips + role pills -->
+  <div class="control-bar">
+    <div class="brand-chips" id="brandChips">
+      <span class="lbl">brand</span>
+      <button class="chip active" data-brand="ame"><span class="dot"></span>American Eagle</button>
+      <button class="chip" data-brand="bbw"><span class="dot"></span>Bath &amp; Body Works</button>
+      <button class="chip" data-brand="hm"><span class="dot"></span>H&amp;M</button>
+      <select class="brand-select" id="brandMore">
+        <option value="">more brands…</option>
+        <option value="vs">Victoria's Secret</option>
+        <option value="cos">COS</option>
+        <option value="ct">Charlotte Tilbury</option>
+      </select>
+    </div>
+    <div class="role-bar" id="roleBar">
+      <span class="lbl">role</span>
+      <button class="role-pill active" data-role="mgr">Store Mgr</button>
+      <button class="role-pill" data-role="asst">Asst Mgr</button>
+      <button class="role-pill" data-role="assoc">Sales Assoc.</button>
+      <button class="role-pill" data-role="vm">VM</button>
+      <button class="sign-out" id="signOut" title="Sign out">
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 4V3a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-1"/><path d="M14 8H7m7 0-3-3m3 3-3 3"/></svg>
+        sign out
+      </button>
+    </div>
+  </div>
+
+  <!-- Devices (auto-scale to fit) -->
+  <div class="fit-wrap">
+   <div class="devices">
+
+    <!-- ─────────── iPad ─────────── -->
+    <div class="ipad">
+      <div class="ipad-screen">
+
+        <!-- Sidebar -->
+        <aside class="pad-side">
+          <div class="logo-row">
+            <div class="mono">S</div>
+            <div>
+              <div class="t">SAWA <em style="font-style:italic;color:var(--ink-3)">BOS</em></div>
+              <div class="s">back office system</div>
+            </div>
+          </div>
+
+          <div class="pad-user">
+            <div class="name" id="padUserName">Charlie B.</div>
+            <div class="role"><span id="padUserRole">store manager · iPad</span> · <span class="brand-name" id="padUserBrand">American Eagle</span></div>
+          </div>
+
+          <div>
+            <div class="pad-group-h">today</div>
+            <nav class="pad-nav" id="padNav">
+              <button class="active" data-view="today">
+                <svg class="ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8.5 L4 4 L6 11 L8 2 L10 13 L12 5 L14 9"/></svg>
+                Today
+              </button>
+              <button data-view="orders">
+                <svg class="ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="12" height="11" rx="2"/><path d="M5 2v2M11 2v2M2 7h12"/></svg>
+                Orders
+              </button>
+              <button data-view="stock">
+                <svg class="ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2l6 3v6l-6 3-6-3V5l6-3z"/><path d="M2 5l6 3 6-3M8 8v7"/></svg>
+                Stock
+              </button>
+              <button data-view="team">
+                <svg class="ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="5.5" cy="6" r="2.2"/><circle cx="11" cy="7" r="1.7"/><path d="M2 13c0-2 1.5-3.2 3.5-3.2S9 11 9 13M9.5 13c0-1.5 1-2.4 2.5-2.4S14.5 11.5 14.5 13"/></svg>
+                Team
+              </button>
+            </nav>
+          </div>
+
+          <div>
+            <div class="pad-group-h">account</div>
+            <nav class="pad-nav">
+              <button data-view="me">
+                <svg class="ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="6" r="2.5"/><path d="M3 14c0-2.5 2.2-4 5-4s5 1.5 5 4"/></svg>
+                Me
+              </button>
+            </nav>
+          </div>
+
+          <div class="pad-foot">
+            <div class="live">live · auto 60s · entra id</div>
+            <div>v5.3 production</div>
+            <div id="padFootRefresh">updated 12s ago</div>
+          </div>
+        </aside>
+
+        <!-- Main -->
+        <main class="pad-main">
+
+          <!-- TODAY -->
+          <section class="pad-view active" data-view="today">
+            <div class="pad-head">
+              <div>
+                <div class="t" id="padTitle">Live pulse.</div>
+                <div class="s"><span class="b" id="padSubBrand">American Eagle</span> · <span id="padStore">Dubai Outlet Mall · MEI-2706</span></div>
+              </div>
+              <div class="filters">
+                <div class="grp">
+                  <select class="sel" id="padBrandSel"></select>
+                  <select class="sel" id="padViewSel">
+                    <option>WTD</option><option>Today</option><option>Weekly</option>
+                    <option>MTD</option><option>Monthly</option><option>QTD</option>
+                    <option>Quarter</option><option>YTD</option><option>Year</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- 4 cleaner colored common metric boxes -->
+            <div class="common-boxes">
+              <div class="cb live">
+                <div class="l">
+                  <span><span id="padViewLabel">WTD</span> revenue · live</span>
+                  <span class="refresh">updated <span id="padPadRefresh">12s</span> ago · auto 60s</span>
+                </div>
+                <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:8px;">
+                  <div class="n"><span style="font-size:14px;color:var(--ink-3);font-weight:400;margin-right:6px;">AED</span><span id="padRev">161,297</span></div>
+                  <div class="f"><span class="delta-neg" id="padDelta">−29.8%</span> <span id="padDeltaLab">vs BP</span></div>
+                </div>
+                <div class="progress"><i id="padProgress" style="width:70%"></i></div>
+                <div style="display:flex;justify-content:space-between;margin-top:8px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--ink-3);letter-spacing:.04em;">
+                  <span>of <b id="padTarget" style="color:var(--ink)">229,736</b> target · <b id="padPace" style="color:var(--ink)">70%</b> pace</span>
+                  <button class="edit-target" onclick="editTarget()">edit</button>
+                </div>
+              </div>
+
+              <div class="cb atv">
+                <div class="l">ATV</div>
+                <div class="n"><span id="padATV">151</span><span class="u">aed</span></div>
+                <div class="f">avg ticket · <b>+6%</b> vs LW</div>
+              </div>
+              <div class="cb chan">
+                <div class="l">Channels live</div>
+                <div class="n"><span id="padChanLive">4</span><span class="u">/ 5</span></div>
+                <div class="f">auto-attributed · 1 offline</div>
+              </div>
+              <div class="cb tx">
+                <div class="l">Transactions</div>
+                <div class="n"><span id="padTx">989</span></div>
+                <div class="f">7d · conv <b>14%</b> · IPC <b>3</b></div>
+              </div>
+            </div>
+
+            <!-- brand-personal strip -->
+            <div class="bp-strip">
+              <div class="lab"><b id="padBpBrandTag">AME</b> · brand-personal</div>
+              <div class="m"><div class="n" id="padBp1Val">62%</div><div class="l" id="padBp1Lbl">Aura linkage</div></div>
+              <div class="m"><div class="n" id="padBp2Val">38</div><div class="l" id="padBp2Lbl">denim fittings</div></div>
+              <div class="m"><div class="n" id="padBp3Val">2.4×</div><div class="l" id="padBp3Lbl">jeans : tops</div></div>
+            </div>
+
+            <!-- Channels -->
+            <div class="channels-wrap">
+              <div class="head">
+                <div class="l">Orders · clickable</div>
+                <div class="hint">tap a channel to drill</div>
+              </div>
+              <div class="channels" id="padChannels"><!-- injected --></div>
+            </div>
+
+            <!-- Hourly + AI brief -->
+            <div class="strip">
+              <div class="pulse-card">
+                <div class="head">
+                  <div class="l">Hourly sales · today</div>
+                  <div class="r">x · hour · y · AED · live <span id="padHourLive">18:00</span></div>
+                </div>
+                <div class="hourly-chart">
+                  <div class="y" id="padY">
+                    <span>22k</span><span>16k</span><span>10k</span><span>4k</span>
+                  </div>
+                  <div class="bars-wrap"><div class="bars" id="padBars"></div></div>
+                  <div class="axis-corner">aed</div>
+                  <div class="x" id="padX"></div>
+                </div>
+              </div>
+              <div class="ai-card">
+                <div class="head">
+                  <div class="l">AI brief · <span class="role-tag" id="padAiRole">store mgr</span></div>
+                  <div class="r">role · hourly</div>
+                </div>
+                <div class="ai-body" id="padAi"></div>
+              </div>
+            </div>
+
+            <!-- Real-time stock card (per constraint) -->
+            <div class="stock-card-ipad">
+              <div class="head">
+                <div class="l">Real-time stock · floor count</div>
+                <div class="r">SIOCS · last refresh <span id="padStockRefresh">14:18</span></div>
+              </div>
+              <div class="grid">
+                <div class="stock-mini">
+                  <div class="l">On floor</div>
+                  <div class="n" id="padStockFloor">2,184</div>
+                  <div class="f">units · 312 styles</div>
+                </div>
+                <div class="stock-mini">
+                  <div class="l">Backstock</div>
+                  <div class="n" id="padStockBack">617</div>
+                  <div class="f">14 cartons pending</div>
+                </div>
+                <div class="stock-mini warn">
+                  <div class="l">Low / OOS</div>
+                  <div class="n" id="padStockLow">9</div>
+                  <div class="f">styles · push transfer</div>
+                </div>
+                <div class="stock-mini" style="background:var(--paper-2);">
+                  <div class="l">Best seller · today</div>
+                  <div class="n" id="padStockBest" style="font-size:18px;line-height:1.1;">AE Slim 360</div>
+                  <div class="f" id="padStockBestSub">132 units sold · 28% mix</div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ORDERS view -->
+          <section class="pad-view" data-view="orders">
+            <div class="pad-head">
+              <div>
+                <div class="t">Orders.</div>
+                <div class="s"><span class="b" id="padOrdersSubBrand">American Eagle</span> · drill any channel</div>
+              </div>
+              <div class="filters"><div class="grp">
+                <select class="sel"><option>American Eagle</option></select>
+                <select class="sel"><option>WTD</option><option>Today</option></select>
+              </div></div>
+            </div>
+            <div class="channels-wrap" style="margin-top:16px;">
+              <div class="head">
+                <div class="l">Channel breakdown · clickable</div>
+                <div class="hint">5 channels · 4 live · Endless Aisle merged into Asst. Ecom</div>
+              </div>
+              <div class="channels" id="padChannels2"></div>
+            </div>
+            <div class="strip">
+              <div class="pulse-card">
+                <div class="head">
+                  <div class="l">Orders per hour · today</div>
+                  <div class="r">x · hour · y · transactions</div>
+                </div>
+                <div class="hourly-chart">
+                  <div class="y"><span>20</span><span>14</span><span>8</span><span>2</span></div>
+                  <div class="bars-wrap"><div class="bars" id="padOrdersBars"></div></div>
+                  <div class="axis-corner">tx</div>
+                  <div class="x" id="padOrdersX"></div>
+                </div>
+              </div>
+              <div class="ai-card">
+                <div class="head"><div class="l">Order signals</div><div class="r">last hour</div></div>
+                <div class="ai-body">
+                  <div class="ai-item">
+                    <div class="h"><span class="role-tag">priority</span><span class="time">18:14</span></div>
+                    <div class="msg">MPOS conv dipped <b>−6%</b> after 17:00. Open till 1 by 18:30.</div>
+                  </div>
+                  <div class="ai-item">
+                    <div class="h"><span class="role-tag">attach</span><span class="time">17:42</span></div>
+                    <div class="msg">SAWA POS basket attach holding <b>1.4</b>. Push fitting capture.</div>
+                  </div>
+                  <div class="ai-item">
+                    <div class="h"><span class="role-tag">channel</span><span class="time">17:10</span></div>
+                    <div class="msg">Asst. Ecom (incl. Endless Aisle) <b>+12%</b> WTD. Replenish CT slim 32 online.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- STOCK view -->
+          <section class="pad-view" data-view="stock">
+            <div class="pad-head">
+              <div>
+                <div class="t">Stock.</div>
+                <div class="s">Source · SIOCS · last refresh <span id="padStock2Refresh">14:18</span></div>
+              </div>
+              <div class="filters"><div class="grp">
+                <select class="sel"><option>American Eagle</option></select>
+                <select class="sel"><option>All categories</option><option>Men's</option><option>Women's</option></select>
+              </div></div>
+            </div>
+            <div class="common-boxes" style="grid-template-columns:repeat(4,1fr); margin-top:16px;">
+              <div class="cb atv"><div class="l">On floor</div><div class="n">2,184</div><div class="f">312 styles</div></div>
+              <div class="cb chan"><div class="l">Backstock</div><div class="n">617</div><div class="f">14 cartons</div></div>
+              <div class="cb tx"><div class="l">Low/OOS</div><div class="n" style="color:var(--neg)">9</div><div class="f">push transfer</div></div>
+              <div class="cb live"><div class="l">Stock-to-sales</div><div class="n">8.2 <span class="u">wks</span></div><div class="f">target 8–10w · <b>on plan</b></div></div>
+            </div>
+            <div class="stock-card-ipad">
+              <div class="head"><div class="l">Low stock · push to RFID</div><div class="r">tap to reserve</div></div>
+              <div class="stock-list">
+                <div class="row"><div class="nm">AE Slim 360 Stretch · 32×32<small>SKU 1148-330-32-32</small></div><div class="ct">2</div><div class="b low"><i style="width:18%"></i></div><div class="act"><span class="danger">replenish ↗</span></div></div>
+                <div class="row"><div class="nm">Aerie Real Sunnie · 32C<small>SKU 9803-554-32C</small></div><div class="ct">3</div><div class="b low"><i style="width:26%"></i></div><div class="act"><span class="danger">replenish ↗</span></div></div>
+                <div class="row"><div class="nm">AE Crew Logo Tee · M-Black<small>SKU 4421-110-M-BLK</small></div><div class="ct">5</div><div class="b"><i style="width:38%"></i></div><div class="act">monitor</div></div>
+                <div class="row"><div class="nm">AE Curvy Mom Jean · 28×30<small>SKU 3318-301-28-30</small></div><div class="ct">6</div><div class="b"><i style="width:48%"></i></div><div class="act">monitor</div></div>
+              </div>
+            </div>
+          </section>
+
+          <!-- TEAM view -->
+          <section class="pad-view" data-view="team">
+            <div class="pad-head">
+              <div>
+                <div class="t">Team.</div>
+                <div class="s" id="padTeamSub">4 on shift · 1 break · close 22:00 · viewing as Store Mgr</div>
+              </div>
+              <div class="filters"><div class="grp">
+                <select class="sel"><option>Current shift</option><option>Today</option><option>This week</option></select>
+              </div></div>
+            </div>
+            <div class="stock-card-ipad" style="margin-top:16px;">
+              <div class="head"><div class="l">Associates · ranked by sales</div><div class="r" id="padTeamRoleHint">store mgr · sees all</div></div>
+              <div class="stock-list" id="padTeamList"></div>
+            </div>
+            <div class="strip">
+              <div class="pulse-card">
+                <div class="head"><div class="l">Team conv · hourly</div><div class="r">x · hour · y · %</div></div>
+                <div class="hourly-chart">
+                  <div class="y"><span>20%</span><span>14%</span><span>8%</span><span>2%</span></div>
+                  <div class="bars-wrap"><div class="bars" id="padTeamBars"></div></div>
+                  <div class="axis-corner">%</div>
+                  <div class="x" id="padTeamX"></div>
+                </div>
+              </div>
+              <div class="ai-card">
+                <div class="head"><div class="l">Team brief</div><div class="r">role-aware</div></div>
+                <div class="ai-body" id="padTeamAi"></div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ME view -->
+          <section class="pad-view" data-view="me">
+            <div class="pad-head">
+              <div>
+                <div class="t">Me.</div>
+                <div class="s" id="padMeSub">your day · saves · targets</div>
+              </div>
+              <div class="filters"><div class="grp"><select class="sel"><option>WTD</option><option>Today</option><option>MTD</option></select></div></div>
+            </div>
+            <div class="common-boxes" style="grid-template-columns:repeat(4,1fr); margin-top:16px;">
+              <div class="cb atv"><div class="l">My ATV</div><div class="n">182<span class="u">aed</span></div><div class="f">vs store 151 · <b>+20%</b></div></div>
+              <div class="cb chan"><div class="l">My saves</div><div class="n">9</div><div class="f">3 fittings · 6 walk-aways</div></div>
+              <div class="cb tx"><div class="l">My tx</div><div class="n">42</div><div class="f">conv 18% · IPC 3.2</div></div>
+              <div class="cb live"><div class="l">My target · WTD</div><div class="n">18k <span class="u">aed</span></div><div class="f"><b>74%</b> pace · <span class="delta-pos">+4%</span></div></div>
+            </div>
+            <div class="strip">
+              <div class="pulse-card">
+                <div class="head"><div class="l">My hourly sales</div><div class="r">x · hour · y · AED</div></div>
+                <div class="hourly-chart">
+                  <div class="y"><span>3k</span><span>2k</span><span>1k</span><span>0</span></div>
+                  <div class="bars-wrap"><div class="bars" id="padMeBars"></div></div>
+                  <div class="axis-corner">aed</div>
+                  <div class="x" id="padMeX"></div>
+                </div>
+              </div>
+              <div class="ai-card">
+                <div class="head"><div class="l">For you</div><div class="r">role-tailored</div></div>
+                <div class="ai-body">
+                  <div class="ai-item">
+                    <div class="h"><span class="role-tag">your day</span><span class="time">live</span></div>
+                    <div class="msg">You're <b>+20%</b> vs store ATV. Push <b>denim + tee</b> attach to close the 1.8 bundle ask.</div>
+                  </div>
+                  <div class="ai-item action">
+                    <div class="h"><span class="role-tag">action</span><span class="time">next 30m</span></div>
+                    <div class="msg">3 walk-aways in fitting · greet <b>Bay 4</b> next.</div>
+                    <button class="cta">Mark addressed</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+        </main>
+      </div>
+    </div>
+
+    <!-- ─────────── iPhone ─────────── -->
+    <div class="iphone">
+      <div class="iphone-screen">
+        <div class="notch"></div>
+        <div class="status">
+          <div>9:41</div>
+          <div class="icons">
+            <svg class="ic-signal" width="18" height="11" viewBox="0 0 18 11" fill="currentColor" aria-hidden="true">
+              <rect x="0"  y="7" width="3" height="4" rx=".7"/>
+              <rect x="5"  y="5" width="3" height="6" rx=".7"/>
+              <rect x="10" y="3" width="3" height="8" rx=".7"/>
+              <rect x="15" y="0" width="3" height="11" rx=".7"/>
+            </svg>
+            <svg class="ic-wifi" width="16" height="12" viewBox="0 0 16 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
+              <path d="M1 4.5 C5 1, 11 1, 15 4.5"/>
+              <path d="M3.3 7.1 C6 5, 10 5, 12.7 7.1"/>
+              <circle cx="8" cy="10" r=".9" fill="currentColor" stroke="none"/>
+            </svg>
+            <div class="ic-batt"><i></i></div>
+          </div>
+        </div>
+
+        <div class="ph-body" id="phBody">
+
+          <!-- SSO (kept for deep-link demo only; app boots to Today after full-screen login) -->
+          <section class="ph-view sso" data-view="sso">
+            <div class="logo-big">S</div>
+            <div class="greet">SAWA <em>BOS</em></div>
+            <div class="sub">Sign in with your Alshaya account to open your live brief.</div>
+            <button class="ms-btn" data-go="role">
+              <div class="ms-grid"><div></div><div></div><div></div><div></div></div>
+              Continue with Microsoft
+            </button>
+            <div class="alt">SSO only · no password ui · trusted store device</div>
+            <div class="secure">
+              <span class="l">session protected</span>
+              <span>entra id · v5.3</span>
+            </div>
+          </section>
+
+          <!-- Role picker -->
+          <section class="ph-view roles-wrap" data-view="role">
+            <div class="role-hello">Welcome,<br/><em id="phHelloName">Sara.</em></div>
+            <div class="role-sub">Pick a role to open your live brief. Last shift closed Tue 22:14.</div>
+            <div class="role-list">
+              <button class="role-tile primary" data-go="today" data-role="mgr">
+                <div class="ic"><svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8.5 L4 4 L6 11 L8 2 L10 13 L12 5 L14 9"/></svg></div>
+                <div class="info"><div class="nm">Store Manager</div><div class="meta">P&amp;L · edit targets · all metrics</div></div>
+                <div class="arr">→</div>
+              </button>
+              <button class="role-tile" data-go="today" data-role="asst">
+                <div class="ic"><svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="5.5" cy="6" r="2.2"/><circle cx="11" cy="7" r="1.7"/><path d="M2 13c0-2 1.5-3.2 3.5-3.2S9 11 9 13M9.5 13c0-1.5 1-2.4 2.5-2.4S14.5 11.5 14.5 13"/></svg></div>
+                <div class="info"><div class="nm">Asst. Store Manager</div><div class="meta">team · floor · monitor</div></div>
+                <div class="arr">→</div>
+              </button>
+              <button class="role-tile" data-go="today" data-role="assoc">
+                <div class="ic"><svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 13l3-3 3 3 4-7"/></svg></div>
+                <div class="info"><div class="nm">Sales Associate</div><div class="meta">my saves · my ATV</div></div>
+                <div class="arr">→</div>
+              </button>
+              <button class="role-tile" data-go="today" data-role="vm">
+                <div class="ic"><svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="12" height="10" rx="1.5"/><path d="M5 6h6M5 9h4"/></svg></div>
+                <div class="info"><div class="nm">Visual Merchandiser</div><div class="meta">VM tasks · floor cues</div></div>
+                <div class="arr">→</div>
+              </button>
+            </div>
+          </section>
+
+          <!-- TODAY (default after login) -->
+          <section class="ph-view active" data-view="today">
+            <div class="ph-app-head">
+              <div class="l">
+                <div class="mono">S</div>
+                <div class="txt">
+                  <div class="t">Today</div>
+                  <div class="s"><span class="b" id="phBrandHead">American Eagle</span> · <span id="phStoreHead">Dubai Outlet · MEI-2706</span></div>
+                </div>
+              </div>
+              <div class="r">
+                <div class="ph-icon"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6a5 5 0 0 1 10 0c0 3 1.5 4.5 1.5 4.5h-13S3 9 3 6Z"/><path d="M6.5 13a1.5 1.5 0 0 0 3 0"/></svg></div>
+                <div class="ph-icon" onclick="goto('me')"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="6" r="2.5"/><path d="M3 14c0-2.5 2.2-4 5-4s5 1.5 5 4"/></svg></div>
+              </div>
+            </div>
+
+            <div class="ph-chips">
+              <button class="ph-chip active" data-brand="ame"><span class="dot"></span>AME</button>
+              <button class="ph-chip" data-brand="bbw"><span class="dot"></span>BBW</button>
+              <button class="ph-chip" data-brand="hm"><span class="dot"></span>H&amp;M</button>
+              <span class="ph-chip-more">
+                <select id="phBrandMore">
+                  <option value="">more…</option>
+                  <option value="vs">VS</option>
+                  <option value="cos">COS</option>
+                  <option value="ct">CT</option>
+                </select>
+              </span>
+            </div>
+
+            <div class="ph-view-row">
+              <select class="sel" id="phBrandSel"></select>
+              <select class="sel" id="phViewSel">
+                <option>WTD</option><option>Today</option><option>Weekly</option><option>MTD</option><option>Monthly</option><option>QTD</option><option>Quarter</option><option>YTD</option><option>Year</option>
+              </select>
+            </div>
+
+            <!-- LIVE revenue card -->
+            <div class="live-card">
+              <div class="h">
+                <span><span id="phViewLabel">WTD</span> revenue vs business plan</span>
+                <span class="live-pill">live</span>
+              </div>
+              <div class="row">
+                <div class="n"><span class="cur">AED</span><span id="phRev">161,297</span></div>
+                <div class="trend" id="phTrend">−29.8%</div>
+              </div>
+              <div class="target-row">
+                <span>of <b id="phTarget">229,736</b> target</span>
+                <button class="edit-target" onclick="editTarget()">edit</button>
+              </div>
+              <div class="pbar"><i id="phProgress" style="width:70%"></i></div>
+              <div class="pace">
+                <span><b id="phPace">70%</b> pace · forecast <span id="phForecast">−AED 8,210</span></span>
+                <span class="refresh">updated <span id="phRefresh">12s</span> ago · auto 60s</span>
+              </div>
+            </div>
+
+            <!-- common metric strip (3) -->
+            <div class="common-mini">
+              <div class="c"><div class="l">ATV</div><div class="n" id="phATV">151</div><div class="u">aed</div></div>
+              <div class="c"><div class="l">IPC</div><div class="n" id="phIPC">3</div><div class="u">items/tx</div></div>
+              <div class="c"><div class="l">Conv</div><div class="n" id="phConv">14<span style="font-size:13px;color:var(--ink-3)">%</span></div><div class="u" id="phConvFF">7,073 ff</div></div>
+            </div>
+
+            <!-- brand-personal mini strip -->
+            <div class="bp-mini">
+              <div class="h">
+                <span><b id="phBpBrand">AME</b> · brand-personal</span>
+                <span id="phBpLive">live</span>
+              </div>
+              <div class="grid" id="phBp"></div>
+            </div>
+
+            <!-- Hourly chart -->
+            <div class="ph-hourly">
+              <div class="h">
+                <span>Hourly sales · today</span>
+                <span class="r">x · hour · y · AED</span>
+              </div>
+              <div class="chart">
+                <div class="y"><span>22k</span><span>15k</span><span>8k</span><span>1k</span></div>
+                <div class="bw"><div class="bars" id="phBars"></div></div>
+                <div class="axis-corner">aed</div>
+                <div class="x" id="phX"></div>
+              </div>
+            </div>
+
+            <!-- AI brief -->
+            <div class="ph-ai">
+              <div class="h">
+                <span>AI brief · <span class="role-tag" id="phAiRole">store mgr</span></span>
+                <span>role · hourly</span>
+              </div>
+              <div id="phAi"></div>
+            </div>
+          </section>
+
+          <!-- ORDERS -->
+          <section class="ph-view" data-view="orders">
+            <div class="ph-app-head">
+              <div class="l">
+                <div class="mono">S</div>
+                <div class="txt">
+                  <div class="t">Orders</div>
+                  <div class="s"><span class="b" id="phOrdersBrand">American Eagle</span> · 5 channels · 4 live</div>
+                </div>
+              </div>
+              <div class="r"><div class="ph-icon"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="7" r="4"/><path d="M10.2 10.2L14 14"/></svg></div></div>
+            </div>
+            <div class="ph-view-row">
+              <select class="sel"><option>American Eagle</option></select>
+              <select class="sel"><option>WTD</option><option>Today</option></select>
+            </div>
+
+            <div class="ph-orders-sum">
+              <div><div class="l">All channels</div><div class="v" id="phOrdersTotal">AED 11,240</div></div>
+              <div style="text-align:right"><div class="l">tx</div><div class="v" id="phOrdersTx">82</div></div>
+            </div>
+            <div class="ph-ch-list">
+              <div class="head"><span>Channel breakdown</span><span class="r">tap to drill</span></div>
+              <div id="phOrdersList"></div>
+            </div>
+          </section>
+
+          <!-- STOCK -->
+          <section class="ph-view" data-view="stock">
+            <div class="ph-app-head">
+              <div class="l">
+                <div class="mono">S</div>
+                <div class="txt">
+                  <div class="t">Stock</div>
+                  <div class="s">SIOCS · refresh <span id="phStockRefresh">14:18</span></div>
+                </div>
+              </div>
+              <div class="r"><div class="ph-icon"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4h12M2 8h12M2 12h12"/></svg></div></div>
+            </div>
+
+            <div class="ph-view-row">
+              <select class="sel"><option>American Eagle</option></select>
+              <select class="sel"><option>All categories</option></select>
+            </div>
+
+            <div class="ph-stock-sum">
+              <div class="c"><div class="l">On floor</div><div class="n">2,184</div><div class="f">312 styles</div></div>
+              <div class="c"><div class="l">Backstock</div><div class="n">617</div><div class="f">14 cartons</div></div>
+              <div class="c warn" style="grid-column:1/-1"><div class="l">Low / OOS risk</div><div class="n">9 styles</div><div class="f">push transfer · tap to reserve</div></div>
+            </div>
+
+            <div class="sku-list">
+              <div class="head"><span>Low stock</span><span>floor count</span></div>
+              <div class="sku-row low">
+                <div class="r1"><div class="nm">AE Slim 360 · 32×32</div><div class="ct">2</div></div>
+                <div class="meta">SKU 1148-330-32-32 · <span class="danger">replenish</span></div>
+                <div class="b"><i style="width:18%"></i></div>
+              </div>
+              <div class="sku-row low">
+                <div class="r1"><div class="nm">Aerie Real Sunnie · 32C</div><div class="ct">3</div></div>
+                <div class="meta">SKU 9803-554-32C · <span class="danger">replenish</span></div>
+                <div class="b"><i style="width:26%"></i></div>
+              </div>
+              <div class="sku-row">
+                <div class="r1"><div class="nm">AE Crew Logo Tee · M</div><div class="ct">5</div></div>
+                <div class="meta">SKU 4421-110-M-BLK · monitor</div>
+                <div class="b"><i style="width:38%"></i></div>
+              </div>
+              <div class="sku-row">
+                <div class="r1"><div class="nm">AE Curvy Mom · 28×30</div><div class="ct">6</div></div>
+                <div class="meta">SKU 3318-301-28-30 · monitor</div>
+                <div class="b"><i style="width:48%"></i></div>
+              </div>
+            </div>
+          </section>
+
+          <!-- TEAM -->
+          <section class="ph-view" data-view="team">
+            <div class="ph-app-head">
+              <div class="l">
+                <div class="mono">S</div>
+                <div class="txt">
+                  <div class="t">Team</div>
+                  <div class="s" id="phTeamSub">4 on shift · 1 break</div>
+                </div>
+              </div>
+              <div class="r"><div class="ph-icon"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 3v10M3 8h10"/></svg></div></div>
+            </div>
+
+            <div class="ph-view-row">
+              <select class="sel"><option>Current shift</option></select>
+              <select class="sel"><option>WTD</option></select>
+            </div>
+
+            <div class="team-pulse-bar">
+              <div><div class="l">Team pulse</div><div class="v">4 on shift · 1 break</div></div>
+              <div class="live-tag">● live</div>
+            </div>
+
+            <div class="team-list" id="phTeamList"></div>
+          </section>
+
+          <!-- ME -->
+          <section class="ph-view" data-view="me">
+            <div class="ph-app-head">
+              <div class="l">
+                <div class="mono">S</div>
+                <div class="txt">
+                  <div class="t">Me</div>
+                  <div class="s" id="phMeSub">your day · saves · targets</div>
+                </div>
+              </div>
+              <div class="r"><div class="ph-icon"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="8" cy="8" r="2"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2"/></svg></div></div>
+            </div>
+
+            <div class="me-card">
+              <div class="me-head">
+                <div class="av" id="phMeAv">S</div>
+                <div>
+                  <div class="nm" id="phMeName">Sara Al-Mansour</div>
+                  <div class="rl"><span id="phMeRole">store manager</span> · <span id="phMeBrand">American Eagle</span></div>
+                </div>
+              </div>
+              <div class="me-grid">
+                <div class="c"><div class="l">My ATV</div><div class="n" id="phMeATV">182</div><div class="f">vs store 151 · +20%</div></div>
+                <div class="c"><div class="l">My saves</div><div class="n">9</div><div class="f">3 fittings · 6 walk-ups</div></div>
+                <div class="c"><div class="l">My tx</div><div class="n">42</div><div class="f">conv 18% · IPC 3.2</div></div>
+                <div class="c"><div class="l">My target</div><div class="n">18k</div><div class="f">74% pace · +4%</div></div>
+              </div>
+            </div>
+
+            <div class="me-card">
+              <div class="me-list">
+                <div class="row"><span class="l">Sprint window</span><span class="v">02–12 Jun 2026</span></div>
+                <div class="row"><span class="l">Last shift</span><span class="v">Tue 22:14</span></div>
+                <div class="row"><span class="l">Auth</span><span class="v">Microsoft Entra ID</span></div>
+                <div class="row"><span class="l">App version</span><span class="v">v5.3 · live</span></div>
+                <div class="row"><span class="l">Device</span><span class="v">Store iPhone 14 · trusted</span></div>
+              </div>
+            </div>
+          </section>
+
+        </div>
+
+        <!-- Tab bar -->
+        <nav class="tabbar" id="tabbar">
+          <button class="tab active" data-go="today">
+            <svg class="ic" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 10.5 L5 5 L7.5 14 L10 3 L12.5 17 L15 7 L18 11"/></svg>
+            Today
+          </button>
+          <button class="tab" data-go="orders">
+            <svg class="ic" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="14" height="13" rx="2"/><path d="M6 3v2M14 3v2M3 8h14"/></svg>
+            Orders
+          </button>
+          <button class="tab" data-go="stock">
+            <svg class="ic" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3l7 3.5v7L10 17l-7-3.5v-7L10 3z"/><path d="M3 6.5L10 10l7-3.5M10 10v7"/></svg>
+            Stock
+          </button>
+          <button class="tab" data-go="team">
+            <svg class="ic" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="7" cy="8" r="2.5"/><circle cx="14" cy="9" r="2"/><path d="M2.5 16c0-2.5 2-4 4.5-4s4.5 1.5 4.5 4M12 16c0-2 1.3-3 3-3s3 1 3 3"/></svg>
+            Team
+          </button>
+          <button class="tab" data-go="me">
+            <svg class="ic" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="7" r="3"/><path d="M3 17c0-3 3-5 7-5s7 2 7 5"/></svg>
+            Me
+          </button>
+        </nav>
+      </div>
+    </div>
+  </div>
+
+   </div><!-- /.devices -->
+  </div><!-- /.fit-wrap -->
+
+  <div class="cap">
+    <span class="cap-dot"></span>
+    <span>live · v5.3 · 6 brands · 4 roles · click anywhere to drill</span>
+  </div>
+</div>
+
+<script>
+  // ───────────────────── STATE + DATA ─────────────────────
+  const brands = {
+    ame: {
+      key: 'ame', name: 'American Eagle', code: 'AME',
+      store: 'Dubai Outlet Mall · MEI-2706', storeShort: 'Dubai Outlet · MEI-2706',
+      rev: '161,297', target: '229,736', delta: '−29.8%', trend: 'neg',
+      pace: 70, forecast: '−AED 8,210',
+      atv: '151', ipc: '3', conv: '14', convFF: '7,073 ff',
+      tx: '989', chanLive: '4',
+      bp: [
+        { v: '62%', l: 'Aura linkage' },
+        { v: '38',  l: 'denim fittings' },
+        { v: '2.4×',l: 'jeans : tops'  }
+      ],
+      bpTag: 'AME',
+      channels: [
+        { cls:'p', code:'P', name:'SAWA POS',   tx:48, mix:'56%', val:'6,280' },
+        { cls:'m', code:'M', name:'MPOS',       tx:24, mix:'28%', val:'3,140' },
+        { cls:'h', code:'H', name:'Hadreen',    tx:4,  mix:'7%',  val:'840'   },
+        { cls:'a', code:'A', name:'Asst. Ecom', tx:6,  mix:'9%',  val:'980'   , note:'incl. Endless Aisle' },
+        { cls:'s', code:'S', name:'SCO',        off:true, val:'—', note:'not deployed' }
+      ],
+      total: '11,240', orderTx: '82',
+      hourly: [4, 7, 9, 8, 12, 14, 18, 22, 20, 16, 14, 9, 5], // 10–22h
+      best: 'AE Slim 360', bestSub: '132 units sold · 28% mix',
+      teamSub: '4 on shift · 1 break',
+      team: [
+        { in:'D', name:'Diana',  rl:'fitting',         val:'8,420 aed', tag:'top · 92%' },
+        { in:'O', name:'Olga',   rl:'wear · core',     val:'6,180 aed', tag:'$ 1,800 saves' },
+        { in:'N', name:'Nejat',  rl:'till 2',          val:'5,940 aed', tag:'22 tx · atv +14%' },
+        { in:'E', name:'Ellen',  rl:'assist · ecom',   val:'2,310 aed', tag:'2 services' }
+      ],
+      ai: {
+        mgr: [
+          { lab:'priority', msg:'WTD pace <b>70%</b> · need <b>AED 68k</b> Fri–Sat to close gap.', time:'live' },
+          { lab:'channel', msg:'MPOS dipped <b>−6%</b> after 17:00 — open till 1 by 18:30.', time:'18:14' },
+          { lab:'attach',  msg:'Open with <b>Men\'s denim + core bras</b>. Last hour conv <b>14%</b>.', time:'17:00' }
+        ],
+        asst: [
+          { lab:'team',    msg:'Move <b>Diana</b> to till 1 at <b>18:30</b>. Fitting load drops after 18:00.', time:'live' },
+          { lab:'pulse',   msg:'Bay 4 walk-aways +3 in last 30m — assign roving greeter.', time:'17:42' }
+        ],
+        assoc: [
+          { lab:'your day', msg:'You\'re <b>+20%</b> vs store ATV. Push <b>denim + tee</b> attach.', time:'live' },
+          { lab:'save',    msg:'1 walk-away pending in fitting · greet <b>Bay 2</b>.', time:'17:50' }
+        ],
+        vm: [
+          { lab:'floor',   msg:'Move <b>core bras</b> to Bay 3 — conv up <b>+8%</b> when stocked at eye-line.', time:'live' },
+          { lab:'mannequin', msg:'Refresh window 2 with denim + olive tee combo (best mix today).', time:'17:30' }
+        ]
+      }
+    },
+    bbw: {
+      key: 'bbw', name: 'Bath & Body Works', code: 'BBW',
+      store: 'Dubai Hills · GF · BBW-1142', storeShort: 'Dubai Hills · GF',
+      rev: '188,420', target: '212,500', delta: '−11.3%', trend: 'neg',
+      pace: 89, forecast: '−AED 2,840',
+      atv: '128', ipc: '4', conv: '22', convFF: '8,640 ff',
+      tx: '1,471', chanLive: '4',
+      bp: [
+        { v: '58%', l: 'Signature mix' },
+        { v: '42%', l: '3-for-2 attach' },
+        { v: '22',  l: 'BBW loyalty signups' }
+      ],
+      bpTag: 'BBW',
+      channels: [
+        { cls:'p', code:'P', name:'SAWA POS',   tx:62, mix:'48%', val:'7,940' },
+        { cls:'m', code:'M', name:'MPOS',       tx:34, mix:'30%', val:'4,980' },
+        { cls:'h', code:'H', name:'Hadreen',    tx:8,  mix:'9%',  val:'1,520' },
+        { cls:'a', code:'A', name:'Asst. Ecom', tx:11, mix:'13%', val:'2,140', note:'incl. Endless Aisle' },
+        { cls:'s', code:'S', name:'SCO',        off:true, val:'—', note:'not deployed' }
+      ],
+      total: '16,580', orderTx: '115',
+      hourly: [5, 9, 13, 14, 17, 21, 24, 26, 24, 19, 16, 11, 6],
+      best: 'Strawberry Pound Cake', bestSub: 'body cream · 184 units',
+      teamSub: '5 on shift · 1 break',
+      team: [
+        { in:'L', name:'Lina',   rl:'fragrance bar',     val:'9,840 aed', tag:'signature 64%' },
+        { in:'M', name:'Mariam', rl:'candle wall',       val:'7,640 aed', tag:'3-for-2 · 18 attach' },
+        { in:'R', name:'Riya',   rl:'till 2',            val:'6,210 aed', tag:'28 tx' },
+        { in:'A', name:'Aisha',  rl:'gift packaging',    val:'3,940 aed', tag:'12 gift wraps' }
+      ],
+      ai: {
+        mgr: [
+          { lab:'priority', msg:'Pace <b>89%</b> · close to plan. Push <b>3-for-2</b> through closing.', time:'live' },
+          { lab:'signature', msg:'Signature mix at <b>58%</b> — stretch to 62% with body-cream sampling.', time:'17:30' }
+        ],
+        asst: [
+          { lab:'floor',   msg:'Candle wall conversion strong. Reposition Mariam to refill 3-wick at 18:00.', time:'live' }
+        ],
+        assoc: [
+          { lab:'your day', msg:'Signature attach 64% — top of team. Try cross-sell <b>hand cream</b> on every 3rd customer.', time:'live' }
+        ],
+        vm: [
+          { lab:'floor', msg:'Move <b>holiday signature</b> mannequin to entry. Traffic up <b>+22%</b> 17:00–19:00.', time:'live' }
+        ]
+      }
+    },
+    hm: {
+      key: 'hm', name: 'H&M', code: 'HM',
+      store: 'Mall of Emirates · L1 · HM-2218', storeShort: 'MoE · L1',
+      rev: '142,310', target: '156,400', delta: '−9.0%', trend: 'neg',
+      pace: 91, forecast: '+AED 320',
+      atv: '94', ipc: '3.5', conv: '11', convFF: '13,710 ff',
+      tx: '1,514', chanLive: '4',
+      bp: [
+        { v: '34%', l: 'SCO mix' },
+        { v: '+18%', l: 'denim attach' },
+        { v: '740',  l: 'H&M Member signups' }
+      ],
+      bpTag: 'H&M',
+      channels: [
+        { cls:'p', code:'P', name:'SAWA POS',   tx:42, mix:'38%', val:'5,840' },
+        { cls:'m', code:'M', name:'MPOS',       tx:28, mix:'24%', val:'3,640' },
+        { cls:'h', code:'H', name:'Hadreen',    tx:6,  mix:'7%',  val:'920' },
+        { cls:'a', code:'A', name:'Asst. Ecom', tx:9,  mix:'11%', val:'1,420', note:'incl. Endless Aisle' },
+        { cls:'s', code:'S', name:'SCO · live', live:true, tx:36, mix:'20%', val:'2,340' }
+      ],
+      total: '14,160', orderTx: '121',
+      hourly: [4, 6, 9, 11, 14, 17, 20, 23, 22, 18, 14, 10, 6],
+      best: 'Mom Loose Jeans', bestSub: '256 units · 22% mix',
+      teamSub: '6 on shift · 1 break',
+      team: [
+        { in:'F', name:'Fatima',  rl:'denim',       val:'8,820 aed', tag:'attach +18%' },
+        { in:'J', name:'Jana',    rl:'kidswear',    val:'6,140 aed', tag:'42 tx' },
+        { in:'T', name:'Tarek',   rl:'till sco',    val:'4,920 aed', tag:'sco 34%' },
+        { in:'Z', name:'Zayd',    rl:'till 1',      val:'3,710 aed', tag:'18 tx' }
+      ],
+      ai: {
+        mgr: [
+          { lab:'priority', msg:'<b>SCO mix 34%</b> — highest channel share. Capacity ok to push to 38%.', time:'live' },
+          { lab:'attach',   msg:'Denim attach <b>+18%</b>. Pair with basics tee promo.', time:'17:14' }
+        ],
+        asst: [
+          { lab:'floor', msg:'Move <b>Tarek</b> to SCO support · throughput +22% per assist.', time:'live' }
+        ],
+        assoc: [{ lab:'your day', msg:'Top in denim today — <b>+18%</b> attach. Carry forward to closing.', time:'live' }],
+        vm: [{ lab:'floor', msg:'Restock <b>Mom jeans</b> 26/28 — 4 sizes broken in last hour.', time:'live' }]
+      }
+    },
+    vs: {
+      key: 'vs', name: "Victoria's Secret", code: 'VS',
+      store: 'Mall of Emirates · L2 · VS-3320', storeShort: 'MoE · L2',
+      rev: '124,910', target: '140,200', delta: '−10.9%', trend: 'neg',
+      pace: 89, forecast: '−AED 1,620',
+      atv: '218', ipc: '2.4', conv: '16', convFF: '3,580 ff',
+      tx: '573', chanLive: '4',
+      bp: [
+        { v: '48%', l: 'Bra penetration' },
+        { v: '34%', l: 'PINK mix' },
+        { v: '8.4', l: 'fitting → buy' }
+      ],
+      bpTag: 'VS',
+      channels: [
+        { cls:'p', code:'P', name:'SAWA POS',   tx:38, mix:'52%', val:'8,290' },
+        { cls:'m', code:'M', name:'MPOS',       tx:14, mix:'21%', val:'3,310' },
+        { cls:'h', code:'H', name:'Hadreen',    tx:6,  mix:'9%',  val:'1,440' },
+        { cls:'a', code:'A', name:'Asst. Ecom', tx:8,  mix:'18%', val:'2,890', note:'incl. Endless Aisle' },
+        { cls:'s', code:'S', name:'SCO',        off:true, val:'—', note:'not deployed' }
+      ],
+      total: '15,930', orderTx: '66',
+      hourly: [3, 5, 7, 9, 11, 13, 16, 18, 17, 15, 12, 8, 5],
+      best: 'Body by Victoria · 34D', bestSub: '46 fittings · 22 bought',
+      teamSub: '4 on shift · 1 break',
+      team: [
+        { in:'P', name:'Priya',   rl:'fitting lead',   val:'14,620 aed', tag:'8.4 fit→buy' },
+        { in:'N', name:'Nadia',   rl:'pink',           val:'7,140 aed',  tag:'pink 34%' },
+        { in:'S', name:'Sonia',   rl:'till',           val:'5,310 aed',  tag:'18 tx' },
+        { in:'L', name:'Layla',   rl:'beauty',         val:'2,940 aed',  tag:'mist · attach' }
+      ],
+      ai: {
+        mgr: [
+          { lab:'priority', msg:'Bra penetration <b>48%</b> · target 52%. Fitting room load capacity available.', time:'live' },
+          { lab:'attach', msg:'PINK + mist attach lifting basket <b>+12%</b>.', time:'17:30' }
+        ],
+        asst: [{ lab:'floor', msg:'Priya hot at fitting · move <b>Layla</b> to support before close.', time:'live' }],
+        assoc: [{ lab:'your day', msg:'Fitting → buy <b>8.4</b> — keep matching balconette pairs.', time:'live' }],
+        vm: [{ lab:'floor', msg:'Refresh <b>Body by Victoria</b> table — 34D selling out at top.', time:'live' }]
+      }
+    },
+    cos: {
+      key: 'cos', name: 'COS', code: 'COS',
+      store: 'The Dubai Mall · L1 · COS-1408', storeShort: 'Dubai Mall · L1',
+      rev: '98,540', target: '112,000', delta: '−12.0%', trend: 'neg',
+      pace: 88, forecast: '−AED 1,910',
+      atv: '412', ipc: '2.1', conv: '8', convFF: '2,940 ff',
+      tx: '239', chanLive: '4',
+      bp: [
+        { v: '64%', l: 'Considered basket' },
+        { v: '38%', l: 'wool/linen mix' },
+        { v: '4.6', l: 'avg items tried' }
+      ],
+      bpTag: 'COS',
+      channels: [
+        { cls:'p', code:'P', name:'SAWA POS',   tx:22, mix:'58%', val:'9,070' },
+        { cls:'m', code:'M', name:'MPOS',       tx:12, mix:'22%', val:'3,420' },
+        { cls:'h', code:'H', name:'Hadreen',    tx:3,  mix:'5%',  val:'780' },
+        { cls:'a', code:'A', name:'Asst. Ecom', tx:5,  mix:'15%', val:'2,360', note:'incl. Endless Aisle' },
+        { cls:'s', code:'S', name:'SCO',        off:true, val:'—', note:'not deployed' }
+      ],
+      total: '15,630', orderTx: '42',
+      hourly: [2, 3, 4, 5, 7, 9, 11, 14, 13, 11, 8, 6, 3],
+      best: 'Wool-blend overcoat', bestSub: '14 units · ATV 1,490',
+      teamSub: '4 on shift',
+      team: [
+        { in:'K', name:'Karim',   rl:'tailoring',   val:'18,940 aed', tag:'atv 1,420' },
+        { in:'I', name:'Iman',    rl:'wear',        val:'9,820 aed',  tag:'4.6 tried' },
+        { in:'M', name:'Maya',    rl:'till',        val:'4,610 aed',  tag:'12 tx' },
+        { in:'A', name:'Adil',    rl:'fitting',     val:'2,180 aed',  tag:'considered 64%' }
+      ],
+      ai: {
+        mgr: [{ lab:'priority', msg:'Highest ATV across portfolio at <b>AED 412</b>. Considered basket strong.', time:'live' }],
+        asst: [{ lab:'floor', msg:'Tailoring queue: <b>3 garments</b> · 12-min avg. OK till 19:00.', time:'live' }],
+        assoc: [{ lab:'your day', msg:'4.6 items tried per fit — keep matching wool + linen.', time:'live' }],
+        vm: [{ lab:'floor', msg:'Refresh window with <b>oversize wool</b> coat — top seller today.', time:'live' }]
+      }
+    },
+    ct: {
+      key: 'ct', name: 'Charlotte Tilbury', code: 'CT',
+      store: 'The Dubai Mall · GF · CT-1102', storeShort: 'Dubai Mall · GF',
+      rev: '76,210', target: '88,000', delta: '−13.4%', trend: 'neg',
+      pace: 87, forecast: '−AED 1,470',
+      atv: '348', ipc: '2.6', conv: '20', convFF: '1,820 ff',
+      tx: '219', chanLive: '4',
+      bp: [
+        { v: '54%', l: 'Soft Glam attach' },
+        { v: '38',  l: 'Pillow Talk demos' },
+        { v: '72%', l: 'Magic Cream mix' }
+      ],
+      bpTag: 'CT',
+      channels: [
+        { cls:'p', code:'P', name:'SAWA POS',   tx:18, mix:'48%', val:'6,420' },
+        { cls:'m', code:'M', name:'MPOS',       tx:12, mix:'26%', val:'3,480' },
+        { cls:'h', code:'H', name:'Hadreen',    tx:4,  mix:'8%',  val:'1,070' },
+        { cls:'a', code:'A', name:'Asst. Ecom', tx:7,  mix:'18%', val:'2,420', note:'incl. Endless Aisle' },
+        { cls:'s', code:'S', name:'SCO',        off:true, val:'—', note:'not deployed' }
+      ],
+      total: '13,390', orderTx: '41',
+      hourly: [2, 3, 5, 7, 9, 11, 14, 16, 15, 12, 10, 7, 4],
+      best: 'Pillow Talk Original', bestSub: '38 demos · 24 sold',
+      teamSub: '3 on shift',
+      team: [
+        { in:'A', name:'Amal',    rl:'beauty advisor',   val:'18,420 aed', tag:'soft glam 54%' },
+        { in:'L', name:'Layan',   rl:'fragrance',        val:'7,180 aed',  tag:'12 demos' },
+        { in:'F', name:'Farah',   rl:'till',             val:'5,640 aed',  tag:'18 tx' }
+      ],
+      ai: {
+        mgr: [{ lab:'priority', msg:'Pillow Talk demos converting <b>63%</b> — push Charlotte\'s Magic Cream upsell.', time:'live' }],
+        asst: [{ lab:'floor', msg:'Beauty bar booked till 19:30 — extend by 30m if walk-ups continue.', time:'live' }],
+        assoc: [{ lab:'your day', msg:'Soft Glam attach <b>54%</b> — top of team. Try Magic Cream sample close.', time:'live' }],
+        vm: [{ lab:'floor', msg:'Restage Pillow Talk row · 4 shades broken on top tier.', time:'live' }]
+      }
+    }
+  };
+
+  const roles = {
+    mgr:   { code:'mgr',   name:'Store Manager',          short:'store mgr',   ai:'mgr',   edit:true,  team:'sees all', greet:'Sara' },
+    asst:  { code:'asst',  name:'Asst. Store Manager',    short:'asst mgr',    ai:'asst',  edit:false, team:'sees all', greet:'Mariam' },
+    assoc: { code:'assoc', name:'Sales Associate',        short:'sales assoc', ai:'assoc', edit:false, team:'own + total', greet:'Diana' },
+    vm:    { code:'vm',    name:'Visual Merchandiser',    short:'vm',          ai:'vm',    edit:false, team:'floor', greet:'Layla' }
+  };
+
+  const state = { brand:'ame', role:'mgr', view:'WTD', tab:'today' };
+
+  // ───────────────────── RENDER HELPERS ─────────────────────
+  const $  = q => document.querySelector(q);
+  const $$ = q => document.querySelectorAll(q);
+
+  function renderBars(targetId, values, axisId, xLabels, maxIdx) {
+    const wrap = document.getElementById(targetId);
+    if (!wrap) return;
+    const max = Math.max(...values);
+    const nowIdx = (maxIdx ?? values.indexOf(max));
+    wrap.innerHTML = values.map((v, i) => {
+      const h = Math.max(6, (v / max) * 100);
+      const cls = i === nowIdx ? 'bar now' : (i > nowIdx ? 'bar dim' : 'bar');
+      return `<div class="${cls}" style="height:${h}%"></div>`;
+    }).join('');
+    if (axisId) {
+      const ax = document.getElementById(axisId);
+      if (ax) ax.innerHTML = xLabels.map(l => `<span>${l}</span>`).join('');
+    }
+  }
+
+  function renderChannels(targetId, channels) {
+    const w = document.getElementById(targetId);
+    if (!w) return;
+    w.innerHTML = channels.map(c => {
+      const tag = c.off ? `<div class="off-tag">offline</div>` : `<div class="live">live</div>`;
+      const meta = c.off ? c.note : `${c.tx} tx · ${c.mix} mix${c.note ? ' · ' + c.note : ''}`;
+      return `<button class="ch ${c.cls} ${c.off?'off':''}" ${c.off?'disabled':''}>
+        <div class="top"><div class="badge">${c.code}</div>${tag}</div>
+        <div>
+          <div class="name">${c.name}</div>
+          <div class="meta">${meta}</div>
+        </div>
+        <div class="val">${c.off ? '—' : 'AED ' + c.val}</div>
+      </button>`;
+    }).join('');
+  }
+
+  function renderPhChannels(targetId, channels) {
+    const w = document.getElementById(targetId);
+    if (!w) return;
+    w.innerHTML = channels.map(c => {
+      const tag = c.off ? `<div class="live-tag">offline</div>` : `<div class="live-tag">live</div>`;
+      const meta = c.off ? c.note : `${c.tx} tx · ${c.mix} mix`;
+      return `<div class="ph-ch-item ${c.cls} ${c.off?'s':''}">
+        <div class="badge">${c.code}</div>
+        <div class="info"><div class="nm">${c.name}</div><div class="meta">${meta}</div></div>
+        <div class="right"><div class="val">${c.off ? '—' : 'AED ' + c.val}</div>${tag}</div>
+      </div>`;
+    }).join('');
+  }
+
+  // ── AI brief decorators ─────────────────────────────────────────
+  // Tag colour mapping by label keyword
+  function tagClass(lab) {
+    const l = String(lab || '').toLowerCase();
+    if (/(priority|escalate|urgent|alert)/.test(l))    return 't-priority';
+    if (/(your day|today|pulse|now)/.test(l))           return 't-yourday';
+    if (/(channel|mpos|pos|hadreen|ecom|sco)/.test(l))  return 't-channel';
+    if (/(attach|bundle|cross|push)/.test(l))           return 't-attach';
+    if (/(team|coach|shift|move)/.test(l))              return 't-team';
+    if (/(save|fitting|bay)/.test(l))                   return 't-save';
+    if (/(stock|sku|replen|window|vm|merch)/.test(l))   return 't-stock';
+    if (/(action|task|next|todo)/.test(l))              return 't-action';
+    return 't-default';
+  }
+  // Highlight numbers, currency, %, time tokens inside the message.
+  // Safe: existing <b>…</b> wrappers stay untouched.
+  function decorateMsg(html) {
+    return html
+      // negative %: -6%, −6%
+      .replace(/(?<![\w.])([\-−]\s?\d+(?:\.\d+)?\s?%)/g, '<em class="num neg">$1</em>')
+      // positive %: +20%
+      .replace(/(?<![\w.])(\+\s?\d+(?:\.\d+)?\s?%)/g,    '<em class="num pos">$1</em>')
+      // bare %: 70%, 14% — but not already-tagged
+      .replace(/(?<![\d>])(\d+(?:\.\d+)?\s?%)(?![<])/g,  '<em class="num pct">$1</em>')
+      // AED amounts (AED 68k, AED 8,210)
+      .replace(/\b(AED)\s+([\d,]+(?:\.\d+)?\s?[kKmM]?)/g,
+        '<em class="num aed"><span class="cur">$1</span>&nbsp;$2</em>')
+      // time of day token (e.g. 18:30) — small mono cap
+      .replace(/(?<![\d])(\d{1,2}:\d{2})(?![\d])/g,      '<em class="num t">$1</em>');
+  }
+
+  function renderAi(targetId, items) {
+    const w = document.getElementById(targetId);
+    if (!w) return;
+    w.innerHTML = items.map((it, i) => {
+      const action = i === 0 ? ' action' : '';
+      const cls = tagClass(it.lab);
+      return `<div class="ai-item${action}">
+        <div class="h">
+          <span class="role-tag ${cls}">${it.lab}</span>
+          <span class="time"><span class="live-pip"></span>${it.time}</span>
+        </div>
+        <div class="msg">${decorateMsg(it.msg)}</div>
+        ${i === 0 ? '<button class="cta"><span class="cta-tick">✓</span> Acknowledge<span class="cta-arr">→</span></button>' : ''}
+      </div>`;
+    }).join('');
+  }
+
+  function renderPhAi(targetId, items) {
+    const w = document.getElementById(targetId);
+    if (!w) return;
+    w.innerHTML = items.map((it, i) => {
+      const cls = tagClass(it.lab);
+      const lead = i === 0 ? ' lead' : '';
+      return `<div class="item${lead}">
+        <div class="label">
+          <span class="tag ${cls}">${it.lab}</span>
+          <span class="when"><span class="live-pip"></span>${it.time}</span>
+        </div>
+        <div class="msg">${decorateMsg(it.msg)}</div>
+      </div>`;
+    }).join('');
+  }
+
+  function renderTeam(targetId, team, role) {
+    const w = document.getElementById(targetId);
+    if (!w) return;
+    const palette = ['#0F6B4E','#3E5867','#D6A21E','#D8527C','#7A1F47','#2D6CDF'];
+    let list = team;
+    if (role === 'assoc') {
+      // Sales Assoc only sees own row + team total
+      list = [team[0]];
+    }
+    let rows = list.map((m, i) => `<div class="team-row ${role==='assoc'&&i===0?'me':''}">
+      <div class="av" style="background:${palette[i % palette.length]}">${m.in}</div>
+      <div class="info"><div class="nm">${m.name}</div><div class="rl">${m.rl}</div></div>
+      <div class="right"><div class="val">${m.val}</div><div class="tag">${m.tag}</div></div>
+    </div>`).join('');
+
+    if (role === 'assoc') {
+      const total = team.reduce((s,m) => s + parseFloat(m.val.replace(/[, aed]/g,'')||0), 0);
+      rows += `<div class="team-row" style="background:var(--paper-2);border-radius:10px;padding:12px 10px;margin-top:4px;">
+        <div class="av" style="background:var(--ink-3)">∑</div>
+        <div class="info"><div class="nm">Team total</div><div class="rl">all on shift</div></div>
+        <div class="right"><div class="val">${total.toLocaleString()} aed</div><div class="tag">team</div></div>
+      </div>`;
+    }
+    w.innerHTML = rows;
+  }
+
+  // ipad team list (different format)
+  function renderPadTeam(targetId, team, role) {
+    const w = document.getElementById(targetId);
+    if (!w) return;
+    const palette = ['#0F6B4E','#3E5867','#D6A21E','#D8527C','#7A1F47','#2D6CDF'];
+    let list = team;
+    if (role === 'assoc') list = [team[0]];
+    w.innerHTML = list.map((m, i) => `<div class="row" style="grid-template-columns: 48px 1.4fr .6fr 1fr .8fr;">
+      <div class="av-pad" style="width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:${palette[i%palette.length]};color:#fff;font-family:'Fraunces',serif;font-weight:500;font-size:14px;">${m.in}</div>
+      <div class="nm">${m.name}<small>${m.rl}</small></div>
+      <div class="ct">${m.val.split(' ')[0].replace(/,/g,'').slice(0,5)}</div>
+      <div class="b"><i style="width:${50 + (i*8)}%"></i></div>
+      <div class="act">${m.tag}</div>
+    </div>`).join('');
+  }
+
+  // ───────────────────── PROGRESS / DELTA HELPERS ─────────────────────
+  function deltaClassPos(t) { return t === 'pos' ? 'delta-pos' : 'delta-neg'; }
+  function trendClassUp(t) { return t === 'pos' ? 'up' : ''; }
+
+  // ───────────────────── MASTER RENDER ─────────────────────
+  function render() {
+    const b = brands[state.brand];
+    const r = roles[state.role];
+
+    // root brand attr (drives CSS tint)
+    document.getElementById('stage').setAttribute('data-brand', b.key);
+    document.body.classList.toggle('no-edit', !r.edit);
+
+    // header chips active state
+    $$('#brandChips .chip').forEach(c => c.classList.toggle('active', c.dataset.brand === b.key));
+    $$('.ph-chips .ph-chip').forEach(c => c.classList.toggle('active', c.dataset.brand === b.key));
+    $$('#roleBar .role-pill').forEach(c => c.classList.toggle('active', c.dataset.role === r.code));
+
+    // iPad sidebar user info
+    $('#padUserName').textContent = r.greet === 'Sara' ? 'Sara Al-Mansour' :
+                                    r.greet === 'Diana' ? 'Diana K.' :
+                                    r.greet === 'Layla' ? 'Layla S.' : 'Mariam H.';
+    $('#padUserRole').textContent = `${r.short} · iPad`;
+    $('#padUserBrand').textContent = b.name;
+
+    // iPad title row
+    $('#padSubBrand').textContent = b.name;
+    $('#padStore').textContent = b.store;
+    $('#padOrdersSubBrand').textContent = b.name;
+
+    // iPad common boxes
+    $('#padRev').textContent = b.rev;
+    $('#padTarget').textContent = b.target;
+    $('#padDelta').textContent = b.delta;
+    $('#padDelta').className = b.trend === 'pos' ? 'delta-pos' : 'delta-neg';
+    $('#padPace').textContent = b.pace + '%';
+    $('#padProgress').style.width = b.pace + '%';
+    $('#padATV').textContent = b.atv;
+    $('#padChanLive').textContent = b.chanLive;
+    $('#padTx').textContent = b.tx;
+    $('#padViewLabel').textContent = state.view;
+
+    // brand-personal strip (pad)
+    $('#padBpBrandTag').textContent = b.bpTag;
+    $('#padBp1Val').textContent = b.bp[0].v; $('#padBp1Lbl').textContent = b.bp[0].l;
+    $('#padBp2Val').textContent = b.bp[1].v; $('#padBp2Lbl').textContent = b.bp[1].l;
+    $('#padBp3Val').textContent = b.bp[2].v; $('#padBp3Lbl').textContent = b.bp[2].l;
+
+    // best/stock
+    $('#padStockBest').textContent = b.best;
+    $('#padStockBestSub').textContent = b.bestSub;
+
+    // iPad channels
+    renderChannels('padChannels', b.channels);
+    renderChannels('padChannels2', b.channels);
+
+    // iPad hourly chart
+    const hours = ['10','11','12','13','14','15','16','17','18','19','20','21','22'];
+    renderBars('padBars', b.hourly, 'padX', hours, 7);
+    renderBars('padOrdersBars', b.hourly.map(v => Math.round(v*0.7)), 'padOrdersX', hours, 7);
+    renderBars('padTeamBars', [8,9,11,12,13,14,16,18,17,15,12,10,8], 'padTeamX', hours, 7);
+    renderBars('padMeBars',   [0,0.4,0.8,1.2,1.5,1.8,2.1,2.4,2.2,1.9,1.6,1.1,0.6].map(x=>x*1000), 'padMeX', hours, 7);
+
+    // iPad AI brief
+    $('#padAiRole').textContent = r.short;
+    renderAi('padAi', b.ai[r.ai] || b.ai.mgr);
+
+    // iPad team
+    $('#padTeamSub').textContent = `${b.teamSub} · viewing as ${r.short}`;
+    $('#padTeamRoleHint').textContent = `${r.short} · ${r.team}`;
+    renderPadTeam('padTeamList', b.team, r.code);
+    renderAi('padTeamAi', b.ai[r.ai] || b.ai.mgr);
+
+    // iPad brand sel + view sel
+    const psel = $('#padBrandSel');
+    if (psel) psel.innerHTML = Object.values(brands).map(x => `<option ${x.key===b.key?'selected':''} value="${x.key}">${x.name}</option>`).join('');
+
+    // iPhone header
+    $('#phBrandHead').textContent = b.name;
+    $('#phStoreHead').textContent = b.storeShort;
+    $('#phOrdersBrand').textContent = b.name;
+    $('#phHelloName').textContent = r.greet + '.';
+    $('#phViewLabel').textContent = state.view;
+
+    // iPhone live card
+    $('#phRev').textContent = b.rev;
+    $('#phTarget').textContent = b.target;
+    $('#phTrend').textContent = b.delta;
+    $('#phTrend').className = 'trend ' + (b.trend==='pos' ? 'up' : '');
+    $('#phPace').textContent = b.pace + '%';
+    $('#phProgress').style.width = b.pace + '%';
+    $('#phForecast').textContent = b.forecast;
+
+    // iPhone common metrics
+    $('#phATV').textContent = b.atv;
+    $('#phIPC').textContent = b.ipc;
+    $('#phConv').innerHTML = b.conv + '<span style="font-size:13px;color:var(--ink-3)">%</span>';
+    $('#phConvFF').textContent = b.convFF;
+
+    // iPhone brand-personal mini
+    $('#phBpBrand').textContent = b.bpTag;
+    $('#phBp').innerHTML = b.bp.map(m => `<div class="m"><div class="n">${m.v}</div><div class="l">${m.l}</div></div>`).join('');
+
+    // iPhone hourly chart
+    renderBars('phBars', b.hourly, 'phX', hours, 7);
+
+    // iPhone AI brief
+    $('#phAiRole').textContent = r.short;
+    renderPhAi('phAi', b.ai[r.ai] || b.ai.mgr);
+
+    // iPhone orders
+    $('#phOrdersTotal').textContent = 'AED ' + b.total;
+    $('#phOrdersTx').textContent = b.orderTx;
+    renderPhChannels('phOrdersList', b.channels);
+
+    // iPhone team
+    $('#phTeamSub').textContent = b.teamSub;
+    renderTeam('phTeamList', b.team, r.code);
+
+    // iPhone Me
+    $('#phMeAv').textContent = r.greet[0];
+    $('#phMeName').textContent = (r.greet === 'Sara' ? 'Sara Al-Mansour' :
+                                  r.greet === 'Diana' ? 'Diana K.' :
+                                  r.greet === 'Layla' ? 'Layla S.' : 'Mariam H.');
+    $('#phMeRole').textContent = r.short;
+    $('#phMeBrand').textContent = b.name;
+    $('#phMeATV').textContent = (parseInt(b.atv)+30).toString();
+
+    // iPhone brand sel
+    const psel2 = $('#phBrandSel');
+    if (psel2) psel2.innerHTML = Object.values(brands).map(x => `<option ${x.key===b.key?'selected':''} value="${x.key}">${x.name}</option>`).join('');
+  }
+
+  // ───────────────────── EVENTS ─────────────────────
+  function setBrand(key) {
+    if (!brands[key]) return;
+    state.brand = key;
+    render();
+  }
+  function setRole(code) {
+    if (!roles[code]) return;
+    state.role = code;
+    render();
+  }
+  function setView(label) {
+    state.view = label;
+    render();
+  }
+  function setTab(tab) {
+    state.tab = tab;
+    $$('#tabbar .tab').forEach(t => t.classList.toggle('active', t.dataset.go === tab));
+    $$('.ph-view').forEach(s => s.classList.remove('active'));
+    const v = document.querySelector(`.ph-view[data-view="${tab}"]`);
+    if (v) v.classList.add('active');
+    const body = $('#phBody');
+    if (body) body.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  function goto(tab) {
+    setTab(tab);
+  }
+  function setPadView(view) {
+    $$('.pad-side .pad-nav button').forEach(b => b.classList.toggle('active', b.dataset.view === view));
+    $$('.pad-view').forEach(s => s.classList.remove('active'));
+    const v = document.querySelector(`.pad-view[data-view="${view}"]`);
+    if (v) v.classList.add('active');
+    const m = document.querySelector('.pad-main');
+    if (m) m.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function editTarget() {
+    if (!roles[state.role].edit) {
+      alert('Only Store Manager can edit the sales target.');
+      return;
+    }
+    const newT = prompt('Edit ' + state.view + ' target (AED):', brands[state.brand].target.replace(/,/g,''));
+    if (newT && !isNaN(parseInt(newT))) {
+      brands[state.brand].target = parseInt(newT).toLocaleString();
+      // recompute pace from current rev/new target
+      const rev = parseInt(brands[state.brand].rev.replace(/,/g,''));
+      const t = parseInt(newT);
+      brands[state.brand].pace = Math.round((rev / t) * 100);
+      brands[state.brand].delta = ((rev - t) / t * 100).toFixed(1).replace('-','−') + '%';
+      brands[state.brand].trend = rev >= t ? 'pos' : 'neg';
+      render();
+    }
+  }
+  window.editTarget = editTarget;
+  window.goto = goto;
+
+  // wire up
+  $$('#brandChips .chip').forEach(c => c.addEventListener('click', () => setBrand(c.dataset.brand)));
+  document.getElementById('brandMore').addEventListener('change', (e) => { if (e.target.value) setBrand(e.target.value); e.target.value=''; });
+  $$('.ph-chips .ph-chip').forEach(c => c.addEventListener('click', () => setBrand(c.dataset.brand)));
+  const phMore = document.getElementById('phBrandMore');
+  if (phMore) phMore.addEventListener('change', (e) => { if (e.target.value) setBrand(e.target.value); e.target.value=''; });
+
+  $$('#roleBar .role-pill').forEach(p => p.addEventListener('click', () => setRole(p.dataset.role)));
+
+  // ipad nav
+  $$('.pad-side .pad-nav button').forEach(b => b.addEventListener('click', () => setPadView(b.dataset.view)));
+
+  // iphone tabbar
+  $$('#tabbar .tab').forEach(t => t.addEventListener('click', () => setTab(t.dataset.go)));
+
+  // iphone role-tile/sso/role-go
+  $$('.role-tile').forEach(t => t.addEventListener('click', () => {
+    if (t.dataset.role) setRole(t.dataset.role);
+    setTab(t.dataset.go);
+  }));
+  $$('[data-go="role"]').forEach(b => b.addEventListener('click', () => {
+    $$('.ph-view').forEach(s => s.classList.remove('active'));
+    document.querySelector('.ph-view[data-view="role"]').classList.add('active');
+  }));
+
+  // view selectors
+  const padViewSel = document.getElementById('padViewSel');
+  if (padViewSel) padViewSel.addEventListener('change', e => setView(e.target.value));
+  const phViewSel = document.getElementById('phViewSel');
+  if (phViewSel) phViewSel.addEventListener('change', e => setView(e.target.value));
+  const padBrandSel = document.getElementById('padBrandSel');
+  if (padBrandSel) padBrandSel.addEventListener('change', e => setBrand(e.target.value));
+  const phBrandSel  = document.getElementById('phBrandSel');
+  if (phBrandSel)  phBrandSel.addEventListener('change',  e => setBrand(e.target.value));
+
+  // refresh stamps: tick "12s ago" up
+  let refreshSec = 12;
+  setInterval(() => {
+    refreshSec = (refreshSec + 1) % 60;
+    const r = $('#phRefresh');         if (r) r.textContent = refreshSec + 's';
+    const r2 = $('#padPadRefresh');    if (r2) r2.textContent = refreshSec + 's';
+    const r3 = $('#padFootRefresh');   if (r3) r3.textContent = 'updated ' + refreshSec + 's ago';
+  }, 1000);
+
+  // ─────────────────── MOTION CANVAS (login background) ───────────────────
+  (function motionCanvas() {
+    const c = document.getElementById('motionCanvas');
+    if (!c) return;
+    const ctx = c.getContext('2d');
+    let w, h, dpr;
+    const nodes = [];
+    const NODE_COUNT = 64;
+    const LINK_DIST = 160;
+
+    function resize() {
+      dpr = window.devicePixelRatio || 1;
+      w = c.clientWidth = window.innerWidth;
+      h = c.clientHeight = window.innerHeight;
+      c.width  = w * dpr;
+      c.height = h * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    function seed() {
+      nodes.length = 0;
+      for (let i = 0; i < NODE_COUNT; i++) {
+        nodes.push({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          vx: (Math.random() - .5) * 0.32,
+          vy: (Math.random() - .5) * 0.32,
+          r: Math.random() * 1.6 + 0.6,
+          accent: Math.random() < 0.18,
+          phase: Math.random() * Math.PI * 2
+        });
+      }
+    }
+    function tick(t) {
+      ctx.clearRect(0, 0, w, h);
+      for (const n of nodes) {
+        n.x += n.vx; n.y += n.vy;
+        if (n.x < 0 || n.x > w) n.vx *= -1;
+        if (n.y < 0 || n.y > h) n.vy *= -1;
+      }
+      // Lines between near nodes
+      for (let i = 0; i < nodes.length; i++) {
+        for (let j = i + 1; j < nodes.length; j++) {
+          const a = nodes[i], b = nodes[j];
+          const dx = a.x - b.x, dy = a.y - b.y;
+          const d = Math.sqrt(dx*dx + dy*dy);
+          if (d < LINK_DIST) {
+            const alpha = (1 - d / LINK_DIST);
+            const accent = a.accent || b.accent;
+            ctx.beginPath();
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(b.x, b.y);
+            ctx.strokeStyle = accent
+              ? `rgba(199, 251, 85, ${alpha * 0.35})`
+              : `rgba(220, 230, 235, ${alpha * 0.10})`;
+            ctx.lineWidth = accent ? 0.7 : 0.5;
+            ctx.stroke();
+          }
+        }
+      }
+      // Dots
+      for (const n of nodes) {
+        const pulse = 1 + Math.sin(t * 0.001 + n.phase) * 0.25;
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, n.r * pulse, 0, Math.PI * 2);
+        if (n.accent) {
+          ctx.fillStyle = 'rgba(199, 251, 85, 0.95)';
+          ctx.shadowColor = 'rgba(199, 251, 85, 0.7)';
+          ctx.shadowBlur = 8;
+        } else {
+          ctx.fillStyle = 'rgba(220, 230, 235, 0.55)';
+          ctx.shadowBlur = 0;
+        }
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      }
+      requestAnimationFrame(tick);
+    }
+    resize(); seed();
+    window.addEventListener('resize', () => { resize(); seed(); });
+    requestAnimationFrame(tick);
+  })();
+
+  // ─────────────────── TICKER COUNT-UP ───────────────────
+  function runTickers() {
+    document.querySelectorAll('.tk-v').forEach(el => {
+      const target = parseInt(el.dataset.target || '0', 10);
+      if (!target) return;
+      const dur = 1200;
+      const start = performance.now();
+      function step(t) {
+        const p = Math.min(1, (t - start) / dur);
+        const eased = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.round(target * eased).toLocaleString();
+        if (p < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    });
+  }
+
+  // ─────────────────── LOGIN FLOW ───────────────────
+  function showPanel(which) {
+    const sso   = document.getElementById('loginSSO');
+    const roles = document.getElementById('loginRoles');
+    if (which === 'sso') {
+      roles.classList.add('gone');
+      sso.classList.remove('gone');
+      sso.classList.add('entering');
+      setTimeout(() => sso.classList.remove('entering'), 600);
+    } else {
+      sso.classList.add('gone');
+      roles.classList.remove('gone');
+      roles.classList.add('entering');
+      setTimeout(() => roles.classList.remove('entering'), 600);
+    }
+  }
+
+  function enterApp(roleKey) {
+    if (roleKey && roles[roleKey]) state.role = roleKey;
+    const ls = document.getElementById('loginStage');
+    const st = document.getElementById('stage');
+    ls.classList.add('gone');
+    st.classList.add('live');
+    // ensure iPhone starts on Today, not SSO
+    setTab('today');
+    render();
+    // fit once stage is rendered (after transform applied)
+    requestAnimationFrame(() => requestAnimationFrame(fitToViewport));
+  }
+  function signOut() {
+    const ls = document.getElementById('loginStage');
+    const st = document.getElementById('stage');
+    st.classList.remove('live');
+    ls.classList.remove('gone');
+    showPanel('sso');
+    runTickers();
+  }
+
+  document.getElementById('loginSignIn').addEventListener('click', () => {
+    // pre-fill greet name based on default role
+    document.getElementById('loginName').textContent = (roles[state.role] || roles.mgr).greet;
+    showPanel('roles');
+  });
+  document.getElementById('loginBack').addEventListener('click', () => showPanel('sso'));
+  document.querySelectorAll('.login-role-card').forEach(c => {
+    c.addEventListener('click', () => enterApp(c.dataset.role));
+  });
+  document.getElementById('signOut').addEventListener('click', signOut);
+
+  // ─────────────────── FIT-TO-VIEWPORT ───────────────────
+  // Devices are 1180 (iPad) + 40 (gap) + 430 (iPhone 14 Pro Max) = 1650px wide.
+  // Add 64px breathing margin → ideal width 1714px.
+  function fitToViewport() {
+    const target = 1714;
+    const vw = window.innerWidth;
+    const scale = Math.min(1, (vw - 24) / target);
+    document.documentElement.style.setProperty('--fit-scale', scale.toFixed(4));
+    // compensate height so scaled iPad doesn't leave a gap
+    const wrap = document.querySelector('.fit-wrap');
+    if (wrap) {
+      const innerH = 880; // tallest device
+      wrap.style.height = (innerH * scale + 12) + 'px';
+    }
+  }
+  window.addEventListener('resize', fitToViewport);
+  window.addEventListener('orientationchange', fitToViewport);
+
+  // ─────────────────── INITIAL RENDER ───────────────────
+  // Deep-link can skip the login screen for testing: ?skipLogin=1
+  (function init() {
+    const q = new URLSearchParams(location.search);
+    const br  = q.get('brand');
+    const rl  = q.get('role');
+    const pad = q.get('pad');
+    const ph  = q.get('ph');
+    if (br && brands[br]) state.brand = br;
+    if (rl && roles[rl])  state.role  = rl;
+    render();
+    runTickers();
+    if (q.get('skipLogin') === '1' || pad || ph) {
+      enterApp(state.role);
+      if (pad) setPadView(pad);
+      if (ph)  setTab(ph);
+    }
+  })();
+</script>
+</body>
+</html>
