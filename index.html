@@ -74,16 +74,34 @@
       radial-gradient(70% 60% at 100% 100%, rgba(64,120,255,.08) 0%, transparent 65%),
       linear-gradient(180deg, #0B100E 0%, #0F1614 40%, #11181A 100%);
     color: #ECF1EE;
-    overflow: hidden;
+    /* allow vertical scroll on short screens (1366x768 HP laptops, etc.) */
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
     z-index: 100;
-    display: grid;
-    grid-template-rows: auto 1fr auto;
+    display: flex;
+    flex-direction: column;
     transition: opacity .6s ease, transform .6s ease;
   }
   .login-stage.gone {
     opacity: 0;
     transform: scale(1.04);
     pointer-events: none;
+  }
+  /* Custom thin scrollbar so it doesn't dominate the dark UI */
+  .login-stage::-webkit-scrollbar { width: 10px; }
+  .login-stage::-webkit-scrollbar-track { background: transparent; }
+  .login-stage::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,.08);
+    border-radius: 8px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+  }
+  .login-stage::-webkit-scrollbar-thumb:hover {
+    background: rgba(199,251,85,.20);
+    background-clip: padding-box;
+    border: 2px solid transparent;
   }
   .motion-bg {
     position: absolute; inset: 0;
@@ -186,15 +204,38 @@
 
   .login-panel {
     position: relative; z-index: 5;
-    align-self: center; justify-self: center;
+    align-self: center;
+    width: 100%;
     max-width: 720px;
-    padding: 0 36px;
+    padding: 28px 36px 40px;
+    /* margin-block: auto vertically centers when stage has free space.
+       When content is taller than the viewport, the auto margins collapse
+       and the panel scrolls naturally inside .login-stage. */
+    margin-block: auto;
     text-align: center;
     transition: opacity .45s ease, transform .45s ease;
   }
   .login-panel.gone {
     opacity: 0; transform: translateY(-12px) scale(.98);
     pointer-events: none; position: absolute;
+  }
+  /* On short screens (HP laptops at 768px), tighten the vertical rhythm
+     so the demo form is reachable with one short scroll. */
+  @media (max-height: 820px) {
+    .login-hero        { margin: 8px 0 10px; font-size: clamp(34px, 5vw, 52px); line-height: 1.05; }
+    .login-sub         { margin: 0 auto 18px; }
+    .login-tickers     { margin-top: 22px; }
+    .login-pre         { margin-bottom: 14px; padding: 5px 12px; }
+    .login-meta        { margin-top: 14px; }
+    .login-or          { margin: 14px auto 10px; }
+    .login-panel       { padding: 14px 36px 28px; }
+    .login-head        { padding: 14px 28px; }
+  }
+  @media (max-height: 680px) {
+    .login-hero        { font-size: clamp(26px, 4vw, 36px); }
+    .login-sub         { display: none; }
+    .login-btn         { padding: 14px 22px; }
+    .login-tickers     { display: none; }
   }
   .login-panel.entering {
     animation: enterUp .55s cubic-bezier(.22,.61,.36,1) both;
