@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>SAWA BOS · v5.3 — iPad + iPhone Live Prototype</title>
+<title>SAWA BOS · v5.4 — iPad + iPhone Live Prototype (field-review build)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
@@ -275,6 +275,105 @@
     font-family: 'JetBrains Mono', monospace; font-size: 10px;
     color: rgba(255,255,255,.45); text-transform: uppercase; letter-spacing: .16em;
   }
+
+  /* demo username/password form (prototype only) */
+  .login-or {
+    display: flex; align-items: center; gap: 14px;
+    max-width: 380px; margin: 22px auto 14px;
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    text-transform: uppercase; letter-spacing: .22em;
+    color: rgba(255,255,255,.42);
+  }
+  .login-or::before,
+  .login-or::after {
+    content: ""; flex: 1; height: 1px;
+    background: rgba(255,255,255,.10);
+  }
+  .login-demo {
+    max-width: 380px; margin: 0 auto;
+    display: grid; gap: 10px;
+    background: rgba(255,255,255,.035);
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 14px;
+    padding: 18px 18px 16px;
+    text-align: left;
+    backdrop-filter: blur(10px);
+  }
+  .login-demo .lbl {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    text-transform: uppercase; letter-spacing: .18em;
+    color: rgba(255,255,255,.5);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .login-demo .lbl em {
+    font-style: normal; color: rgba(199,251,85,.8);
+    font-size: 9px; letter-spacing: .16em;
+  }
+  .login-demo .field {
+    display: flex; align-items: center; gap: 10px;
+    background: rgba(0,0,0,.28);
+    border: 1px solid rgba(255,255,255,.10);
+    border-radius: 10px;
+    padding: 11px 13px;
+    transition: border .2s ease, background .2s ease;
+  }
+  .login-demo .field:focus-within {
+    border-color: rgba(199,251,85,.45);
+    background: rgba(0,0,0,.4);
+  }
+  .login-demo .field svg { color: rgba(255,255,255,.42); flex-shrink: 0; }
+  .login-demo .field input {
+    flex: 1; min-width: 0;
+    background: transparent; border: 0; outline: 0;
+    color: #fff; font-family: 'Inter', sans-serif; font-size: 14px;
+    letter-spacing: -.005em;
+  }
+  .login-demo .field input::placeholder { color: rgba(255,255,255,.32); }
+  .login-demo .row {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 12px; padding-top: 4px;
+  }
+  .login-demo .role-pick {
+    flex: 1;
+    background: rgba(0,0,0,.28);
+    border: 1px solid rgba(255,255,255,.10);
+    border-radius: 10px;
+    padding: 11px 13px;
+    color: #fff; font-family: 'Inter', sans-serif; font-size: 13px;
+    appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6' fill='none' stroke='rgba(255,255,255,0.5)' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'><path d='M1 1.5l4 3 4-3'/></svg>");
+    background-repeat: no-repeat; background-position: right 13px center; padding-right: 30px;
+  }
+  .login-demo .role-pick option { background:#15201b; color:#fff; }
+  .login-demo .submit {
+    flex-shrink: 0;
+    padding: 12px 20px;
+    border-radius: 10px;
+    background: var(--lime);
+    color: #15201b;
+    border: 0; cursor: pointer;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; font-weight: 600; letter-spacing: .12em;
+    text-transform: uppercase;
+    display: inline-flex; align-items: center; gap: 8px;
+    transition: transform .12s ease, box-shadow .2s ease;
+    box-shadow: 0 8px 24px -10px rgba(199,251,85,.4);
+  }
+  .login-demo .submit:hover { transform: translateY(-1px); box-shadow: 0 12px 28px -10px rgba(199,251,85,.55); }
+  .login-demo .submit:active { transform: translateY(0); }
+  .login-demo .hint {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    color: rgba(255,255,255,.40); text-transform: uppercase; letter-spacing: .18em;
+    text-align: center; margin-top: 4px;
+  }
+  .login-demo .hint b { color: rgba(199,251,85,.8); font-weight: 500; }
+  .login-demo .err {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    color: #ff8c8c; text-transform: uppercase; letter-spacing: .14em;
+    text-align: center; margin-top: 2px;
+    opacity: 0; transition: opacity .25s ease;
+  }
+  .login-demo .err.show { opacity: 1; }
   .login-tickers {
     margin-top: 44px;
     display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
@@ -791,6 +890,45 @@
   }
   .cb .edit-target::before { content: "✎"; font-size: 10px; }
   body.no-edit .edit-target { display: none; }
+
+  /* Tightened VM access (review fix · high #8)
+     VM sees: store context, brand-personal strip, team, Me tab, VM-specific AI brief.
+     VM does NOT see: live revenue card, P&L delta, channel breakdown, channels-live tile,
+     transactions count, target editing. */
+  body.role-vm #padRev,
+  body.role-vm #padTarget,
+  body.role-vm #padDelta,
+  body.role-vm #padPace,
+  body.role-vm #padProgress,
+  body.role-vm .cb.atv .f,
+  body.role-vm .cb.chan,
+  body.role-vm .cb.tx,
+  body.role-vm .channels-wrap,
+  body.role-vm #phRev,
+  body.role-vm #phTrend,
+  body.role-vm #phTarget,
+  body.role-vm #phForecast,
+  body.role-vm #phPace,
+  body.role-vm .live-card .pbar,
+  body.role-vm .live-card .pace,
+  body.role-vm .common-mini .c:nth-child(3),
+  body.role-vm .ph-orders-sum {
+    display: none !important;
+  }
+  /* VM hint banner replaces the revenue card on the iPhone */
+  body.role-vm .live-card::before {
+    content: "VM scope · floor cues · window calendar · brand visuals — revenue hidden by access policy";
+    display: block;
+    font-family: 'JetBrains Mono', monospace; font-size: 10.5px;
+    color: var(--ink-3); letter-spacing: .04em;
+    padding: 14px 12px; line-height: 1.5;
+  }
+  body.role-vm .live-card .h,
+  body.role-vm .live-card .row,
+  body.role-vm .live-card .target-row {
+    display: none !important;
+  }
+  body.role-vm .pad-head .filters { opacity: .4; }
 
   /* brand-personal strip */
   .bp-strip {
@@ -2156,7 +2294,7 @@
       <div class="sawa-mono-lg">S</div>
       <div>
         <div class="lh-t">SAWA <em>BOS</em></div>
-        <div class="lh-s">back office system · v5.3</div>
+        <div class="lh-s">back office system · v5.4 · field-review build</div>
       </div>
     </div>
     <div class="login-secure">
@@ -2181,12 +2319,38 @@
       <span class="arr">→</span>
     </button>
     <div class="login-meta">
-      <span>SSO only · no password UI</span>
+      <span>SSO · production</span>
       <span>·</span>
       <span>trusted store device</span>
       <span>·</span>
       <span>Entra ID</span>
     </div>
+
+    <div class="login-or"><span>or · prototype demo</span></div>
+    <form class="login-demo" id="loginDemo" autocomplete="off" onsubmit="return false">
+      <div class="lbl"><span>demo credentials</span><em>prototype only</em></div>
+      <div class="field">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="6" r="2.6"/><path d="M3 14c0-2.6 2.2-4.4 5-4.4s5 1.8 5 4.4"/></svg>
+        <input id="demoUser" type="text" placeholder="user · e.g. hagar@sawa.dev" value="demo@sawa.dev" />
+      </div>
+      <div class="field">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="10" height="7" rx="1.5"/><path d="M5 7V5a3 3 0 0 1 6 0v2"/></svg>
+        <input id="demoPass" type="password" placeholder="password" value="sawa2026" />
+      </div>
+      <div class="row">
+        <select class="role-pick" id="demoRole">
+          <option value="auto">auto-detect from user</option>
+          <option value="mgr">Store Manager · Hagar (BBW)</option>
+          <option value="mgr-ame">Outlet Manager · Roel (AME)</option>
+          <option value="asst">Asst Mgr · Mariam (H&amp;M)</option>
+          <option value="assoc">Sales Associate · Diana (VS)</option>
+          <option value="vm">Visual Merchandiser · Layla</option>
+        </select>
+        <button class="submit" id="demoSubmit" type="submit">Sign in →</button>
+      </div>
+      <div class="err" id="demoErr">credentials don't match · try demo@sawa.dev / sawa2026</div>
+      <div class="hint">try <b>hagar@sawa.dev</b> · <b>diana@sawa.dev</b> · <b>roel@sawa.dev</b> · <b>mariam@sawa.dev</b> · any pwd works</div>
+    </form>
     <div class="login-tickers">
       <div class="tk"><span class="tk-l">staff</span><span class="tk-v" data-target="1743">0</span></div>
       <div class="tk"><span class="tk-l">brands in scope</span><span class="tk-v" data-target="50">0</span><span class="tk-u">+</span></div>
@@ -2237,7 +2401,7 @@
   <footer class="login-foot">
     <span>© Alshaya Group · live prototype</span>
     <span class="dot"></span>
-    <span>build v5.3 · production</span>
+    <span>build v5.4 · field-review</span>
     <span class="dot"></span>
     <span class="live-dot">session live</span>
   </footer>
@@ -2255,7 +2419,9 @@
       <button class="chip" data-brand="hm"><span class="dot"></span>H&amp;M</button>
       <select class="brand-select" id="brandMore">
         <option value="">more brands…</option>
-        <option value="vs">Victoria's Secret</option>
+        <option value="vs">Victoria's Secret · Dubai Hills</option>
+        <option value="ulta">ULTA Beauty · MoE</option>
+        <option value="primark">Primark · MoE</option>
         <option value="cos">COS</option>
         <option value="ct">Charlotte Tilbury</option>
       </select>
@@ -2330,7 +2496,7 @@
 
           <div class="pad-foot">
             <div class="live">live · auto 60s · entra id</div>
-            <div>v5.3 production</div>
+            <div>v5.4 field-review</div>
             <div id="padFootRefresh">updated 12s ago</div>
           </div>
         </aside>
@@ -2383,7 +2549,7 @@
               <div class="cb chan">
                 <div class="l">Channels live</div>
                 <div class="n"><span id="padChanLive">4</span><span class="u">/ 5</span></div>
-                <div class="f">auto-attributed · 1 offline</div>
+                <div class="f" id="padChanLiveSub">auto-attributed · 1 offline</div>
               </div>
               <div class="cb tx">
                 <div class="l">Transactions</div>
@@ -2473,7 +2639,7 @@
                 <div class="s"><span class="b" id="padOrdersSubBrand">American Eagle</span> · drill any channel</div>
               </div>
               <div class="filters"><div class="grp">
-                <select class="sel"><option>American Eagle</option></select>
+                <select class="sel" id="padOrdersBrandSel"></select>
                 <select class="sel"><option>WTD</option><option>Today</option></select>
               </div></div>
             </div>
@@ -2522,27 +2688,22 @@
             <div class="pad-head">
               <div>
                 <div class="t">Stock.</div>
-                <div class="s">Source · SIOCS · last refresh <span id="padStock2Refresh">14:18</span></div>
+                <div class="s"><span class="b" id="padStockSubBrand">American Eagle</span> · SIOCS · last refresh <span id="padStock2Refresh">14:18</span></div>
               </div>
               <div class="filters"><div class="grp">
-                <select class="sel"><option>American Eagle</option></select>
-                <select class="sel"><option>All categories</option><option>Men's</option><option>Women's</option></select>
+                <select class="sel" id="padStockBrandSel"></select>
+                <select class="sel"><option>All categories</option><option>Top sellers</option><option>Low / OOS</option></select>
               </div></div>
             </div>
             <div class="common-boxes" style="grid-template-columns:repeat(4,1fr); margin-top:16px;">
-              <div class="cb atv"><div class="l">On floor</div><div class="n">2,184</div><div class="f">312 styles</div></div>
-              <div class="cb chan"><div class="l">Backstock</div><div class="n">617</div><div class="f">14 cartons</div></div>
-              <div class="cb tx"><div class="l">Low/OOS</div><div class="n" style="color:var(--neg)">9</div><div class="f">push transfer</div></div>
-              <div class="cb live"><div class="l">Stock-to-sales</div><div class="n">8.2 <span class="u">wks</span></div><div class="f">target 8–10w · <b>on plan</b></div></div>
+              <div class="cb atv"><div class="l">On floor</div><div class="n" id="padStockFloor2">2,184</div><div class="f"><span id="padStockCover2">3 wks · men's denim 69% mix</span></div></div>
+              <div class="cb chan"><div class="l">Backstock</div><div class="n" id="padStockBack2">617</div><div class="f">14 cartons</div></div>
+              <div class="cb tx"><div class="l">Low / OOS</div><div class="n" id="padStockLow2" style="color:var(--neg)">9</div><div class="f">push transfer</div></div>
+              <div class="cb live"><div class="l">Stock-to-sales</div><div class="n"><span id="padStockS2S">8.2</span> <span class="u">wks</span></div><div class="f">target 8–10w · <b>on plan</b></div></div>
             </div>
             <div class="stock-card-ipad">
               <div class="head"><div class="l">Low stock · push to RFID</div><div class="r">tap to reserve</div></div>
-              <div class="stock-list">
-                <div class="row"><div class="nm">AE Slim 360 Stretch · 32×32<small>SKU 1148-330-32-32</small></div><div class="ct">2</div><div class="b low"><i style="width:18%"></i></div><div class="act"><span class="danger">replenish ↗</span></div></div>
-                <div class="row"><div class="nm">Aerie Real Sunnie · 32C<small>SKU 9803-554-32C</small></div><div class="ct">3</div><div class="b low"><i style="width:26%"></i></div><div class="act"><span class="danger">replenish ↗</span></div></div>
-                <div class="row"><div class="nm">AE Crew Logo Tee · M-Black<small>SKU 4421-110-M-BLK</small></div><div class="ct">5</div><div class="b"><i style="width:38%"></i></div><div class="act">monitor</div></div>
-                <div class="row"><div class="nm">AE Curvy Mom Jean · 28×30<small>SKU 3318-301-28-30</small></div><div class="ct">6</div><div class="b"><i style="width:48%"></i></div><div class="act">monitor</div></div>
-              </div>
+              <div class="stock-list" id="padStockList"></div>
             </div>
           </section>
 
@@ -2588,10 +2749,10 @@
               <div class="filters"><div class="grp"><select class="sel"><option>WTD</option><option>Today</option><option>MTD</option></select></div></div>
             </div>
             <div class="common-boxes" style="grid-template-columns:repeat(4,1fr); margin-top:16px;">
-              <div class="cb atv"><div class="l">My ATV</div><div class="n">182<span class="u">aed</span></div><div class="f">vs store 151 · <b>+20%</b></div></div>
-              <div class="cb chan"><div class="l">My saves</div><div class="n">9</div><div class="f">3 fittings · 6 walk-aways</div></div>
-              <div class="cb tx"><div class="l">My tx</div><div class="n">42</div><div class="f">conv 18% · IPC 3.2</div></div>
-              <div class="cb live"><div class="l">My target · WTD</div><div class="n">18k <span class="u">aed</span></div><div class="f"><b>74%</b> pace · <span class="delta-pos">+4%</span></div></div>
+              <div class="cb atv"><div class="l">My ATV</div><div class="n"><span id="padMyATV">182</span><span class="u">aed</span></div><div class="f">vs store <span id="padMyATVvs">151</span> · <b id="padMyATVdelta">+20%</b></div></div>
+              <div class="cb chan"><div class="l">My saves</div><div class="n" id="padMySaves">9</div><div class="f" id="padMySavesSub">3 fittings · 6 walk-aways</div></div>
+              <div class="cb tx"><div class="l">My tx</div><div class="n" id="padMyTx">42</div><div class="f" id="padMyTxSub">conv 18% · IPC 3.2</div></div>
+              <div class="cb live"><div class="l">My target · WTD</div><div class="n"><span id="padMyTarget">18k</span> <span class="u">aed</span></div><div class="f"><b id="padMyPace">74%</b> pace · <span class="delta-pos" id="padMyDelta">+4%</span></div></div>
             </div>
             <div class="strip">
               <div class="pulse-card">
@@ -2604,18 +2765,8 @@
                 </div>
               </div>
               <div class="ai-card">
-                <div class="head"><div class="l">For you</div><div class="r">role-tailored</div></div>
-                <div class="ai-body">
-                  <div class="ai-item">
-                    <div class="h"><span class="role-tag">your day</span><span class="time">live</span></div>
-                    <div class="msg">You're <b>+20%</b> vs store ATV. Push <b>denim + tee</b> attach to close the 1.8 bundle ask.</div>
-                  </div>
-                  <div class="ai-item action">
-                    <div class="h"><span class="role-tag">action</span><span class="time">next 30m</span></div>
-                    <div class="msg">3 walk-aways in fitting · greet <b>Bay 4</b> next.</div>
-                    <button class="cta">Mark addressed</button>
-                  </div>
-                </div>
+                <div class="head"><div class="l">For you · <span class="role-tag" id="padMeAiRole">store mgr</span></div><div class="r">role × brand</div></div>
+                <div class="ai-body" id="padMeAi"></div>
               </div>
             </div>
           </section>
@@ -2660,7 +2811,7 @@
             <div class="alt">SSO only · no password ui · trusted store device</div>
             <div class="secure">
               <span class="l">session protected</span>
-              <span>entra id · v5.3</span>
+              <span>entra id · v5.4</span>
             </div>
           </section>
 
@@ -2716,6 +2867,8 @@
                 <select id="phBrandMore">
                   <option value="">more…</option>
                   <option value="vs">VS</option>
+                  <option value="ulta">ULTA</option>
+                  <option value="primark">Primark</option>
                   <option value="cos">COS</option>
                   <option value="ct">CT</option>
                 </select>
@@ -2797,13 +2950,13 @@
                 <div class="mono">S</div>
                 <div class="txt">
                   <div class="t">Orders</div>
-                  <div class="s"><span class="b" id="phOrdersBrand">American Eagle</span> · 5 channels · 4 live</div>
+                  <div class="s"><span class="b" id="phOrdersBrand">American Eagle</span> · <span id="phOrdersChanSub">5 channels · 4 live</span></div>
                 </div>
               </div>
               <div class="r"><div class="ph-icon"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="7" r="4"/><path d="M10.2 10.2L14 14"/></svg></div></div>
             </div>
             <div class="ph-view-row">
-              <select class="sel"><option>American Eagle</option></select>
+              <select class="sel" id="phOrdersBrandSel"></select>
               <select class="sel"><option>WTD</option><option>Today</option></select>
             </div>
 
@@ -2824,45 +2977,26 @@
                 <div class="mono">S</div>
                 <div class="txt">
                   <div class="t">Stock</div>
-                  <div class="s">SIOCS · refresh <span id="phStockRefresh">14:18</span></div>
+                  <div class="s"><span class="b" id="phStockBrandHead">American Eagle</span> · SIOCS · refresh <span id="phStockRefresh">14:18</span></div>
                 </div>
               </div>
               <div class="r"><div class="ph-icon"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4h12M2 8h12M2 12h12"/></svg></div></div>
             </div>
 
             <div class="ph-view-row">
-              <select class="sel"><option>American Eagle</option></select>
-              <select class="sel"><option>All categories</option></select>
+              <select class="sel" id="phStockBrandSel"></select>
+              <select class="sel"><option>All categories</option><option>Top sellers</option><option>Low / OOS</option></select>
             </div>
 
             <div class="ph-stock-sum">
-              <div class="c"><div class="l">On floor</div><div class="n">2,184</div><div class="f">312 styles</div></div>
-              <div class="c"><div class="l">Backstock</div><div class="n">617</div><div class="f">14 cartons</div></div>
-              <div class="c warn" style="grid-column:1/-1"><div class="l">Low / OOS risk</div><div class="n">9 styles</div><div class="f">push transfer · tap to reserve</div></div>
+              <div class="c"><div class="l">On floor</div><div class="n" id="phStockFloor">2,184</div><div class="f" id="phStockCover">312 styles</div></div>
+              <div class="c"><div class="l">Backstock</div><div class="n" id="phStockBack">617</div><div class="f">14 cartons</div></div>
+              <div class="c warn" style="grid-column:1/-1"><div class="l">Low / OOS risk</div><div class="n"><span id="phStockLow">9</span> styles</div><div class="f">push transfer · tap to reserve</div></div>
             </div>
 
             <div class="sku-list">
               <div class="head"><span>Low stock</span><span>floor count</span></div>
-              <div class="sku-row low">
-                <div class="r1"><div class="nm">AE Slim 360 · 32×32</div><div class="ct">2</div></div>
-                <div class="meta">SKU 1148-330-32-32 · <span class="danger">replenish</span></div>
-                <div class="b"><i style="width:18%"></i></div>
-              </div>
-              <div class="sku-row low">
-                <div class="r1"><div class="nm">Aerie Real Sunnie · 32C</div><div class="ct">3</div></div>
-                <div class="meta">SKU 9803-554-32C · <span class="danger">replenish</span></div>
-                <div class="b"><i style="width:26%"></i></div>
-              </div>
-              <div class="sku-row">
-                <div class="r1"><div class="nm">AE Crew Logo Tee · M</div><div class="ct">5</div></div>
-                <div class="meta">SKU 4421-110-M-BLK · monitor</div>
-                <div class="b"><i style="width:38%"></i></div>
-              </div>
-              <div class="sku-row">
-                <div class="r1"><div class="nm">AE Curvy Mom · 28×30</div><div class="ct">6</div></div>
-                <div class="meta">SKU 3318-301-28-30 · monitor</div>
-                <div class="b"><i style="width:48%"></i></div>
-              </div>
+              <div id="phStockList"></div>
             </div>
           </section>
 
@@ -2914,19 +3048,27 @@
                 </div>
               </div>
               <div class="me-grid">
-                <div class="c"><div class="l">My ATV</div><div class="n" id="phMeATV">182</div><div class="f">vs store 151 · +20%</div></div>
-                <div class="c"><div class="l">My saves</div><div class="n">9</div><div class="f">3 fittings · 6 walk-ups</div></div>
-                <div class="c"><div class="l">My tx</div><div class="n">42</div><div class="f">conv 18% · IPC 3.2</div></div>
-                <div class="c"><div class="l">My target</div><div class="n">18k</div><div class="f">74% pace · +4%</div></div>
+                <div class="c"><div class="l">My ATV</div><div class="n" id="phMeATV">182</div><div class="f"><span id="phMeATVvs">vs store 151 · +20%</span></div></div>
+                <div class="c"><div class="l">My saves</div><div class="n" id="phMySaves">9</div><div class="f" id="phMySavesSub">3 fittings · 6 walk-ups</div></div>
+                <div class="c"><div class="l">My tx</div><div class="n" id="phMyTx">42</div><div class="f" id="phMyTxSub">conv 18% · IPC 3.2</div></div>
+                <div class="c"><div class="l">My target</div><div class="n" id="phMyTarget">18k</div><div class="f"><span id="phMyPaceSub">74% pace · +4%</span></div></div>
               </div>
+            </div>
+
+            <div class="ph-ai">
+              <div class="h">
+                <span>For you · <span class="role-tag" id="phMeAiRole">store mgr</span></span>
+                <span>role × brand</span>
+              </div>
+              <div id="phMeAi"></div>
             </div>
 
             <div class="me-card">
               <div class="me-list">
                 <div class="row"><span class="l">Sprint window</span><span class="v">02–12 Jun 2026</span></div>
                 <div class="row"><span class="l">Last shift</span><span class="v">Tue 22:14</span></div>
-                <div class="row"><span class="l">Auth</span><span class="v">Microsoft Entra ID</span></div>
-                <div class="row"><span class="l">App version</span><span class="v">v5.3 · live</span></div>
+                <div class="row"><span class="l">Auth</span><span class="v" id="phMeAuth">Microsoft Entra ID</span></div>
+                <div class="row"><span class="l">App version</span><span class="v">v5.4 · field-review</span></div>
                 <div class="row"><span class="l">Device</span><span class="v">Store iPhone 14 · trusted</span></div>
               </div>
             </div>
@@ -2966,7 +3108,7 @@
 
   <div class="cap">
     <span class="cap-dot"></span>
-    <span>live · v5.3 · 6 brands · 4 roles · click anywhere to drill</span>
+    <span>live · v5.4 · 8 brands · 4 roles · brand-keyed stock + me · vm access tightened</span>
   </div>
 </div>
 
@@ -3033,7 +3175,7 @@
       bp: [
         { v: '58%', l: 'Signature mix' },
         { v: '42%', l: '3-for-2 attach' },
-        { v: '22',  l: 'BBW loyalty signups' }
+        { v: 'AED 17k',  l: 'Aura linkage' }
       ],
       bpTag: 'BBW',
       channels: [
@@ -3113,13 +3255,13 @@
     },
     vs: {
       key: 'vs', name: "Victoria's Secret", code: 'VS',
-      store: 'Mall of Emirates · L2 · VS-3320', storeShort: 'MoE · L2',
+      store: 'Dubai Hills · L2 · VS-3320', storeShort: 'Dubai Hills · L2',
       rev: '124,910', target: '140,200', delta: '−10.9%', trend: 'neg',
       pace: 89, forecast: '−AED 1,620',
       atv: '218', ipc: '2.4', conv: '16', convFF: '3,580 ff',
       tx: '573', chanLive: '4',
       bp: [
-        { v: '48%', l: 'Bra penetration' },
+        { v: '48%', l: 'BPT · bras / txn' },
         { v: '34%', l: 'PINK mix' },
         { v: '8.4', l: 'fitting → buy' }
       ],
@@ -3143,7 +3285,7 @@
       ],
       ai: {
         mgr: [
-          { lab:'priority', msg:'Bra penetration <b>48%</b> · target 52%. Fitting room load capacity available.', time:'live' },
+          { lab:'priority', msg:'BPT <b>48%</b> · target 52%. Fitting-room load capacity available.', time:'live' },
           { lab:'attach', msg:'PINK + mist attach lifting basket <b>+12%</b>.', time:'17:30' }
         ],
         asst: [{ lab:'floor', msg:'Priya hot at fitting · move <b>Layla</b> to support before close.', time:'live' }],
@@ -3223,6 +3365,251 @@
         assoc: [{ lab:'your day', msg:'Soft Glam attach <b>54%</b> — top of team. Try Magic Cream sample close.', time:'live' }],
         vm: [{ lab:'floor', msg:'Restage Pillow Talk row · 4 shades broken on top tier.', time:'live' }]
       }
+    }
+  };
+
+  // ─────────── Brand-keyed Stock + "For you" Me-tab content (review fixes) ───────────
+  const brandExt = {
+    ame: {
+      stock: {
+        floor:'2,184', back:'617', low:9, s2s:'8.2',
+        cover:'3 wks · men\'s denim 69% mix',
+        sku: [
+          { nm:'AE Slim 360 Stretch · 32×32', sku:'1148-330-32-32', ct:2, fill:18, sev:'low' },
+          { nm:'Aerie Real Sunnie · 32C',     sku:'9803-554-32C',   ct:3, fill:26, sev:'low' },
+          { nm:'AE Crew Logo Tee · M-Black',  sku:'4421-110-M-BLK', ct:5, fill:38, sev:'mid' },
+          { nm:'AE Curvy Mom Jean · 28×30',   sku:'3318-301-28-30', ct:6, fill:48, sev:'mid' }
+        ]
+      },
+      meAi: {
+        mgr:   [{ lab:'priority', msg:'Outlet pace <b>70%</b> · push <b>men\'s denim</b> through closing.', time:'live' },
+                { lab:'action',   msg:'3 men\'s slim sizes pending RFID receive — Sun delivery in queue.', time:'next 30m', cta:'Reserve' }],
+        asst:  [{ lab:'team',     msg:'Move <b>Diana</b> to Bay 2 by <b>18:30</b> — fitting load drops after 18:00.', time:'live' },
+                { lab:'pulse',    msg:'Bay 4 walk-aways <b>+3</b> in last 30m — assign roving greeter.', time:'17:42', cta:'Assign' }],
+        assoc: [{ lab:'your day', msg:'You\'re <b>+20%</b> vs store ATV · push <b>denim + tee</b> attach.', time:'live' },
+                { lab:'save',     msg:'1 walk-away pending in fitting · greet <b>Bay 2</b>.', time:'17:50', cta:'Mark addressed' }],
+        vm:    [{ lab:'floor',    msg:'Bay 4 denim wall down to <b>8 sizes</b> — pull from back.', time:'live' },
+                { lab:'window',   msg:'Refresh window 2 with denim + olive-tee combo (best mix today).', time:'17:30', cta:'Log task' }]
+      }
+    },
+    bbw: {
+      stock: {
+        floor:'1,962', back:'548', low:6, s2s:'5.4',
+        cover:'2.8 wks · Signature 58% mix',
+        sku: [
+          { nm:'Strawberry Pound Cake · body cream 226g', sku:'BBW-026-SPC-226', ct:4, fill:22, sev:'low' },
+          { nm:'Champagne Toast · 3-wick candle',          sku:'BBW-310-CHT-3W',  ct:5, fill:28, sev:'low' },
+          { nm:'A Thousand Wishes · PocketBac',            sku:'BBW-005-ATW-29',  ct:12,fill:55, sev:'mid' },
+          { nm:'Stress Relief · aromatherapy mist 75ml',   sku:'BBW-712-STR-75',  ct:8, fill:42, sev:'mid' }
+        ]
+      },
+      meAi: {
+        mgr:   [{ lab:'priority',  msg:'Pace <b>89%</b> · close to plan · push <b>3-for-2</b> through closing.', time:'live' },
+                { lab:'attach',    msg:'Aura linkage at <b>AED 17k</b> WTD — stretch Signature mix to <b>62%</b>.', time:'17:30', cta:'Brief team' }],
+        asst:  [{ lab:'team',      msg:'<b>Lina</b> hot at fragrance bar · reposition <b>Mariam</b> to candle-wall refill at 18:00.', time:'live' },
+                { lab:'action',    msg:'Gift packaging queue <b>4</b> · <b>Aisha</b> roll forward to 18:15.', time:'18:02', cta:'Notify' }],
+        assoc: [{ lab:'your day',  msg:'Top in Signature attach at <b>64%</b> · cross-sell <b>hand cream</b> every 3rd customer.', time:'live' },
+                { lab:'save',      msg:'2 testers returned at fragrance bar — top up <b>Champagne Toast</b>.', time:'17:48', cta:'Top up' }],
+        vm:    [{ lab:'floor',     msg:'Move <b>holiday signature</b> mannequin to entry · traffic up <b>+22%</b> 17:00–19:00.', time:'live' },
+                { lab:'window',    msg:'Candle wall row 2 · 3-wick gap — restock 4 SKUs.', time:'17:20', cta:'Log task' }]
+      }
+    },
+    hm: {
+      stock: {
+        floor:'4,820', back:'1,140', low:12, s2s:'6.1',
+        cover:'1.9 wks · denim + SCO bag essentials',
+        sku: [
+          { nm:'Mom Loose Jeans · W26',          sku:'HM-0913-DEN-26',  ct:3,  fill:18, sev:'low' },
+          { nm:'SCO bag · medium · paper',        sku:'HM-9912-SCO-MED', ct:0,  fill:0,  sev:'low' },
+          { nm:'Basic Crew Tee · L · Black',      sku:'HM-0210-TEE-L-K', ct:6,  fill:36, sev:'mid' },
+          { nm:'Kid Polo Set · 5–6Y',             sku:'HM-4421-KID-56',  ct:9,  fill:52, sev:'mid' }
+        ]
+      },
+      meAi: {
+        mgr:   [{ lab:'priority',  msg:'<b>SCO mix 34%</b> — highest channel share · capacity ok to push to <b>38%</b>.', time:'live' },
+                { lab:'attach',    msg:'Denim attach <b>+18%</b> · pair with basics-tee promo through close.', time:'17:14', cta:'Brief team' }],
+        asst:  [{ lab:'team',      msg:'Move <b>Tarek</b> to SCO support · throughput <b>+22%</b> per assist.', time:'live' },
+                { lab:'pulse',     msg:'H&M Member sign-ups <b>740</b> · push at till 1 closing hour.', time:'18:02', cta:'Brief till 1' }],
+        assoc: [{ lab:'your day',  msg:'Top in denim today — <b>+18%</b> attach · carry forward to closing.', time:'live' },
+                { lab:'save',      msg:'Kidswear walk-up <b>+6</b> in last 30m · greet at front.', time:'17:48', cta:'Greet' }],
+        vm:    [{ lab:'floor',     msg:'<b>Mom jeans 26/28</b> broken in last hour — restock.', time:'live' },
+                { lab:'window',    msg:'Window 1 basics-tee swap to charcoal + white duo.', time:'17:30', cta:'Log task' }]
+      }
+    },
+    vs: {
+      stock: {
+        floor:'1,420', back:'382', low:7, s2s:'7.8',
+        cover:'2.4 wks · bra core 48% mix',
+        sku: [
+          { nm:'Body by Victoria · 34D',                 sku:'VS-3340-BBV-34D',  ct:2, fill:14, sev:'low' },
+          { nm:'PINK Wear Everywhere bra · M',            sku:'VS-9120-PWE-M',    ct:4, fill:28, sev:'low' },
+          { nm:'Bombshell · Eau de Parfum 100ml',         sku:'VS-7720-BMB-100',  ct:7, fill:42, sev:'mid' },
+          { nm:'Cotton Cheekster · S',                    sku:'VS-2210-CTC-S',    ct:11,fill:58, sev:'mid' }
+        ]
+      },
+      meAi: {
+        mgr:   [{ lab:'priority',  msg:'<b>BPT 48%</b> · target <b>52%</b> · fitting capacity available.', time:'live' },
+                { lab:'attach',    msg:'PINK + Bombshell mist attach lifting basket <b>+12%</b>.', time:'17:30', cta:'Brief team' }],
+        asst:  [{ lab:'team',      msg:'<b>Priya</b> hot at fitting · move <b>Layla</b> to support before close.', time:'live' },
+                { lab:'pulse',     msg:'Fitting rooms <b>8 free</b> · 12-min avg dwell · push capture.', time:'17:55', cta:'Assign' }],
+        assoc: [{ lab:'your day',  msg:'Fitting → buy <b>8.4</b> · keep matching <b>balconette pairs</b>.', time:'live' },
+                { lab:'save',      msg:'1 walk-away in fitting room <b>12</b> · greet now.', time:'17:50', cta:'Mark addressed' }],
+        vm:    [{ lab:'floor',     msg:'Refresh <b>Body by Victoria</b> table · 34D selling out at top.', time:'live' },
+                { lab:'window',    msg:'PINK pyramid row 1 — refresh Bombshell mist front.', time:'17:30', cta:'Log task' }]
+      }
+    },
+    cos: {
+      stock: {
+        floor:'1,210', back:'298', low:5, s2s:'9.4',
+        cover:'3.2 wks · wool & linen lead',
+        sku: [
+          { nm:'Wool-blend overcoat · 38',           sku:'COS-2102-WOC-38',  ct:1, fill:12, sev:'low' },
+          { nm:'Linen wide-leg trousers · 32',       sku:'COS-3308-LWT-32',  ct:3, fill:24, sev:'low' },
+          { nm:'Cashmere crew · M · Stone',          sku:'COS-5511-CSC-M-S', ct:5, fill:38, sev:'mid' },
+          { nm:'Leather shopper · medium · black',   sku:'COS-9020-LSM-BLK', ct:8, fill:52, sev:'mid' }
+        ]
+      },
+      meAi: {
+        mgr:   [{ lab:'priority',  msg:'Highest ATV across portfolio at <b>AED 412</b> · considered basket strong.', time:'live' },
+                { lab:'attach',    msg:'<b>4.6 items tried</b> per fit · maintain wool + linen pairing.', time:'17:30', cta:'Brief team' }],
+        asst:  [{ lab:'team',      msg:'Tailoring queue <b>3 garments</b> · 12-min avg · ok till 19:00.', time:'live' },
+                { lab:'pulse',     msg:'Wear lounge bench full at 18:00 · stagger fittings.', time:'17:55', cta:'Stagger' }],
+        assoc: [{ lab:'your day',  msg:'<b>4.6 items tried</b> per fit · keep wool + linen combinations.', time:'live' },
+                { lab:'save',      msg:'Customer requested tailoring · log on iPad before walk-out.', time:'17:50', cta:'Log' }],
+        vm:    [{ lab:'floor',     msg:'Refresh window with <b>oversize wool</b> coat — top seller today.', time:'live' },
+                { lab:'window',    msg:'Tailoring signage row 3 faded — replace.', time:'17:30', cta:'Log task' }]
+      }
+    },
+    ct: {
+      stock: {
+        floor:'804', back:'212', low:4, s2s:'7.1',
+        cover:'2.6 wks · Pillow Talk + Magic Cream lead',
+        sku: [
+          { nm:'Pillow Talk Original · lipstick',           sku:'CT-1102-PTO-NUD',  ct:4, fill:18, sev:'low' },
+          { nm:'Magic Cream · 50ml',                          sku:'CT-3320-MC-50',    ct:3, fill:22, sev:'low' },
+          { nm:'Hollywood Flawless Filter · shade 3',         sku:'CT-2210-HFF-03',   ct:6, fill:38, sev:'mid' },
+          { nm:'Bigger Brighter Eyes · Hypnotising Brown',    sku:'CT-4411-BBE-HB',   ct:10,fill:52, sev:'mid' }
+        ]
+      },
+      meAi: {
+        mgr:   [{ lab:'priority',  msg:'Pillow Talk demos converting <b>63%</b> · push Magic Cream upsell.', time:'live' },
+                { lab:'attach',    msg:'Soft Glam attach <b>54%</b> — sample close with Magic Cream.', time:'17:30', cta:'Brief team' }],
+        asst:  [{ lab:'team',      msg:'Beauty bar booked till <b>19:30</b> · extend by 30m if walk-ups continue.', time:'live' },
+                { lab:'pulse',     msg:'Demo queue <b>4</b> · <b>Amal</b> takes next walk-up.', time:'17:55', cta:'Assign' }],
+        assoc: [{ lab:'your day',  msg:'<b>Soft Glam</b> attach <b>54%</b> — top of team · try Magic Cream sample close.', time:'live' },
+                { lab:'save',      msg:'Demo no-show 18:15 · slot freed — pull next walk-up.', time:'17:50', cta:'Fill slot' }],
+        vm:    [{ lab:'floor',     msg:'Restage <b>Pillow Talk</b> row · 4 shades broken top tier.', time:'live' },
+                { lab:'window',    msg:'Magic Cream end-cap empty — restock 3 SKUs.', time:'17:30', cta:'Log task' }]
+      }
+    }
+  };
+  Object.entries(brandExt).forEach(([k,v]) => Object.assign(brands[k], v));
+
+  // Two extra brands seen in the deck (Primark · MOE, ULTA · MOE)
+  brands.primark = {
+    key:'primark', name:'Primark', code:'PRIMARK',
+    store:'Mall of Emirates · L1 · PMK-3204', storeShort:'MoE · L1',
+    rev:'248,610', target:'264,000', delta:'−5.8%', trend:'neg',
+    pace:94, forecast:'+AED 1,820',
+    atv:'62', ipc:'4.2', conv:'19', convFF:'18,940 ff',
+    tx:'4,010', chanLive:'4',
+    bp:[{ v:'42%', l:'kidswear mix' }, { v:'3.1', l:'items per basket' }, { v:'AED 18k', l:'pyjama capsule WTD' }],
+    bpTag:'PRIMARK',
+    channels:[
+      { cls:'p', code:'P', name:'SAWA POS',   tx:140,mix:'52%', val:'12,140' },
+      { cls:'m', code:'M', name:'MPOS',       tx:42, mix:'14%', val:'3,210' },
+      { cls:'h', code:'H', name:'Hadreen',    tx:6,  mix:'3%',  val:'520' },
+      { cls:'a', code:'A', name:'Asst. Ecom', tx:22, mix:'31%', val:'7,210', note:'incl. Endless Aisle' },
+      { cls:'s', code:'S', name:'SCO',        off:true, val:'—', note:'not deployed' }
+    ],
+    total:'23,080', orderTx:'210',
+    hourly:[6,9,13,18,22,26,29,33,31,26,21,16,9],
+    best:'Cosy fleece pyjama set', bestSub:'182 units sold · 22% mix',
+    teamSub:'7 on shift · 1 break',
+    team:[
+      { in:'R', name:'Rashed',  rl:'kidswear',   val:'7,940 aed', tag:'+12% attach' },
+      { in:'N', name:'Nour',    rl:'till 4',     val:'5,610 aed', tag:'82 tx' },
+      { in:'S', name:'Salma',   rl:'pyjamas',    val:'4,720 aed', tag:'capsule lead' },
+      { in:'O', name:'Omar',    rl:'till 1',     val:'3,180 aed', tag:'48 tx' }
+    ],
+    ai:{
+      mgr:[{ lab:'priority', msg:'Pace <b>94%</b> · push closing <b>kidswear capsule</b> through 19:30.', time:'live' }],
+      asst:[{ lab:'team',    msg:'Move <b>Rashed</b> to till 4 · queue 8-deep.', time:'live' }],
+      assoc:[{ lab:'your day', msg:'Top in kidswear today · maintain till close.', time:'live' }],
+      vm:[{ lab:'floor', msg:'<b>Pyjama wall</b> down to 12 sizes · replenish row 2.', time:'live' }]
+    },
+    stock:{
+      floor:'8,420', back:'2,140', low:14, s2s:'4.2',
+      cover:'1.4 wks · pyjama capsule lead',
+      sku:[
+        { nm:'Cosy fleece pyjama set · M',     sku:'PMK-0904-PJS-M',  ct:9, fill:32, sev:'mid' },
+        { nm:'Disney character tee · 7–8Y',     sku:'PMK-1210-DCT-78', ct:12,fill:42, sev:'mid' },
+        { nm:'Active leggings · L · black',     sku:'PMK-3320-ACT-L',  ct:14,fill:55, sev:'mid' },
+        { nm:'Jute tote bag · large',           sku:'PMK-5520-JTB-L',  ct:18,fill:62, sev:'mid' }
+      ]
+    },
+    meAi:{
+      mgr:[{ lab:'priority', msg:'Pace <b>94%</b> · push closing <b>kidswear capsule</b>.', time:'live' },
+           { lab:'attach', msg:'ATV pulled by <b>3-pack tees</b> — keep table front.', time:'17:30', cta:'Brief team' }],
+      asst:[{ lab:'team', msg:'Move <b>Rashed</b> to till 4 · queue 8-deep.', time:'live' },
+            { lab:'pulse', msg:'Pyjama walk-ups <b>+4</b> in last 30m.', time:'17:55', cta:'Greet' }],
+      assoc:[{ lab:'your day', msg:'Top in <b>kidswear</b> today · maintain till close.', time:'live' },
+             { lab:'save', msg:'1 customer holding 6 items · offer basket.', time:'17:50', cta:'Offer basket' }],
+      vm:[{ lab:'floor', msg:'<b>Pyjama wall</b> row 2 down to 12 sizes — replenish.', time:'live' },
+          { lab:'window', msg:'Tote bag table needs reset before close.', time:'17:30', cta:'Log task' }]
+    }
+  };
+  brands.ulta = {
+    key:'ulta', name:'ULTA Beauty', code:'ULTA',
+    store:'Mall of Emirates · GF · ULT-1108', storeShort:'MoE · GF',
+    rev:'112,420', target:'128,000', delta:'−12.2%', trend:'neg',
+    pace:88, forecast:'−AED 1,820',
+    atv:'264', ipc:'2.8', conv:'18', convFF:'2,940 ff',
+    tx:'426', chanLive:'4',
+    bp:[{ v:'78%', l:'service utilisation' }, { v:'AED 22k', l:'brand-zone basket' }, { v:'42%', l:'beauty-advisor close' }],
+    bpTag:'ULTA',
+    channels:[
+      { cls:'p', code:'P', name:'SAWA POS',   tx:48, mix:'58%', val:'9,420' },
+      { cls:'m', code:'M', name:'MPOS',       tx:18, mix:'22%', val:'3,180' },
+      { cls:'h', code:'H', name:'Hadreen',    tx:6,  mix:'6%',  val:'920' },
+      { cls:'a', code:'A', name:'Asst. Ecom', tx:9,  mix:'14%', val:'2,210', note:'incl. Endless Aisle' },
+      { cls:'s', code:'S', name:'SCO',        off:true, val:'—', note:'not deployed' }
+    ],
+    total:'15,730', orderTx:'81',
+    hourly:[2,4,6,9,12,15,18,20,19,16,12,8,4],
+    best:'Lancôme La vie est belle · 30ml', bestSub:'26 units sold · 14% mix',
+    teamSub:'5 on shift · 1 break',
+    team:[
+      { in:'D', name:'Dalia',  rl:'beauty advisor',  val:'12,420 aed', tag:'soft glam 54%' },
+      { in:'F', name:'Farah',  rl:'fragrance',       val:'7,610 aed',  tag:'demos 38' },
+      { in:'L', name:'Layan',  rl:'till',            val:'5,420 aed',  tag:'42 tx' },
+      { in:'M', name:'Mira',   rl:'service bar',     val:'3,180 aed',  tag:'78% util' }
+    ],
+    ai:{
+      mgr:[{ lab:'priority', msg:'Service utilisation <b>78%</b> · push brow / lash add-ons closing 19:30.', time:'live' }],
+      asst:[{ lab:'team', msg:'Service queue <b>2</b> · 18-min wait — offer voucher.', time:'live' }],
+      assoc:[{ lab:'your day', msg:'Top in beauty-advisor sales today · keep gentle close.', time:'live' }],
+      vm:[{ lab:'floor', msg:'<b>MAC end-cap</b> restock · 4 shades broken.', time:'live' }]
+    },
+    stock:{
+      floor:'1,640', back:'412', low:6, s2s:'8.2',
+      cover:'2.8 wks · service skus lead',
+      sku:[
+        { nm:'Lancôme La vie est belle · 30ml',        sku:'ULT-7720-LVB-30',  ct:2, fill:16, sev:'low' },
+        { nm:'MAC Velvet Teddy · lipstick',             sku:'ULT-1102-VT-LIP',  ct:4, fill:24, sev:'low' },
+        { nm:'Drunk Elephant C-Firma Day Serum',        sku:'ULT-3320-DE-CFS',  ct:6, fill:38, sev:'mid' },
+        { nm:'Ulta brush set · 5-piece',                 sku:'ULT-9020-UBS-05',  ct:9, fill:52, sev:'mid' }
+      ]
+    },
+    meAi:{
+      mgr:[{ lab:'priority', msg:'Service utilisation <b>78%</b> · push <b>brow / lash</b> add-ons.', time:'live' },
+           { lab:'attach', msg:'Brand zone <b>Lancôme</b> +12% basket.', time:'17:30', cta:'Brief team' }],
+      asst:[{ lab:'team', msg:'Service queue <b>2</b> · 18-min wait — offer voucher.', time:'live' },
+            { lab:'pulse', msg:'Drunk Elephant zone walk-ups <b>+5</b>.', time:'17:55', cta:'Greet' }],
+      assoc:[{ lab:'your day', msg:'Top in beauty-advisor sales today · keep gentle close.', time:'live' },
+             { lab:'save', msg:'1 customer holding <b>AED 180</b> basket · upsell brush set.', time:'17:50', cta:'Upsell' }],
+      vm:[{ lab:'floor', msg:'<b>MAC end-cap</b> restock · 4 shades broken.', time:'live' },
+          { lab:'window', msg:'Drunk Elephant corner signage peeling — replace.', time:'17:30', cta:'Log task' }]
     }
   };
 
@@ -3396,24 +3783,90 @@
   function deltaClassPos(t) { return t === 'pos' ? 'delta-pos' : 'delta-neg'; }
   function trendClassUp(t) { return t === 'pos' ? 'up' : ''; }
 
+  // ── Persona name (brand × role aware) ───────────────────────────
+  function personaName(roleCode, brandKey) {
+    const map = {
+      mgr:   { ame:'Roel A.',       bbw:'Hagar M.',      hm:'Sara Al-Mansour', vs:'Sara Al-Mansour', cos:'Sara Al-Mansour', ct:'Sara Al-Mansour', primark:'Khalid F.', ulta:'Reem N.' },
+      asst:  { ame:'Mariam H.',     bbw:'Aisha R.',      hm:'Mariam H.',       vs:'Nadia K.',        cos:'Iman F.',         ct:'Layan A.',         primark:'Salma N.',  ulta:'Farah B.' },
+      assoc: { ame:'Nejat O.',      bbw:'Lina A.',       hm:'Fatima T.',       vs:'Diana K.',        cos:'Karim L.',        ct:'Amal R.',          primark:'Rashed S.', ulta:'Dalia M.' },
+      vm:    { ame:'Layla S.',      bbw:'Layla S.',      hm:'Layla S.',         vs:'Layla S.',        cos:'Layla S.',        ct:'Layla S.',         primark:'Layla S.',  ulta:'Layla S.' }
+    };
+    return (map[roleCode] && map[roleCode][brandKey]) || 'Sara Al-Mansour';
+  }
+  function personaInitial(name) {
+    return (name || 'S').trim()[0].toUpperCase();
+  }
+
+  // ── Brand-keyed stock SKU list (fix · review critical #1) ─────
+  function renderPadStock(targetId, sku) {
+    const w = document.getElementById(targetId);
+    if (!w) return;
+    if (!sku || !sku.length) {
+      w.innerHTML = `<div class="row" style="opacity:.6"><div class="nm">SKU table for this brand will land next sprint.<small>placeholder · brand-keyed data pending RFID + SIOCS wiring</small></div><div class="ct">—</div><div class="b"><i style="width:8%"></i></div><div class="act">monitor</div></div>`;
+      return;
+    }
+    w.innerHTML = sku.map(s => {
+      const sev = s.sev === 'low' ? 'low' : '';
+      const act = s.sev === 'low'
+        ? '<span class="danger">replenish ↗</span>'
+        : 'monitor';
+      return `<div class="row"><div class="nm">${s.nm}<small>SKU ${s.sku}</small></div><div class="ct">${s.ct}</div><div class="b ${sev}"><i style="width:${s.fill}%"></i></div><div class="act">${act}</div></div>`;
+    }).join('');
+  }
+  function renderPhStock(targetId, sku) {
+    const w = document.getElementById(targetId);
+    if (!w) return;
+    if (!sku || !sku.length) {
+      w.innerHTML = `<div class="sku-row" style="opacity:.6"><div class="r1"><div class="nm">SKU table arriving next sprint</div><div class="ct">—</div></div><div class="meta">brand-keyed SIOCS feed pending</div><div class="b"><i style="width:8%"></i></div></div>`;
+      return;
+    }
+    w.innerHTML = sku.map(s => {
+      const low = s.sev === 'low' ? ' low' : '';
+      const action = s.sev === 'low'
+        ? `<span class="danger">replenish</span>`
+        : `monitor`;
+      return `<div class="sku-row${low}"><div class="r1"><div class="nm">${s.nm}</div><div class="ct">${s.ct}</div></div><div class="meta">SKU ${s.sku} · ${action}</div><div class="b"><i style="width:${s.fill}%"></i></div></div>`;
+    }).join('');
+  }
+
+  // ── Channels-live count tile (fix · review critical #3) ───────
+  function channelsLiveSummary(channels) {
+    const total = channels.length;
+    const live  = channels.filter(c => !c.off).length;
+    const off   = total - live;
+    return { total, live, off,
+      sub: off === 0 ? 'auto-attributed · all live' : `auto-attributed · ${off} offline` };
+  }
+
+  // ── Populate brand selects across views (fix · review high #6) ─
+  function paintBrandSelect(id, currentKey) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.innerHTML = Object.values(brands)
+      .map(x => `<option ${x.key===currentKey?'selected':''} value="${x.key}">${x.name}</option>`)
+      .join('');
+  }
+
   // ───────────────────── MASTER RENDER ─────────────────────
   function render() {
     const b = brands[state.brand];
     const r = roles[state.role];
+    const persona = personaName(r.code, b.key);
+    const ch = channelsLiveSummary(b.channels);
 
     // root brand attr (drives CSS tint)
     document.getElementById('stage').setAttribute('data-brand', b.key);
     document.body.classList.toggle('no-edit', !r.edit);
+    // Tightened VM access (fix · review high #8)
+    document.body.classList.toggle('role-vm', r.code === 'vm');
 
     // header chips active state
     $$('#brandChips .chip').forEach(c => c.classList.toggle('active', c.dataset.brand === b.key));
     $$('.ph-chips .ph-chip').forEach(c => c.classList.toggle('active', c.dataset.brand === b.key));
     $$('#roleBar .role-pill').forEach(c => c.classList.toggle('active', c.dataset.role === r.code));
 
-    // iPad sidebar user info
-    $('#padUserName').textContent = r.greet === 'Sara' ? 'Sara Al-Mansour' :
-                                    r.greet === 'Diana' ? 'Diana K.' :
-                                    r.greet === 'Layla' ? 'Layla S.' : 'Mariam H.';
+    // iPad sidebar user info (persona is now brand × role aware)
+    $('#padUserName').textContent = persona;
     $('#padUserRole').textContent = `${r.short} · iPad`;
     $('#padUserBrand').textContent = b.name;
 
@@ -3421,6 +3874,7 @@
     $('#padSubBrand').textContent = b.name;
     $('#padStore').textContent = b.store;
     $('#padOrdersSubBrand').textContent = b.name;
+    const padStockSub = $('#padStockSubBrand'); if (padStockSub) padStockSub.textContent = b.name;
 
     // iPad common boxes
     $('#padRev').textContent = b.rev;
@@ -3430,7 +3884,9 @@
     $('#padPace').textContent = b.pace + '%';
     $('#padProgress').style.width = b.pace + '%';
     $('#padATV').textContent = b.atv;
-    $('#padChanLive').textContent = b.chanLive;
+    // Channels-live tile is now computed (fix · review critical #3)
+    $('#padChanLive').textContent = String(ch.live);
+    const chSub = $('#padChanLiveSub'); if (chSub) chSub.textContent = ch.sub;
     $('#padTx').textContent = b.tx;
     $('#padViewLabel').textContent = state.view;
 
@@ -3440,9 +3896,23 @@
     $('#padBp2Val').textContent = b.bp[1].v; $('#padBp2Lbl').textContent = b.bp[1].l;
     $('#padBp3Val').textContent = b.bp[2].v; $('#padBp3Lbl').textContent = b.bp[2].l;
 
-    // best/stock
+    // best/stock (Today summary tile)
     $('#padStockBest').textContent = b.best;
     $('#padStockBestSub').textContent = b.bestSub;
+
+    // iPad Stock tab — fully brand-keyed (fix · review critical #1)
+    if (b.stock) {
+      const s = b.stock;
+      const setText = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+      setText('padStockFloor2', s.floor);
+      setText('padStockBack2',  s.back);
+      setText('padStockLow2',   s.low);
+      setText('padStockS2S',    s.s2s);
+      setText('padStockCover2', s.cover);
+      renderPadStock('padStockList', s.sku);
+    } else {
+      renderPadStock('padStockList', null);
+    }
 
     // iPad channels
     renderChannels('padChannels', b.channels);
@@ -3465,9 +3935,26 @@
     renderPadTeam('padTeamList', b.team, r.code);
     renderAi('padTeamAi', b.ai[r.ai] || b.ai.mgr);
 
-    // iPad brand sel + view sel
-    const psel = $('#padBrandSel');
-    if (psel) psel.innerHTML = Object.values(brands).map(x => `<option ${x.key===b.key?'selected':''} value="${x.key}">${x.name}</option>`).join('');
+    // iPad Me — brand × role aware (fix · review critical #2)
+    const padMeAiRole = $('#padMeAiRole'); if (padMeAiRole) padMeAiRole.textContent = r.short;
+    const meItems = (b.meAi && (b.meAi[r.ai] || b.meAi.mgr)) || b.ai[r.ai] || b.ai.mgr;
+    renderAi('padMeAi', meItems);
+
+    // iPad Me KPI strip — brand-keyed
+    const myATV  = Math.round(parseInt(b.atv) * 1.20);
+    const setText = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+    setText('padMyATV', String(myATV));
+    setText('padMyATVvs', b.atv);
+    setText('padMyATVdelta', '+20%');
+    setText('padMyTx', String(Math.round(parseFloat(b.tx.replace(/,/g,''))/26) || 38));
+    setText('padMyTxSub', `conv ${b.conv}% · IPC ${b.ipc}`);
+    setText('padMyTarget', '18k');
+    setText('padMyPace', `${Math.min(99, b.pace + 4)}%`);
+
+    // iPad brand sel — all brands, sticky-selected
+    paintBrandSelect('padBrandSel',       b.key);
+    paintBrandSelect('padOrdersBrandSel', b.key);
+    paintBrandSelect('padStockBrandSel',  b.key);
 
     // iPhone header
     $('#phBrandHead').textContent = b.name;
@@ -3475,6 +3962,9 @@
     $('#phOrdersBrand').textContent = b.name;
     $('#phHelloName').textContent = r.greet + '.';
     $('#phViewLabel').textContent = state.view;
+    const phOrdersSub = $('#phOrdersChanSub');
+    if (phOrdersSub) phOrdersSub.textContent = `${ch.total} channels · ${ch.live} live`;
+    const phStockHead = $('#phStockBrandHead'); if (phStockHead) phStockHead.textContent = b.name;
 
     // iPhone live card
     $('#phRev').textContent = b.rev;
@@ -3507,22 +3997,42 @@
     $('#phOrdersTx').textContent = b.orderTx;
     renderPhChannels('phOrdersList', b.channels);
 
+    // iPhone Stock — brand-keyed (fix · review critical #1)
+    if (b.stock) {
+      const s = b.stock;
+      setText('phStockFloor', s.floor);
+      setText('phStockBack',  s.back);
+      setText('phStockLow',   s.low);
+      setText('phStockCover', s.cover);
+      renderPhStock('phStockList', s.sku);
+    } else {
+      renderPhStock('phStockList', null);
+    }
+
     // iPhone team
     $('#phTeamSub').textContent = b.teamSub;
     renderTeam('phTeamList', b.team, r.code);
 
-    // iPhone Me
-    $('#phMeAv').textContent = r.greet[0];
-    $('#phMeName').textContent = (r.greet === 'Sara' ? 'Sara Al-Mansour' :
-                                  r.greet === 'Diana' ? 'Diana K.' :
-                                  r.greet === 'Layla' ? 'Layla S.' : 'Mariam H.');
+    // iPhone Me — brand × role aware (fix · review critical #2)
+    $('#phMeAv').textContent = personaInitial(persona);
+    $('#phMeName').textContent = persona;
     $('#phMeRole').textContent = r.short;
     $('#phMeBrand').textContent = b.name;
-    $('#phMeATV').textContent = (parseInt(b.atv)+30).toString();
+    $('#phMeATV').textContent = String(myATV);
+    setText('phMeATVvs', `vs store ${b.atv} · +20%`);
+    setText('phMySaves', '9');
+    setText('phMySavesSub', '3 fittings · 6 walk-ups');
+    setText('phMyTx', String(Math.round(parseFloat(b.tx.replace(/,/g,''))/26) || 38));
+    setText('phMyTxSub', `conv ${b.conv}% · IPC ${b.ipc}`);
+    setText('phMyTarget', '18k');
+    setText('phMyPaceSub', `${Math.min(99, b.pace + 4)}% pace · +4%`);
+    const phMeAiRole = $('#phMeAiRole'); if (phMeAiRole) phMeAiRole.textContent = r.short;
+    renderPhAi('phMeAi', meItems);
 
-    // iPhone brand sel
-    const psel2 = $('#phBrandSel');
-    if (psel2) psel2.innerHTML = Object.values(brands).map(x => `<option ${x.key===b.key?'selected':''} value="${x.key}">${x.name}</option>`).join('');
+    // iPhone brand selects
+    paintBrandSelect('phBrandSel',       b.key);
+    paintBrandSelect('phOrdersBrandSel', b.key);
+    paintBrandSelect('phStockBrandSel',  b.key);
   }
 
   // ───────────────────── EVENTS ─────────────────────
@@ -3611,10 +4121,13 @@
   if (padViewSel) padViewSel.addEventListener('change', e => setView(e.target.value));
   const phViewSel = document.getElementById('phViewSel');
   if (phViewSel) phViewSel.addEventListener('change', e => setView(e.target.value));
-  const padBrandSel = document.getElementById('padBrandSel');
-  if (padBrandSel) padBrandSel.addEventListener('change', e => setBrand(e.target.value));
-  const phBrandSel  = document.getElementById('phBrandSel');
-  if (phBrandSel)  phBrandSel.addEventListener('change',  e => setBrand(e.target.value));
+
+  // brand selects across all tabs — all sync to global state (fix · review high #6)
+  ['padBrandSel','padOrdersBrandSel','padStockBrandSel',
+   'phBrandSel','phOrdersBrandSel','phStockBrandSel'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('change', e => setBrand(e.target.value));
+  });
 
   // refresh stamps: tick "12s ago" up
   let refreshSec = 12;
@@ -3772,6 +4285,64 @@
     c.addEventListener('click', () => enterApp(c.dataset.role));
   });
   document.getElementById('signOut').addEventListener('click', signOut);
+
+  // ─────────────────── DEMO LOGIN (prototype only) ───────────────────
+  // Any non-empty user + pwd works; user-handle auto-maps to a starter brand × role.
+  const demoMap = {
+    'demo':    { role:'mgr',   brand:'ame'  },
+    'hagar':   { role:'mgr',   brand:'bbw'  },
+    'diana':   { role:'assoc', brand:'vs'   },
+    'roel':    { role:'mgr',   brand:'ame'  },
+    'mariam':  { role:'asst',  brand:'hm'   },
+    'layla':   { role:'vm',    brand:'vs'   },
+    'sara':    { role:'mgr',   brand:'hm'   },
+    'reem':    { role:'mgr',   brand:'ulta' },
+    'khalid':  { role:'mgr',   brand:'primark' }
+  };
+  function demoHandle(email) {
+    return String(email || '').split('@')[0].trim().toLowerCase();
+  }
+  function flashDemoErr(msg) {
+    const e = document.getElementById('demoErr');
+    if (!e) return;
+    if (msg) e.textContent = msg;
+    e.classList.add('show');
+    setTimeout(() => e.classList.remove('show'), 2400);
+  }
+  function submitDemoLogin() {
+    const user = document.getElementById('demoUser').value;
+    const pass = document.getElementById('demoPass').value;
+    if (!user || !pass) {
+      flashDemoErr('user + password required · try demo@sawa.dev / sawa2026');
+      return;
+    }
+    const roleOverride = document.getElementById('demoRole').value;
+    const handle = demoHandle(user);
+    const preset = demoMap[handle] || demoMap.demo;
+
+    // role-override picker on the form takes priority unless 'auto'
+    if (roleOverride && roleOverride !== 'auto') {
+      if (roleOverride === 'mgr-ame')   { state.role = 'mgr';   state.brand = 'ame'; }
+      else { state.role = roleOverride; state.brand = preset.brand; }
+    } else {
+      state.role  = preset.role;
+      state.brand = preset.brand;
+    }
+    // signal that this is a demo session (Me-tab Auth row reads "Demo session")
+    window.__sawaDemoSession = true;
+    enterApp(state.role);
+    // update Auth label
+    const auth = document.getElementById('phMeAuth');
+    if (auth) auth.textContent = `Demo session · ${user}`;
+  }
+  const demoBtn = document.getElementById('demoSubmit');
+  if (demoBtn) demoBtn.addEventListener('click', (e) => { e.preventDefault(); submitDemoLogin(); });
+  ['demoUser','demoPass'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') { e.preventDefault(); submitDemoLogin(); }
+    });
+  });
 
   // ─────────────────── FIT-TO-VIEWPORT ───────────────────
   // Devices are 1180 (iPad) + 40 (gap) + 430 (iPhone 14 Pro Max) = 1650px wide.
