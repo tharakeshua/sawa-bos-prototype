@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>SAWA BOS · Discovery Sprint — v5.3</title>
+<title>SAWA BOS · Discovery Sprint — v5.7 · field-validated</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
@@ -1024,6 +1024,208 @@
     word-break: break-all;
   }
 
+  /* ── Field-validation slides (v5.7) ─────────────────────────── */
+  .fv-stats {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px;
+    margin-top: 30px; max-width: 1040px;
+  }
+  .fv-stats .st {
+    background: var(--paper);
+    border: 1px solid var(--line-2);
+    border-radius: 14px;
+    padding: 18px 18px 16px;
+    display: flex; flex-direction: column;
+    position: relative; overflow: hidden;
+  }
+  .fv-stats .st::before {
+    content:""; position:absolute; left:0; top:0; bottom:0; width:3px;
+    background: linear-gradient(180deg, var(--lime-3), var(--ink));
+  }
+  .fv-stats .st .lab {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    text-transform: uppercase; letter-spacing: .2em; color: var(--ink-3);
+    margin-bottom: 8px;
+  }
+  .fv-stats .st .n {
+    font-family: 'Fraunces', serif; font-weight: 500;
+    font-size: 44px; line-height: 1; letter-spacing: -.025em;
+    color: var(--ink);
+  }
+  .fv-stats .st .n small {
+    font-family: 'JetBrains Mono', monospace; font-weight: 400;
+    font-size: 13px; color: var(--ink-3); letter-spacing: .04em;
+    margin-left: 4px;
+  }
+  .fv-stats .st .foot {
+    font-family: 'Inter', sans-serif; font-size: 12.5px;
+    color: var(--ink-2); margin-top: 6px; line-height: 1.35;
+  }
+
+  /* Live build-loop list (ask → ship pairs) */
+  .ask-ship {
+    display: grid; grid-template-columns: 1fr; gap: 10px;
+    margin-top: 24px; max-width: 1080px;
+  }
+  .ask-ship .row {
+    display: grid; grid-template-columns: 32px 1fr 24px 1fr;
+    gap: 14px; align-items: stretch;
+    background: var(--paper);
+    border: 1px solid var(--line-2);
+    border-radius: 14px;
+    padding: 14px 18px;
+  }
+  .ask-ship .row .rk {
+    font-family: 'Fraunces', serif; font-weight: 500;
+    font-size: 28px; line-height: 1; color: var(--ink-3);
+    align-self: center;
+  }
+  .ask-ship .row .ask, .ask-ship .row .ship {
+    display: flex; flex-direction: column; gap: 4px; min-width: 0;
+  }
+  .ask-ship .row .ask .lab,
+  .ask-ship .row .ship .lab {
+    font-family: 'JetBrains Mono', monospace; font-size: 8.5px;
+    text-transform: uppercase; letter-spacing: .2em;
+    align-self: flex-start;
+    padding: 2px 6px; border-radius: 4px;
+  }
+  .ask-ship .row .ask .lab { color: var(--ink-3); background: var(--paper-3); }
+  .ask-ship .row .ship .lab { color: var(--lime-ink); background: var(--lime); font-weight: 700; }
+  .ask-ship .row .ask .t,
+  .ask-ship .row .ship .t {
+    font-family: 'Fraunces', serif; font-weight: 500;
+    font-size: 15px; letter-spacing: -.01em;
+    line-height: 1.3; color: var(--ink);
+  }
+  .ask-ship .row .ship .t em { font-style: italic; color: var(--ink-2); }
+  .ask-ship .row .arrow {
+    display: grid; place-items: center;
+    font-family: 'JetBrains Mono', monospace; font-size: 18px;
+    color: var(--ink-3);
+  }
+
+  /* Build-loop timeline */
+  .loop-line {
+    margin-top: 36px; max-width: 1100px;
+    position: relative;
+  }
+  .loop-line::before {
+    content:""; position:absolute; left: 12px; right: 12px; top: 14px;
+    height: 2px;
+    background: linear-gradient(90deg,
+      var(--line-2) 0%, var(--ink) 18%, var(--lime-3) 50%,
+      var(--ink) 82%, var(--line-2) 100%);
+  }
+  .loop-line .row {
+    display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px;
+    position: relative;
+  }
+  .loop-line .step {
+    display: flex; flex-direction: column; align-items: center;
+    text-align: center; position: relative; padding-top: 36px;
+  }
+  .loop-line .step .dot {
+    position: absolute; top: 6px; left: 50%; transform: translateX(-50%);
+    width: 18px; height: 18px; border-radius: 50%;
+    background: var(--paper); border: 2px solid var(--ink);
+    box-shadow: 0 0 0 4px var(--paper);
+  }
+  .loop-line .step.live .dot {
+    background: var(--lime); border-color: var(--ink);
+    animation: pulse 1.6s ease-in-out infinite;
+  }
+  .loop-line .step .time {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    color: var(--ink); letter-spacing: .04em; font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .loop-line .step .lab {
+    font-family: 'JetBrains Mono', monospace; font-size: 8.5px;
+    text-transform: uppercase; letter-spacing: .2em;
+    color: var(--ink-3); margin-bottom: 5px;
+  }
+  .loop-line .step .t {
+    font-family: 'Inter', sans-serif; font-size: 12px; line-height: 1.35;
+    color: var(--ink-2); max-width: 150px;
+  }
+  .loop-line .step .t b { color: var(--ink); font-weight: 600; }
+
+  /* Big testimonial quote card */
+  .quote-card {
+    margin-top: 22px;
+    background:
+      radial-gradient(60% 50% at 0% 0%, rgba(199,251,85,.10) 0%, transparent 60%),
+      var(--paper);
+    border: 1px solid var(--line-2);
+    border-left: 4px solid var(--lime);
+    border-radius: 16px;
+    padding: 36px 44px 32px;
+    max-width: 1100px;
+    position: relative;
+    box-shadow: 0 18px 40px -22px rgba(35,40,30,.22);
+  }
+  .quote-card::before {
+    content:"\201C";
+    position: absolute; left: 20px; top: -10px;
+    font-family: 'Fraunces', serif; font-size: 120px; font-weight: 500;
+    color: var(--lime); line-height: 1; opacity: .9;
+  }
+  .quote-card .qt {
+    font-family: 'Fraunces', serif; font-weight: 500;
+    font-size: 22px; line-height: 1.45; letter-spacing: -.012em;
+    color: var(--ink);
+  }
+  .quote-card .qt em {
+    font-style: italic; color: var(--ink-2);
+    background: linear-gradient(180deg, transparent 70%, rgba(199,251,85,.42) 70% 95%, transparent 95%);
+    padding: 0 1px;
+  }
+  .quote-card .qt + .qt { margin-top: 14px; }
+  .quote-card .qf {
+    margin-top: 22px;
+    display: flex; align-items: center; gap: 14px;
+    padding-top: 18px; border-top: 1px dashed var(--line-2);
+  }
+  .quote-card .qf .av {
+    width: 40px; height: 40px; border-radius: 12px;
+    background: var(--ink); color: var(--lime);
+    display: grid; place-items: center;
+    font-family: 'Fraunces', serif; font-weight: 500; font-size: 18px;
+    box-shadow: 0 6px 14px -6px rgba(15,20,23,.25);
+  }
+  .quote-card .qf .nm {
+    font-family: 'Fraunces', serif; font-weight: 500;
+    font-size: 18px; letter-spacing: -.01em; color: var(--ink);
+  }
+  .quote-card .qf .rl {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    text-transform: uppercase; letter-spacing: .18em; color: var(--ink-3);
+    margin-top: 3px;
+  }
+
+  /* Final clean Thank-you slide */
+  .thanks-clean {
+    height: 100%;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+  }
+  .thanks-clean h1 {
+    font-family: 'Fraunces', serif; font-weight: 500;
+    font-size: 168px; line-height: 1; letter-spacing: -.04em;
+    color: var(--ink);
+  }
+  .thanks-clean h1 em {
+    font-style: italic; color: var(--lime-ink);
+    background: linear-gradient(180deg, transparent 60%, var(--lime) 60% 94%, transparent 94%);
+    padding: 0 6px;
+  }
+  .thanks-clean .sig {
+    margin-top: 32px;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    color: var(--ink-3); text-transform: uppercase; letter-spacing: .28em;
+  }
+
   /* ── Thank-you logo card ────────────────────────────────────── */
   .scan-card {
     margin-top: 36px;
@@ -1081,7 +1283,7 @@
         <div class="mono-logo">S</div>
         <div>
           <div class="lh-t">SAWA <em>BOS</em></div>
-          <div class="lh-s">back office system · v5.3</div>
+          <div class="lh-s">back office system · v5.7 · field-validated</div>
         </div>
       </div>
       <div class="cover-secure">discovery sprint · evidence-led</div>
@@ -1119,7 +1321,7 @@
     </div>
 
     <div class="chrome">
-      <span class="l"><span class="dot"></span>SAWA BOS · v5.3 · Discovery Sprint</span>
+      <span class="l"><span class="dot"></span>SAWA BOS · v5.7 · Discovery Sprint · field-validated</span>
       <span class="r">01 · cover</span>
     </div>
   </section>
@@ -2110,7 +2312,7 @@
   <!-- ═══════════════ 24 · WHAT SHIPS ═══════════════ -->
   <section class="slide paper" data-slide="24">
     <div class="inner">
-      <span class="eyebrow">What ships today · v5.3</span>
+      <span class="eyebrow">What ships today · v5.7</span>
       <h2 class="hero" style="max-width:1040px;">
         A live prototype<br/>
         you can <em>open right now.</em>
@@ -2139,10 +2341,11 @@
         </a>
       </div>
 
-      <p class="sub muted" style="margin-top:24px;font-size:13px;max-width:880px;">
-        Seven brands. Four roles. Five channels. Nine timeframes. Real-time stock with manual override.
-        Colour-coded AI brief tailored per role. iPhone 14 Pro Max + iPad Pro 11", auto-fit to any browser.
-        Single HTML file. No build. No backend. No install.
+      <p class="sub muted" style="margin-top:24px;font-size:13px;max-width:960px;">
+        <b>Eight brands</b> · four roles · five channels · nine timeframes · real-time stock with manual override.
+        Role-aware AI brief · BBW Aura (Quick + Full daily) · SFA011 segment table with IPC + Footfall ·
+        Top 5 sellers + top 3 categories per brand · barcode / QR scan with product-level stock.
+        iPhone 14 Pro Max + iPad Pro 11" · auto-fit to any browser · single HTML file · no build · no backend.
       </p>
     </div>
     <div class="chrome">
@@ -2151,39 +2354,250 @@
     </div>
   </section>
 
-  <!-- ═══════════════ 25 · THANK YOU ═══════════════ -->
+  <!-- ═══════════════ 25 · FIELD VALIDATION · HAGAR ═══════════════ -->
   <section class="slide cream" data-slide="25">
+    <div class="inner">
+      <span class="eyebrow">Field validation · 11 Jun 2026 · live test</span>
+      <h2 class="hero" style="max-width:1080px;">
+        Hagar tested it. <em>Live.</em><br/>
+        On her own laptop. For 100 minutes.
+      </h2>
+      <p class="sub" style="margin-top:12px;">
+        We shared the prototype, gave her the URL, and stepped back. She drove. Every change she
+        asked for in the room shipped <b>before she left the call</b> — through the same AI agent
+        that built v5.0 to v5.6.
+      </p>
+
+      <div class="fv-stats">
+        <div class="st">
+          <div class="lab">session length</div>
+          <div class="n">100<small>min</small></div>
+          <div class="foot">screen-share · BBW MoE · 10:34 → 12:14</div>
+        </div>
+        <div class="st">
+          <div class="lab">asks captured</div>
+          <div class="n">5</div>
+          <div class="foot">scan · segments · aura split · ipc/ff · movers</div>
+        </div>
+        <div class="st">
+          <div class="lab">shipped same day</div>
+          <div class="n">5<small>/ 5</small></div>
+          <div class="foot">every ask · zero handoff · zero ticket</div>
+        </div>
+        <div class="st">
+          <div class="lab">turnaround</div>
+          <div class="n">&lt; 7<small>hrs</small></div>
+          <div class="foot">ask 11:00 · ship 17:00 · note 17:30</div>
+        </div>
+      </div>
+    </div>
+    <div class="chrome">
+      <span class="l"><span class="dot"></span>Field validation</span>
+      <span class="r">25 · operator tested</span>
+    </div>
+  </section>
+
+  <!-- ═══════════════ 26 · ASK → SHIP · IN THE ROOM ═══════════════ -->
+  <section class="slide paper" data-slide="26">
+    <div class="inner">
+      <span class="eyebrow">In-session loop · BBW · Hagar · MoE</span>
+      <h2 class="hero" style="max-width:1080px;font-size:48px;">
+        Five real asks. <em>Five real ships.</em><br/>
+        Same session.
+      </h2>
+
+      <div class="ask-ship">
+        <div class="row">
+          <div class="rk">1</div>
+          <div class="ask">
+            <span class="lab">she asked</span>
+            <div class="t">"Show me product-level stock when I scan a SKU — I don't want to type barcodes."</div>
+          </div>
+          <div class="arrow">→</div>
+          <div class="ship">
+            <span class="lab">we shipped</span>
+            <div class="t">Stock <em>scan + lookup</em> panel · total / on-floor / backstore / fill-rate · per product</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="rk">2</div>
+          <div class="ask">
+            <span class="lab">she asked</span>
+            <div class="t">"I don't run per-associate targets — I track segment sales every two hours. Mirror SFA011."</div>
+          </div>
+          <div class="arrow">→</div>
+          <div class="ship">
+            <span class="lab">we shipped</span>
+            <div class="t">Segment table <em>(10-12 / 12-14 / 14-16 …)</em> · plan / act / LY / Tx / ATV / Conv / mix · LIVE indicator</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="rk">3</div>
+          <div class="ask">
+            <span class="lab">she asked</span>
+            <div class="t">"Aura must split <b>Quick</b> and <b>Full</b> enrolment, daily — not just monthly aggregate."</div>
+          </div>
+          <div class="arrow">→</div>
+          <div class="ship">
+            <span class="lab">we shipped</span>
+            <div class="t">Aura panel · <em>Quick · Full · Linkage value</em> · daily · vs LW delta · brand-personal strip on BBW</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="rk">4</div>
+          <div class="ask">
+            <span class="lab">she asked</span>
+            <div class="t">"Add <b>IPC</b> (items per customer) and <b>Footfall</b> to each segment — that's what gives me conv%."</div>
+          </div>
+          <div class="arrow">→</div>
+          <div class="ship">
+            <span class="lab">we shipped</span>
+            <div class="t">Two extra columns · IPC + Footfall · per segment + day total · iPad + iPhone</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="rk">5</div>
+          <div class="ask">
+            <span class="lab">she asked</span>
+            <div class="t">"Top 5 best sellers + top 3 categories (Candle, Splash, Showergel…) — for BBW and all the others."</div>
+          </div>
+          <div class="arrow">→</div>
+          <div class="ship">
+            <span class="lab">we shipped</span>
+            <div class="t">Movers card · <em>top 5 SKUs + top 3 categories with mix % and vs-LW delta</em> · all 8 brands</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="chrome">
+      <span class="l"><span class="dot"></span>Ask → ship</span>
+      <span class="r">26 · five for five</span>
+    </div>
+  </section>
+
+  <!-- ═══════════════ 27 · BUILD LOOP · TIMELINE ═══════════════ -->
+  <section class="slide warm" data-slide="27">
+    <div class="inner">
+      <span class="eyebrow">Cursor build loop · the difference</span>
+      <h2 class="hero" style="max-width:1080px;font-size:48px;">
+        Feedback at 10:34. <em>Shipped by 17:00.</em><br/>
+        Note in the inbox by 17:30.
+      </h2>
+      <p class="sub" style="margin-top:10px;">
+        No ticket queue. No sprint planning. No "we'll get back to you." The AI agent watches
+        the call, captures the ask, edits the prototype, and pushes to the public URL — all in
+        the same session. Hagar refreshes her browser and sees her request live.
+      </p>
+
+      <div class="loop-line">
+        <div class="row">
+          <div class="step">
+            <div class="dot"></div>
+            <div class="time">10:34</div>
+            <div class="lab">start</div>
+            <div class="t"><b>Hagar joins</b> · we share v5.5 prototype URL</div>
+          </div>
+          <div class="step">
+            <div class="dot"></div>
+            <div class="time">11:00</div>
+            <div class="lab">ask 1–3</div>
+            <div class="t"><b>Scan stock · segments · Aura quick + full</b></div>
+          </div>
+          <div class="step">
+            <div class="dot"></div>
+            <div class="time">11:45</div>
+            <div class="lab">ship · v5.6</div>
+            <div class="t"><b>Aura panel + segment table + scan</b> pushed live</div>
+          </div>
+          <div class="step">
+            <div class="dot"></div>
+            <div class="time">12:14</div>
+            <div class="lab">call ends</div>
+            <div class="t">She refreshes · sees her own asks live</div>
+          </div>
+          <div class="step live">
+            <div class="dot"></div>
+            <div class="time">15:30</div>
+            <div class="lab">ship · v5.7</div>
+            <div class="t"><b>Movers + IPC + Footfall</b> pushed live</div>
+          </div>
+          <div class="step">
+            <div class="dot"></div>
+            <div class="time">17:30</div>
+            <div class="lab">note</div>
+            <div class="t"><b>Hagar's thank-you note</b> in inbox</div>
+          </div>
+        </div>
+      </div>
+
+      <p class="sub muted" style="margin-top:30px;font-size:13px;max-width:980px;">
+        Same loop, four prior sessions: H&amp;M (Cos), AME (Roel), VS (Diana), COS (Karim).
+        v5.0 → v5.7 in 12 days. Operators in the driver's seat — not in the requirements doc.
+      </p>
+    </div>
+    <div class="chrome">
+      <span class="l"><span class="dot"></span>Cursor loop</span>
+      <span class="r">27 · 7 hours, not 7 weeks</span>
+    </div>
+  </section>
+
+  <!-- ═══════════════ 28 · OPERATOR TESTIMONIAL ═══════════════ -->
+  <section class="slide paper" data-slide="28">
+    <div class="inner">
+      <span class="eyebrow">Operator testimonial · BBW · MoE · 11 Jun 2026</span>
+      <h2 class="hero" style="max-width:1080px;font-size:42px;">
+        In her words — <em>the morning after the test.</em>
+      </h2>
+
+      <div class="quote-card">
+        <p class="qt">
+          "I had the chance to work with the reports you shared, and I found it
+          <em>extremely useful and much more user-friendly</em> than many of the tools and reports
+          we currently use."
+        </p>
+        <p class="qt">
+          "We truly appreciate how quickly you took our feedback into consideration and
+          turned it into <em>actionable solutions.</em> The reports you developed will be
+          extremely valuable — helping us save time, improving efficiency, and providing
+          more realistic insights that can have a significant impact on the business."
+        </p>
+        <p class="qt">
+          "Your proactive approach and commitment to finding practical solutions will help
+          us <em>organize our work more effectively and professionally</em> while saving a
+          considerable amount of time and effort. Thank you for your outstanding support,
+          hard work, and continuous collaboration."
+        </p>
+        <div class="qf">
+          <div class="av">H</div>
+          <div>
+            <div class="nm">Hagar M.</div>
+            <div class="rl">Store Manager · Bath &amp; Body Works · Mall of the Emirates</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="chrome">
+      <span class="l"><span class="dot"></span>Operator voice</span>
+      <span class="r">28 · verbatim</span>
+    </div>
+  </section>
+
+  <!-- ═══════════════ 29 · THANK YOU (clean) ═══════════════ -->
+  <section class="slide cream" data-slide="29">
     <div class="cover-bg">
       <div class="grid"></div>
       <div class="orb o1"></div>
       <div class="orb o2"></div>
     </div>
-    <div class="inner center center-x">
-      <span class="eyebrow">Thank you</span>
-      <h1 class="hero" style="font-size:84px;max-width:1100px;">
-        Built for the floor.<br/>
-        <em>By someone who shadowed it.</em>
-      </h1>
-      <p class="sub muted" style="font-size:15px;margin-top:20px;max-width:760px;text-align:center;">
-        SAWA BOS · v5.3 · Discovery Sprint · 02–12 Jun 2026
-        <br/>
-        Project owner · Tharakeswara Reddy &nbsp;·&nbsp; Sponsor · Kalai Selvam
-        <br/>
-        Fieldwork · Mall of the Emirates · Dubai Hills · Dubai Outlet · 7 brands · 4 transcripts
-      </p>
-
-      <div class="scan-card">
-        <div class="lab">scan / open</div>
-        <div class="url">tharakeshua.github.io/sawa-bos-prototype</div>
+    <div class="inner">
+      <div class="thanks-clean">
+        <h1>Thank <em>you.</em></h1>
+        <div class="sig">SAWA BOS · v5.7</div>
       </div>
-
-      <p class="footnote" style="margin-top:32px;text-align:center;">
-        With thanks to Hagar (BBW), the VS Sales Manager, Roel (AME), and the H&amp;M / COS colleagues who told the truth.
-      </p>
     </div>
     <div class="chrome">
       <span class="l"><span class="dot"></span>End of deck</span>
-      <span class="r">25 · thank you</span>
+      <span class="r">29 · thank you</span>
     </div>
   </section>
 
