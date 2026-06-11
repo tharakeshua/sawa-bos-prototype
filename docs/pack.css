@@ -546,3 +546,19 @@ h2.section .count {
   .pack-shell { max-width: 100%; padding: 24px; }
   .role-card, .sys-card, .ev-card, .stat, .lk { break-inside: avoid; }
 }
+
+/* ── Accessibility (v5.8 patch) ─────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+:focus-visible {
+  outline: 2px solid var(--lime-3, #9CE600);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+:focus:not(:focus-visible) { outline: none; }

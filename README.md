@@ -1,100 +1,86 @@
-# SAWA BOS · v5.3 — Live iPad + iPhone Prototype
+# SAWA BOS · v5.8 · field-validated
 
-Single-file, self-contained interactive prototype for the Alshaya **SAWA Back-Office System**.
-Boots into a full-screen animated SSO → role picker → dual-device cockpit (iPad Pro 11" + iPhone 14 Pro Max), with role-aware UI, brand-personal metrics, and a live AI brief.
+Single-file, self-contained iPad-grade interactive prototype for Alshaya's **SAWA Back-Office System** — paired with a 29-slide narrative deck and a three-doc reference pack. Boots into an animated SSO → role picker → dual-device cockpit (iPad Pro 11" + iPhone 14 Pro Max). Role-aware UI, brand-personal metrics, live AI brief, scan-stock, segments, Aura split, top-sellers, all wired to the same state engine.
 
-> Six brands × four roles × nine timeframes × five channels — all wired to the same state engine, all in **one `index.html`** (no build, no backend, no install).
-
----
-
-## Two artifacts in one package
-
-| Artifact | URL                                                              | What it is                                                     |
-|----------|------------------------------------------------------------------|----------------------------------------------------------------|
-| Prototype | <https://tharakeshua.github.io/sawa-bos-prototype/>             | The live iPad + iPhone 14 Pro Max cockpit                       |
-| Slide deck | <https://tharakeshua.github.io/sawa-bos-prototype/slides/>      | 21-slide Discovery Sprint narrative (problem → field → solution → outcome) |
-
-Locally, run **`./start.sh`** from the root to launch the prototype, or
-**`./slides/start.sh`** to launch the slide deck on its own port.
+> **Eight brands × four roles × five channels** — all wired to one state engine, all in **one `index.html`** (no build, no backend, no install).
 
 ---
 
-## Run it (any machine, no install)
+## What's new in v5.6 / v5.7 / v5.8
 
-### macOS / Linux
-```bash
-./start.sh
-```
-Then open <http://127.0.0.1:8765/index.html> (it should open automatically).
+A 100-minute live session with the BBW Store Manager (Hagar M., MoE, 11 Jun 2026) drove an in-session build loop — every ask shipped before the call ended. v5.8 is the post-review polish round:
 
-### Windows
-Double-click `start.bat` → it'll boot a local server and open the prototype in your default browser.
-
-### Already have Python?
-```bash
-python3 -m http.server 8765
-# then visit http://127.0.0.1:8765/index.html
-```
-
-### Already have Node?
-```bash
-npx serve -p 8765
-```
-
-### "I have nothing installed"
-You can open `index.html` directly by **double-clicking** the file — it works from `file://` too. The Google Fonts will require an internet connection on first load (they cache afterward).
+- **v5.6 / v5.7** · BBW Aura panel (Quick / Full split · daily) · SFA011 segment view · scan-stock by SKU · top-5 best-sellers + top-3 categories per brand · 29-slide deck rebuilt around four field-validation slides + Hagar's verbatim testimonial · three-doc reference pack (role workflows · technical feasibility · evidence wall v3).
+- **v5.8** · Eight-brand lock (ULTA KPI card added on slide 20 + every "seven brands" line corrected) · accessibility patch (`prefers-reduced-motion`, `:focus-visible`, ARIA on nav/tabbar/channels) · bottom-sheet target editor (replaces the old `prompt()` / `alert()` flow) · validation-depth legend on slide 4 · persona diversification (every brand gets a distinct Manager + VM) · cornerstones vs research-pillars rename · tightened slide click-handler · fresh release zip with full `docs/` + `slides/`.
 
 ---
 
-## What's inside (one file)
+## Live URLs
 
-| Element | Notes |
+| Artifact | URL |
 |---|---|
-| **Full-screen login** | Animated HTML5 Canvas particle network + drifting orbs · Continue with Microsoft → role picker |
-| **iPad Pro 11" (1180 × 820)** | Sidebar nav · Live Pulse · KPI grid · brand-personal strip · orders · hourly chart · colour-coded AI brief · real-time stock |
-| **iPhone 14 Pro Max (430 × 880)** | Real Dynamic Island · iOS status bar · live revenue card (dark) · common KPIs · brand-personal strip · hourly · AI brief · iOS home indicator |
-| **Auto-fit** | Both devices scale-to-fit your browser width via JS `transform: scale()` (no overflow, smooth resize) |
+| Prototype | <https://tharakeshua.github.io/sawa-bos-prototype/> |
+| Slide deck (29 slides) | <https://tharakeshua.github.io/sawa-bos-prototype/slides/> |
+| Docs hub | <https://tharakeshua.github.io/sawa-bos-prototype/docs/> |
+| Role workflows | <https://tharakeshua.github.io/sawa-bos-prototype/docs/role-workflows.html> |
+| Technical feasibility | <https://tharakeshua.github.io/sawa-bos-prototype/docs/technical-feasibility.html> |
+| Evidence wall (v3.1) | <https://tharakeshua.github.io/sawa-bos-prototype/docs/evidence-wall.html> |
+| Release zip | <https://tharakeshua.github.io/sawa-bos-prototype/sawa-bos-prototype.zip> |
 
 ---
 
-## Deep-link URLs (no clicks needed)
+## Repo layout
+
+```
+sawa-bos-prototype/                  ← source root (this folder)
+├── index.html                       ← the prototype (single-file)
+├── slides/                          ← 29-slide narrative deck
+├── docs/                            ← role-workflows · tech-feasibility · evidence-wall + pack.css
+├── dist/sawa-bos-prototype/         ← published gh-pages mirror (identical files)
+└── README.md                        ← this file
+```
+
+The `dist/sawa-bos-prototype/` subtree is the GitHub Pages publishing copy. Every source change is mirrored there before commit.
+
+---
+
+## Run locally (any machine, no install)
+
+| Platform | Command |
+|---|---|
+| macOS / Linux | `./dist/sawa-bos-prototype/start.sh` |
+| Windows | double-click `dist/sawa-bos-prototype/start.bat` |
+| Already have Python | `python3 -m http.server 8765` from any folder containing `index.html` |
+| Already have Node | `npx serve -p 8765` |
+| Nothing installed | open `index.html` directly — `file://` works |
+
+---
+
+## Download the release zip
+
+```bash
+curl -L -o sawa-bos.zip \
+  https://tharakeshua.github.io/sawa-bos-prototype/sawa-bos-prototype.zip
+unzip sawa-bos.zip && cd sawa-bos-prototype && open index.html
+```
+
+The zip ships `index.html` + `slides/` + `docs/` + `README.md` + `.nojekyll` — everything needed to run the full experience offline (no build, no backend).
+
+---
+
+## Deep-link URLs
 
 | Goal | URL fragment |
 |---|---|
 | Skip login | `?skipLogin=1` |
-| Brand | `?brand=ame` · `bbw` · `hm` · `vs` · `cos` · `ct` |
+| Brand | `?brand=ame` · `bbw` · `hm` · `vs` · `cos` · `ct` · `primark` · `ulta` |
 | Role | `&role=mgr` · `asst` · `assoc` · `vm` |
 | iPad view | `&pad=today` · `orders` · `stock` · `team` · `me` |
 | iPhone view | `&ph=today` · `orders` · `stock` · `team` · `me` |
-
-**Example — Diana (Sales Assoc) on VS, iPhone Stock view:**
-`index.html?brand=vs&role=assoc&ph=stock`
-
----
-
-## Customising
-
-All sample data sits inside the `<script>` block in `index.html`:
-
-| Object | What it controls |
-|---|---|
-| `brands` | 6 brands, each with `rev`, `target`, `delta`, `pace`, `atv`, brand-personal KPIs (`bp`), channels, hourly bars, brief items, team roster |
-| `roles` | 4 roles (mgr / asst / assoc / vm) with greet name, ai-brief variant key, edit-target permission |
-| `decorateMsg(html)` | The AI brief auto-decorator — adds colour pills to percentages, AED amounts, `HH:MM` times |
-| `tagClass(lab)` | Maps brief label keywords (priority / channel / attach / your day / team …) to coloured tag chips |
-
-To tune a brand's metrics, edit its entry in `brands` and reload. To add a brand, copy any existing brand block and update the key + name.
-
----
-
-## Browser support
-
-Tested on Chrome 121+, Safari 17+, Edge 121+, Firefox 124+.
-Requires modern browser (Canvas + CSS Grid + `backdrop-filter`).
 
 ---
 
 ## License
 
 Internal prototype. © Alshaya Group. Distributed for evaluation only.
-Built for the v5.3 sprint by the SAWA BOS team.
+Built for the v5.8 sprint by the SAWA BOS team.

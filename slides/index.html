@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>SAWA BOS · Discovery Sprint — v5.7 · field-validated</title>
+<title>SAWA BOS · Discovery Sprint — v5.8 · field-validated</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
@@ -655,8 +655,7 @@
     display: grid; grid-template-columns: repeat(12, 1fr); gap: 12px;
     margin-top: 26px;
   }
-  .brand-grid > .brand-card:nth-child(-n+4) { grid-column: span 3; }
-  .brand-grid > .brand-card:nth-child(n+5)  { grid-column: span 4; }
+  .brand-grid > .brand-card { grid-column: span 3; }
 
   .brand-card {
     background: var(--paper);
@@ -674,6 +673,7 @@
   .brand-card.cos::before { background: var(--b-cos); }
   .brand-card.ct::before  { background: var(--b-ct); }
   .brand-card.pri::before { background: #1A3DAA; }
+  .brand-card.ulta::before{ background: #4A6B7F; }
   .brand-card .nm {
     font-family: 'Fraunces', serif; font-size: 21px; font-weight: 500;
     letter-spacing: -.015em; color: var(--ink); line-height: 1.05;
@@ -1024,7 +1024,7 @@
     word-break: break-all;
   }
 
-  /* ── Field-validation slides (v5.7) ─────────────────────────── */
+  /* ── Field-validation slides (v5.8) ─────────────────────────── */
   .fv-stats {
     display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px;
     margin-top: 30px; max-width: 1040px;
@@ -1261,6 +1261,22 @@
     .slide:last-child { page-break-after: auto; }
     .nav-hint, .progress-bar { display: none; }
   }
+
+  /* ── Accessibility (v5.8 patch) ─────────────────────────────── */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+  :focus-visible {
+    outline: 2px solid var(--lime, #C7FB55);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+  :focus:not(:focus-visible) { outline: none; }
 </style>
 </head>
 <body>
@@ -1283,7 +1299,7 @@
         <div class="mono-logo">S</div>
         <div>
           <div class="lh-t">SAWA <em>BOS</em></div>
-          <div class="lh-s">back office system · v5.7 · field-validated</div>
+          <div class="lh-s">back office system · v5.8 · field-validated</div>
         </div>
       </div>
       <div class="cover-secure">discovery sprint · evidence-led</div>
@@ -1307,7 +1323,7 @@
         </div>
         <div class="m">
           <div class="l">Brands shadowed</div>
-          <div class="v">7 · MOE + DH</div>
+          <div class="v">8 · MOE + DH + Outlet</div>
         </div>
         <div class="m">
           <div class="l">Transcripts read</div>
@@ -1321,7 +1337,7 @@
     </div>
 
     <div class="chrome">
-      <span class="l"><span class="dot"></span>SAWA BOS · v5.7 · Discovery Sprint · field-validated</span>
+      <span class="l"><span class="dot"></span>SAWA BOS · v5.8 · Discovery Sprint · field-validated</span>
       <span class="r">01 · cover</span>
     </div>
   </section>
@@ -1372,7 +1388,7 @@
     <div class="inner">
       <span class="eyebrow soft">Discovery footprint · in-store</span>
       <h2 class="hero" style="font-size:46px;max-width:1080px;">
-        Eight stores. Two malls. Seven brands.<br/>
+        Eight stores. Two malls. Eight brands.<br/>
         <em>One pattern</em> in every aisle.
       </h2>
       <p class="sub muted" style="max-width:920px;margin-top:4px;font-size:14.5px;">
@@ -1439,7 +1455,14 @@
         </div>
       </div>
 
-      <p class="footnote" style="margin-top:22px;">
+      <div class="legend-depth" style="display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--ink-3);font-family:'JetBrains Mono',monospace;margin-top:18px;letter-spacing:.02em;align-items:center;">
+        <span><b style="color:var(--ink)">●</b> deep shadow · transcript <span style="opacity:.6">(BBW, VS, AME)</span></span>
+        <span><b style="color:var(--ink-3)">●</b> narrative interview <span style="opacity:.6">(H&amp;M, COS)</span></span>
+        <span><b style="color:#94A6AD">●</b> floor walk · observational <span style="opacity:.6">(CT, Primark, ULTA)</span></span>
+        <span style="opacity:.65">— 3 + 2 + 3 = 8 brands</span>
+      </div>
+
+      <p class="footnote" style="margin-top:16px;">
         Field tools observed · ARES · Vault · Power BI · Arise · OneDrive · SFA · Hadreen · Quick&nbsp;Up · Assist&nbsp;App · MPOS · SIOCS · OMS · Teams · WhatsApp · Excel · PDF · RFID handheld
       </p>
     </div>
@@ -1693,7 +1716,7 @@
           </p>
         </div>
         <div class="pu">
-          <div class="badge">Pattern · all seven brands</div>
+          <div class="badge">Pattern · all eight brands</div>
           <div class="name">"In case the system shuts down."</div>
           <p class="what">
             Same workaround, same OneDrive, same anxiety. The dashboard exists —
@@ -1867,7 +1890,7 @@
       <div class="section-num">Part two · the rebuild</div>
       <h1 class="section-h">One surface.<br/>Tailored by <em>role.</em></h1>
       <p class="section-sub">
-        Four roles, seven brands, five channels, nine timeframes —
+        Four roles, eight brands, five channels, nine timeframes —
         wired to one state engine and one Microsoft Entra sign-in.
         No PDFs. No pulses. No whiteboard. No shadow Excel.
       </p>
@@ -1960,13 +1983,13 @@
       <div class="arch-grid">
         <div class="arch"><div class="ix">sign-in</div><div class="n">1</div><div class="l">Microsoft Entra · trusted store device. No password UI. No per-brand chain.</div></div>
         <div class="arch"><div class="ix">roles</div><div class="n">4</div><div class="l">Store Mgr · Asst. Mgr · Sales Assoc. · VM. Each gets its own brief + access.</div></div>
-        <div class="arch"><div class="ix">brands</div><div class="n">7</div><div class="l">AME · BBW · H&amp;M · VS · COS · CT · Primark. Brand-personal strip on every screen.</div></div>
+        <div class="arch"><div class="ix">brands</div><div class="n">8</div><div class="l">AME · BBW · H&amp;M · VS · COS · CT · Primark · ULTA. Brand-personal strip on every screen.</div></div>
         <div class="arch"><div class="ix">channels</div><div class="n">5</div><div class="l">SAWA POS · MPOS · Hadreen · Asst. Ecom · SCO — each with one owner, one rule.</div></div>
 
         <div class="arch"><div class="ix">timeframes</div><div class="n">9</div><div class="l">Today · WTD · Weekly · MTD · Monthly · QTD · Quarter · YTD · Year.</div></div>
         <div class="arch"><div class="ix">screens</div><div class="n">7</div><div class="l">SSO · Role · Today · Orders · Stock · Team · Me. iPad + iPhone in sync.</div></div>
-        <div class="arch"><div class="ix">tints</div><div class="n">6</div><div class="l">Light brand accent per chip. Subtle. Authentic to each banner.</div></div>
-        <div class="arch"><div class="ix">cornerstones</div><div class="n">4</div><div class="l">Sales/till · SIOCS · OMS · Hadreen — the four sources we trust.</div></div>
+        <div class="arch"><div class="ix">tints</div><div class="n">8</div><div class="l">Light brand accent per chip. Subtle. Authentic to each banner.</div></div>
+        <div class="arch"><div class="ix">cornerstones</div><div class="n">4</div><div class="l">Sales/till · SIOCS · OMS · Hadreen — the four data sources of truth.</div></div>
       </div>
     </div>
     <div class="chrome">
@@ -2118,13 +2141,13 @@
     </div>
   </section>
 
-  <!-- ═══════════════ 20 · SOLUTION · SEVEN BRANDS ═══════════════ -->
+  <!-- ═══════════════ 20 · SOLUTION · EIGHT BRANDS ═══════════════ -->
   <section class="slide cream" data-slide="20">
     <div class="inner">
-      <span class="eyebrow">Solution · seven brands · authentic metrics</span>
+      <span class="eyebrow">Solution · eight brands · authentic metrics</span>
       <h2 class="hero" style="font-size:46px;max-width:1040px;">
-        Seven brands.<br/>
-        Seven <em>brand-personal</em> KPI strips.
+        Eight brands.<br/>
+        Eight <em>brand-personal</em> KPI strips.
       </h2>
       <p class="sub muted" style="max-width:980px;margin-top:4px;font-size:14.5px;">
         Each brand reads in its own vocabulary — and the floor finally recognises its own scoreboard.
@@ -2208,6 +2231,17 @@
             <div class="k"><div class="v">64%</div><div class="l">SCO mix<br/>(of all txn)</div></div>
             <div class="k"><div class="v">6.2</div><div class="l">IPC<br/>(items / receipt)</div></div>
             <div class="k"><div class="v">71%</div><div class="l">Basics attach<br/>(mix bundle)</div></div>
+          </div>
+        </div>
+
+        <div class="brand-card ulta">
+          <div class="nm">ULTA Beauty</div>
+          <div class="code">ULTA · MOE</div>
+          <div class="tag">Fragrance attach · GWP redemption · sample-to-sale.</div>
+          <div class="kpis">
+            <div class="k"><div class="v">38%</div><div class="l">Fragrance attach<br/>(beauty baskets)</div></div>
+            <div class="k"><div class="v">71%</div><div class="l">GWP redemption<br/>(of eligible)</div></div>
+            <div class="k"><div class="v">24%</div><div class="l">Sample → sale<br/>(in-store conv)</div></div>
           </div>
         </div>
       </div>
@@ -2310,7 +2344,7 @@
   <!-- ═══════════════ 24 · WHAT SHIPS ═══════════════ -->
   <section class="slide paper" data-slide="24">
     <div class="inner">
-      <span class="eyebrow">What ships today · v5.7</span>
+      <span class="eyebrow">What ships today · v5.8</span>
       <h2 class="hero" style="max-width:1040px;">
         A live prototype<br/>
         you can <em>open right now.</em>
@@ -2535,7 +2569,7 @@
 
       <p class="sub muted" style="margin-top:30px;font-size:13px;max-width:980px;">
         Same loop, four prior sessions: H&amp;M (Cos), AME (Roel), VS (Diana), COS (Karim).
-        v5.0 → v5.7 in 12 days. Operators in the driver's seat — not in the requirements doc.
+        v5.0 → v5.8 in 12 days. Operators in the driver's seat — not in the requirements doc.
       </p>
     </div>
     <div class="chrome">
@@ -2595,7 +2629,7 @@
     <div class="inner">
       <div class="thanks-clean">
         <h1>Thank <em>you.</em></h1>
-        <div class="sig">SAWA BOS · v5.7</div>
+        <div class="sig">SAWA BOS · v5.8</div>
       </div>
     </div>
     <div class="chrome">
@@ -2660,10 +2694,11 @@
     }
   });
 
-  slides.forEach(s => s.addEventListener('click', (e) => {
-    if (e.target.closest('a')) return;
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.slide')) return;
+    if (e.target.closest('a, button, input, select, textarea, [role=button], [tabindex], [contenteditable], .no-advance, .sheet, .sheet *, .legend-depth, .legend-depth *')) return;
     next();
-  }));
+  });
 
   function bootFromHash() {
     const m = location.hash.match(/^#(\d+)$/);
