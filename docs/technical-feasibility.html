@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>SAWA BOS · Technical Feasibility · v5.7</title>
+<link rel="stylesheet" href="_pack.css" />
+</head>
+<body>
+
+<div class="pack-shell">
+
+  <header class="pack-head">
+    <a class="pack-brand" href="./">
+      <div class="mono-logo">S</div>
+      <div>
+        <div class="t">SAWA <em>BOS</em></div>
+        <div class="s">technical feasibility · 02 of 03</div>
+      </div>
+    </a>
+    <div class="pack-meta">
+      <span class="pill"><span class="dot"></span>v5.7 · stack-neutral</span>
+      <a href="./">↳ docs hub</a>
+      <a href="../">↳ prototype</a>
+    </div>
+  </header>
+
+  <section class="pack-hero">
+    <span class="eyebrow">Engineering audit · 15 systems</span>
+    <h1 class="hero">Technical <em>feasibility.</em></h1>
+    <p class="lede">
+      Audit of the 15 systems that already hold every metric SAWA BOS surfaces, plus the 7 API contracts
+      we need to wire them together. No new stack. No replatform. BOS sits on top of what's already
+      running — the value is in the unification, the live read, and the role-aware briefing layer.
+    </p>
+    <div class="stat-row" style="margin-top:32px">
+      <div class="stat lime"><div class="l">systems audited</div><div class="v">15</div><div class="s">ARES · SIOCS · OMS · Vault · …</div></div>
+      <div class="stat"><div class="l">API contracts</div><div class="v">7</div><div class="s">5 v5.7 · 2 v6 roadmap</div></div>
+      <div class="stat"><div class="l">brands supported</div><div class="v">8</div><div class="s">zero brand-specific stack</div></div>
+      <div class="stat"><div class="l">new infra</div><div class="v">0</div><div class="s">read-mostly · existing data layer</div></div>
+    </div>
+  </section>
+
+  <h2 class="section">System audit<span class="count">15 systems · 4 primaries shown</span></h2>
+  <p class="lede muted" style="margin-bottom:18px">
+    Each metric in the BOS surface has a designated source-of-truth system. The four below are the
+    foundation; the remaining 11 (Hadreen, Assist App, RFID, T8 Knowledge, Bolt, Arise, Power BI,
+    SF Commerce, MPOS, Excel-Vault stitches, WhatsApp ops) feed in as secondary or read-only inputs.
+  </p>
+
+  <div class="grid cols-2">
+
+    <div class="sys-card">
+      <div class="top"><h3>ARES / BOS</h3><span class="tag">source of truth</span></div>
+      <p>Foundation for the <b>Pulse feed</b>. Primary for transactions. Reported peak-hour freezes in
+      the field; manual interpretation required for segment breakdown — which is why SFA011 still
+      runs as a separate PDF in BBW today.</p>
+    </div>
+
+    <div class="sys-card">
+      <div class="top"><h3>SIOCS</h3><span class="tag">inventory primary</span></div>
+      <p>Best truth for inventory. Primary for the <b>unified stock layer</b>. Recommended refresh
+      cadence: <b>90s polling</b>. SF Commerce stays as fallback only for ecom-exclusive SKUs.</p>
+    </div>
+
+    <div class="sys-card">
+      <div class="top"><h3>OMS</h3><span class="tag">orders</span></div>
+      <p>Required for the <b>Assisted Ecom write-path</b>. Endless Aisle logic depends on the OMS
+      real-time funnel. 2FA login overhead today; needs service-account fix for BOS read.</p>
+    </div>
+
+    <div class="sys-card">
+      <div class="top"><h3>Reporting Vault</h3><span class="tag warn">historical · slow</span></div>
+      <p>Slow load times. Source for P&amp;L and weekly BP targets. Store managers currently apply
+      <b>mental-math overrides</b> daily because of lag — surfaced in BOS as the <b>Edit Target</b>
+      button rather than an off-screen workaround.</p>
+    </div>
+
+  </div>
+
+  <h2 class="section">API mapping &amp; contracts<span class="count">7 contracts · status by phase</span></h2>
+
+  <table class="contract-table">
+    <thead>
+      <tr>
+        <th style="width:22%">API</th>
+        <th style="width:48%">Endpoint purpose</th>
+        <th style="width:15%">Phase</th>
+        <th style="width:15%">Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="mono">SALES_LIVE_V1</span></td>
+        <td>Real-time till transaction stream (ARES). Powers the live revenue / ATV / Tx / Conv cards on every Today screen.</td>
+        <td>v5.7</td>
+        <td><span class="status spike">Tech spike</span></td>
+      </tr>
+      <tr>
+        <td><span class="mono">STOCK_SOH_V2</span></td>
+        <td>Unified On-Hand (SIOCS) on 90s polling. Drives the stock card and the scan-SKU lookup.</td>
+        <td>v5.7</td>
+        <td><span class="status live">Validated</span></td>
+      </tr>
+      <tr>
+        <td><span class="mono">ORDER_FUNNEL_V1</span></td>
+        <td>Attributed channel breakdown (OMS + MPOS). Channels rail · SAWA POS / MPOS / Hadreen / Asst. Ecom / SCO.</td>
+        <td>v5.7</td>
+        <td><span class="status draft">Draft</span></td>
+      </tr>
+      <tr>
+        <td><span class="mono">TARGET_OVERRIDE</span></td>
+        <td>Store Manager target adjustment (Vault write). Saves the daily override Hagar does on paper today.</td>
+        <td>v5.7</td>
+        <td><span class="status design">In design</span></td>
+      </tr>
+      <tr>
+        <td><span class="mono">AI_BRIEF_ROLE</span></td>
+        <td>Generative role-based brief (T8 Knowledge Base). Powers the AI brief card on every Today / Team screen.</td>
+        <td>v5.7</td>
+        <td><span class="status live">Active</span></td>
+      </tr>
+      <tr>
+        <td><span class="mono">AURA_DAILY</span></td>
+        <td>Quick + Full enrolment split, <b>daily</b> (not weekly aggregate). New endpoint requested by BBW Store Manager on 11 Jun.</td>
+        <td>v5.7</td>
+        <td><span class="status live">Shipped</span></td>
+      </tr>
+      <tr>
+        <td><span class="mono">SEGMENT_LIVE</span></td>
+        <td>Hourly SFA011 segment feed with IPC + Footfall. Replaces the per-associate target model for BBW.</td>
+        <td>v5.7</td>
+        <td><span class="status live">Shipped</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2 class="section">AME onboarding<span class="count">zero-stack-change note</span></h2>
+  <div class="callout">
+    <span class="lab">Engineering note</span>
+    <p>
+      <b>No tech stack changes required for AME onboarding.</b> AME KPI extensions —
+      Aura linkage, RFID manual-exception handling, W22 business-plan reconciliation —
+      are handled through the existing BOS data layer. AME enters the same role-aware surface
+      as the other 7 brands; the only additions are AME-specific KPI extensions on top of the
+      shared stack.
+    </p>
+  </div>
+
+  <h2 class="section">Build sequence<span class="count">post-validation roadmap</span></h2>
+  <div class="grid cols-3">
+    <div class="sys-card">
+      <div class="top"><h3>Phase 1 · read</h3><span class="tag soft">2 weeks</span></div>
+      <p><b>SALES_LIVE_V1</b> + <b>STOCK_SOH_V2</b> + <b>AI_BRIEF_ROLE</b>. Live read-only pulse for 1 brand × 1 store. Validates the framing without write paths.</p>
+    </div>
+    <div class="sys-card">
+      <div class="top"><h3>Phase 2 · write</h3><span class="tag soft">2 weeks</span></div>
+      <p><b>TARGET_OVERRIDE</b> + <b>ORDER_FUNNEL_V1</b>. Manager can override targets; channel attribution goes live. Pilot with BBW Hagar's store first.</p>
+    </div>
+    <div class="sys-card">
+      <div class="top"><h3>Phase 3 · brand layer</h3><span class="tag soft">2 weeks</span></div>
+      <p><b>AURA_DAILY</b> + <b>SEGMENT_LIVE</b> + scan-stock. BBW brand layer; then roll the same pattern out to VS (BPT), AME (Aura), CT (services), …</p>
+    </div>
+  </div>
+
+  <footer class="pack-foot">
+    <div class="l"><span>SAWA BOS · v5.7</span><span>·</span><span>Technical feasibility</span></div>
+    <div class="r">
+      <span><a href="role-workflows.html" style="color:var(--ink-3); text-decoration:underline">← role workflows</a></span>
+      <span>·</span>
+      <span><a href="./" style="color:var(--ink-3); text-decoration:underline">docs hub</a></span>
+      <span>·</span>
+      <span><a href="evidence-wall.html" style="color:var(--ink-3); text-decoration:underline">next: evidence wall →</a></span>
+    </div>
+  </footer>
+
+</div>
+
+</body>
+</html>
