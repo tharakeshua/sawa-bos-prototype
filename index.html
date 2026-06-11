@@ -3519,7 +3519,6 @@
                 <div class="sub" id="padAuraLinkSub">WTD · 9.0% of net</div>
                 <div class="ring"><i id="padAuraLinkRing" style="width:85%"></i></div>
               </div>
-              <div class="aura-top" id="padAuraTop"></div>
             </div>
 
             <!-- Channels -->
@@ -5038,12 +5037,6 @@
     set('padAuraLinkSub', a.linkage.sub);
     const ring = document.getElementById('padAuraLinkRing');
     if (ring) ring.style.width = (a.linkage.pct || 80) + '%';
-    const top = document.getElementById('padAuraTop');
-    if (top && a.top) {
-      top.innerHTML = a.top.map(t =>
-        `<div class="at"><div class="l">${t.lab}</div><div class="v">${t.val}</div></div>`
-      ).join('');
-    }
     // iPhone
     set('phAuraQuick', a.quick.v);
     set('phAuraFull',  a.full.v);
