@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>SAWA BOS · v5.6 — Premium · BBW Aura · Segment Sales · Scan Stock</title>
+<title>SAWA BOS · v5.7 — Premium · BBW Aura · Segments · Scan · Top 5 + Categories</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
@@ -2982,6 +2982,208 @@
   /* iPhone scaled version */
   .ph-stock-result .grid { grid-template-columns: 1fr 1fr; }
   .ph-stock-result .hd .nm { font-size: 16px; }
+
+  /* ════════ Movers card · Top 5 sellers + Top 3 categories (all brands) ════════ */
+  .movers-card {
+    margin-top: 16px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: var(--r-card);
+    box-shadow: var(--shadow-card);
+    display: grid;
+    grid-template-columns: 1.55fr 1fr;
+    gap: 0;
+    overflow: hidden;
+    position: relative;
+  }
+  .movers-card::before {
+    content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+    background: linear-gradient(180deg, var(--ink), #555);
+  }
+  .movers-col {
+    padding: 16px 20px;
+    display: flex; flex-direction: column;
+    min-width: 0;
+  }
+  .movers-col + .movers-col {
+    border-left: 1px solid var(--line);
+    background: var(--paper-2);
+  }
+  .movers-col .head {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 12px;
+  }
+  .movers-col .head .l {
+    font-family: 'Fraunces', serif; font-weight: 500;
+    font-size: 16px; letter-spacing: -.01em; color: var(--ink);
+  }
+  .movers-col .head .l em { font-style: italic; color: var(--ink-2); font-weight: 400; }
+  .movers-col .head .r {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    color: var(--ink-3); text-transform: uppercase; letter-spacing: .18em;
+  }
+  /* sellers list */
+  .ts-list { display: flex; flex-direction: column; gap: 8px; }
+  .ts-row {
+    display: grid;
+    grid-template-columns: 22px 1fr auto auto;
+    gap: 10px; align-items: center;
+    padding: 8px 10px;
+    background: var(--paper-2);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    transition: transform .12s ease, border-color .12s ease;
+  }
+  .ts-row:hover { transform: translateX(2px); border-color: var(--ink-3); }
+  .ts-row .rk {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    color: var(--ink-3); font-weight: 600;
+    width: 22px; height: 22px; border-radius: 6px;
+    background: var(--paper); border: 1px solid var(--line);
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .ts-row:first-child .rk { background: var(--ink); color: var(--lime); border-color: var(--ink); }
+  .ts-row .nm {
+    font-family: 'Inter', sans-serif; font-size: 13px;
+    color: var(--ink); line-height: 1.3; min-width: 0;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .ts-row .ct {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    color: var(--ink-3); text-transform: uppercase; letter-spacing: .14em;
+    padding: 3px 7px; border-radius: 999px;
+    background: var(--paper); border: 1px solid var(--line);
+    white-space: nowrap;
+  }
+  .ts-row .v {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    color: var(--ink); font-weight: 600; text-align: right;
+    white-space: nowrap;
+  }
+  .ts-row .v small {
+    display: block; font-weight: 400; color: var(--ink-3);
+    font-size: 9px; letter-spacing: .1em; margin-top: 1px;
+  }
+  /* categories list */
+  .tc-list { display: flex; flex-direction: column; gap: 10px; }
+  .tc-row {
+    padding: 10px 12px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+  }
+  .tc-row .top {
+    display: flex; align-items: baseline; justify-content: space-between;
+    margin-bottom: 6px;
+  }
+  .tc-row .cat {
+    font-family: 'Fraunces', serif; font-weight: 500;
+    font-size: 15px; color: var(--ink); letter-spacing: -.01em;
+  }
+  .tc-row .mix {
+    font-family: 'JetBrains Mono', monospace; font-size: 13px;
+    color: var(--ink); font-weight: 600;
+  }
+  .tc-row .bar {
+    height: 5px; background: var(--paper-2); border-radius: 999px; overflow: hidden;
+    border: 1px solid var(--line);
+  }
+  .tc-row .bar i {
+    display: block; height: 100%;
+    background: linear-gradient(90deg, var(--ink), #555);
+    transition: width .8s ease;
+  }
+  .tc-row .foot {
+    margin-top: 6px;
+    display: flex; align-items: center; justify-content: space-between;
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  }
+  .tc-row .foot .delta { color: var(--pos); }
+  .tc-row .foot .delta.neg { color: var(--neg); }
+  .tc-row .foot .lbl {
+    color: var(--ink-3); text-transform: uppercase; letter-spacing: .14em;
+    font-size: 9px;
+  }
+
+  /* iPhone compact movers */
+  .ph-movers {
+    margin-top: 12px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    box-shadow: var(--shadow-card);
+    overflow: hidden;
+  }
+  .ph-movers .seg-head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--line);
+    background: var(--paper-2);
+  }
+  .ph-movers .seg-head .l {
+    font-family: 'Fraunces', serif; font-weight: 500; font-size: 14px;
+    color: var(--ink); letter-spacing: -.01em;
+  }
+  .ph-movers .seg-head .r {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    color: var(--ink-3); text-transform: uppercase; letter-spacing: .18em;
+  }
+  .ph-ts-list { display: flex; flex-direction: column; padding: 8px 10px; gap: 6px; }
+  .ph-ts {
+    display: grid; grid-template-columns: 18px 1fr auto; gap: 8px; align-items: center;
+    padding: 7px 9px;
+    background: var(--paper-2);
+    border: 1px solid var(--line);
+    border-radius: 9px;
+  }
+  .ph-ts .rk {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    color: var(--ink-3); font-weight: 600;
+    width: 18px; height: 18px; border-radius: 5px;
+    background: var(--paper); border: 1px solid var(--line);
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .ph-ts:first-child .rk { background: var(--ink); color: var(--lime); border-color: var(--ink); }
+  .ph-ts .nm {
+    font-family: 'Inter', sans-serif; font-size: 12px; color: var(--ink);
+    line-height: 1.25; min-width: 0;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .ph-ts .nm small {
+    display: block; font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; color: var(--ink-3); margin-top: 1px;
+    text-transform: uppercase; letter-spacing: .12em;
+  }
+  .ph-ts .v {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    color: var(--ink); font-weight: 600; text-align: right; white-space: nowrap;
+  }
+  .ph-tc-wrap {
+    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px;
+    padding: 8px 10px 12px;
+    border-top: 1px solid var(--line);
+    background: var(--paper-2);
+  }
+  .ph-tc {
+    padding: 8px 9px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    display: flex; flex-direction: column; gap: 3px;
+  }
+  .ph-tc .cat {
+    font-family: 'Fraunces', serif; font-weight: 500; font-size: 12px;
+    color: var(--ink); line-height: 1.1;
+  }
+  .ph-tc .mix {
+    font-family: 'JetBrains Mono', monospace; font-size: 13px;
+    color: var(--ink); font-weight: 600;
+  }
+  .ph-tc .dl {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    color: var(--pos); letter-spacing: .04em;
+  }
+  .ph-tc .dl.neg { color: var(--neg); }
 </style>
 </head>
 <body>
@@ -3000,7 +3202,7 @@
       <div class="sawa-mono-lg">S</div>
       <div>
         <div class="lh-t">SAWA <em>BOS</em></div>
-        <div class="lh-s">back office system · v5.6 · premium</div>
+        <div class="lh-s">back office system · v5.7 · premium</div>
       </div>
     </div>
     <div class="login-secure">
@@ -3041,7 +3243,7 @@
       <span>·</span>
       <span>trusted store device</span>
       <span>·</span>
-      <span>Entra ID · v5.6</span>
+      <span>Entra ID · v5.7</span>
     </div>
 
     <!-- brand marquee · infinite scroll band -->
@@ -3127,7 +3329,7 @@
   <footer class="login-foot">
     <span>© Alshaya Group · live prototype</span>
     <span class="dot"></span>
-    <span>build v5.6 · BBW Aura · segments · scan</span>
+    <span>build v5.7 · top sellers + categories · BBW Aura · segments · scan</span>
     <span class="dot"></span>
     <span class="live-dot">session live</span>
   </footer>
@@ -3222,7 +3424,7 @@
 
           <div class="pad-foot">
             <div class="live">live · auto 60s · entra id</div>
-            <div>v5.6 · BBW pack</div>
+            <div>v5.7 · movers pack</div>
             <div id="padFootRefresh">updated 12s ago</div>
           </div>
         </aside>
@@ -3351,6 +3553,24 @@
                   <div class="r">role · hourly</div>
                 </div>
                 <div class="ai-body" id="padAi"></div>
+              </div>
+            </div>
+
+            <!-- Movers · Top 5 best sellers + Top 3 categories (all brands) -->
+            <div class="movers-card" id="padMoversCard">
+              <div class="movers-col">
+                <div class="head">
+                  <div class="l">Top 5 <em>best sellers</em> · today</div>
+                  <div class="r">units · revenue</div>
+                </div>
+                <div class="ts-list" id="padTopSellers"><!-- injected --></div>
+              </div>
+              <div class="movers-col">
+                <div class="head">
+                  <div class="l">Top 3 <em>categories</em></div>
+                  <div class="r">mix · vs lw</div>
+                </div>
+                <div class="tc-list" id="padTopCats"><!-- injected --></div>
               </div>
             </div>
 
@@ -3623,7 +3843,7 @@
             <div class="alt">SSO only · no password ui · trusted store device</div>
             <div class="secure">
               <span class="l">session protected</span>
-              <span>entra id · v5.6</span>
+              <span>entra id · v5.7</span>
             </div>
           </section>
 
@@ -3767,6 +3987,20 @@
                 <span>role · hourly</span>
               </div>
               <div id="phAi"></div>
+            </div>
+
+            <!-- Movers · Top 5 best sellers + Top 3 categories (iPhone) -->
+            <div class="ph-movers" id="phMoversCard">
+              <div class="seg-head">
+                <div class="l">Top 5 best sellers · today</div>
+                <div class="r">units · aed</div>
+              </div>
+              <div class="ph-ts-list" id="phTopSellers"><!-- injected --></div>
+              <div class="seg-head" style="border-top:1px solid var(--line);">
+                <div class="l">Top 3 categories</div>
+                <div class="r">mix · vs lw</div>
+              </div>
+              <div class="ph-tc-wrap" id="phTopCats"><!-- injected --></div>
             </div>
           </section>
 
@@ -3926,7 +4160,7 @@
                 <div class="row"><span class="l">Sprint window</span><span class="v">02–12 Jun 2026</span></div>
                 <div class="row"><span class="l">Last shift</span><span class="v">Tue 22:14</span></div>
                 <div class="row"><span class="l">Auth</span><span class="v" id="phMeAuth">Microsoft Entra ID</span></div>
-                <div class="row"><span class="l">App version</span><span class="v">v5.6 · BBW pack</span></div>
+                <div class="row"><span class="l">App version</span><span class="v">v5.7 · movers pack</span></div>
                 <div class="row"><span class="l">Device</span><span class="v">Store iPhone 14 · trusted</span></div>
               </div>
             </div>
@@ -3966,7 +4200,7 @@
 
   <div class="cap">
     <span class="cap-dot"></span>
-    <span>live · v5.6 · BBW Aura + segment-sales + scan stock · 8 brands · 4 roles</span>
+    <span>live · v5.7 · top sellers + categories · BBW Aura + segments + scan · 8 brands · 4 roles</span>
   </div>
 </div>
 
@@ -4022,6 +4256,18 @@
       hourly: [4, 7, 9, 8, 12, 14, 18, 22, 20, 16, 14, 9, 5], // 10–22h
       best: 'AE Slim 360', bestSub: '132 units sold · 28% mix',
       teamSub: '4 on shift · 1 break',
+      topSellers: [
+        { rank:1, nm:"AE Slim 360 jean · W30",     cat:'denim',     qty:132, val:'AED 6,820' },
+        { rank:2, nm:"Olive utility tee · L",        cat:'tops',      qty:96,  val:'AED 3,840' },
+        { rank:3, nm:"Curvy mom jean · W28",         cat:'denim',     qty:78,  val:'AED 4,290' },
+        { rank:4, nm:"Washed hoodie · M",            cat:'fleece',    qty:64,  val:'AED 3,520' },
+        { rank:5, nm:"Cargo joggers · S",            cat:'bottoms',   qty:52,  val:'AED 2,860' }
+      ],
+      topCats: [
+        { cat:'Denim',  mix:'46%', delta:'+3.1pp vs LW', trend:'pos' },
+        { cat:'Tops',   mix:'22%', delta:'+0.8pp',        trend:'pos' },
+        { cat:'Fleece', mix:'14%', delta:'−1.4pp',        trend:'neg' }
+      ],
       team: [
         { in:'D', name:'Diana',  rl:'fitting',         val:'8,420 aed', tag:'top · 92%' },
         { in:'O', name:'Olga',   rl:'wear · core',     val:'6,180 aed', tag:'$ 1,800 saves' },
@@ -4098,6 +4344,20 @@
       hourly: [5, 9, 13, 14, 17, 21, 24, 26, 24, 19, 16, 11, 6],
       best: 'Strawberry Pound Cake', bestSub: 'body cream · 184 units',
       teamSub: '5 on shift · 1 break',
+      topSellers: [
+        { rank:1, nm:"Strawberry Pound Cake · 226g",  cat:'body cream',  qty:184, val:'AED 4,232' },
+        { rank:2, nm:"Champagne Toast · 3-wick",       cat:'candle',      qty:142, val:'AED 3,560' },
+        { rank:3, nm:"Japanese Cherry Blossom · 236ml", cat:'body lotion', qty:118, val:'AED 2,360' },
+        { rank:4, nm:"Warm Vanilla Sugar · 295ml",     cat:'shower gel',  qty:96,  val:'AED 1,820' },
+        { rank:5, nm:"A Thousand Wishes · 88ml",       cat:'splash',      qty:84,  val:'AED 1,260' }
+      ],
+      // BBW category tracker (not part of Aura) · which category is performing well today
+      topCats: [
+        { cat:'Candle',      mix:'32%', delta:'+4.2pp vs LW', trend:'pos' },
+        { cat:'Body cream',  mix:'24%', delta:'+1.8pp',        trend:'pos' },
+        { cat:'Splash',      mix:'18%', delta:'−2.1pp',        trend:'neg' }
+      ],
+      allCats: ['Candle','Splash','Shower gel','Hand soap','Body lotion','Body cream'],
       team: [
         { in:'L', name:'Lina',   rl:'fragrance bar',     val:'9,840 aed', tag:'signature 64%' },
         { in:'M', name:'Mariam', rl:'candle wall',       val:'7,640 aed', tag:'3-for-2 · 18 attach' },
@@ -4144,6 +4404,18 @@
       hourly: [4, 6, 9, 11, 14, 17, 20, 23, 22, 18, 14, 10, 6],
       best: 'Mom Loose Jeans', bestSub: '256 units · 22% mix',
       teamSub: '6 on shift · 1 break',
+      topSellers: [
+        { rank:1, nm:"Mom Loose Jean · W26",         cat:'denim',     qty:256, val:'AED 5,760' },
+        { rank:2, nm:"Basic Crew Tee · L Black",      cat:'basics',    qty:198, val:'AED 1,960' },
+        { rank:3, nm:"Kid Polo Set · 5–6Y",           cat:'kids',      qty:124, val:'AED 2,480' },
+        { rank:4, nm:"Cargo trousers · 32",           cat:'bottoms',   qty:88,  val:'AED 2,640' },
+        { rank:5, nm:"Linen shirt · M",               cat:'shirts',    qty:64,  val:'AED 1,920' }
+      ],
+      topCats: [
+        { cat:'Denim',  mix:'34%', delta:'+2.4pp vs LW', trend:'pos' },
+        { cat:'Basics', mix:'28%', delta:'+0.6pp',        trend:'pos' },
+        { cat:'Kids',   mix:'18%', delta:'+3.8pp',        trend:'pos' }
+      ],
       team: [
         { in:'F', name:'Fatima',  rl:'denim',       val:'8,820 aed', tag:'attach +18%' },
         { in:'J', name:'Jana',    rl:'kidswear',    val:'6,140 aed', tag:'42 tx' },
@@ -4186,6 +4458,18 @@
       hourly: [3, 5, 7, 9, 11, 13, 16, 18, 17, 15, 12, 8, 5],
       best: 'Body by Victoria · 34D', bestSub: '46 fittings · 22 bought',
       teamSub: '4 on shift · 1 break',
+      topSellers: [
+        { rank:1, nm:"Body by Victoria · 34D",        cat:'bras',     qty:64,  val:'AED 7,680' },
+        { rank:2, nm:"PINK Wear Everywhere · M",       cat:'bras',     qty:58,  val:'AED 5,220' },
+        { rank:3, nm:"Bombshell EDP · 100ml",          cat:'fragrance', qty:42,  val:'AED 6,720' },
+        { rank:4, nm:"Cotton Cheekster · S",           cat:'panties',  qty:124, val:'AED 3,720' },
+        { rank:5, nm:"PINK shine mist · 75ml",         cat:'body',     qty:88,  val:'AED 1,760' }
+      ],
+      topCats: [
+        { cat:'Bras',      mix:'48%', delta:'+2.6pp vs LW', trend:'pos' },
+        { cat:'Fragrance', mix:'18%', delta:'+1.4pp',        trend:'pos' },
+        { cat:'Panties',   mix:'16%', delta:'−0.8pp',        trend:'neg' }
+      ],
       team: [
         { in:'P', name:'Priya',   rl:'fitting lead',   val:'14,620 aed', tag:'8.4 fit→buy' },
         { in:'N', name:'Nadia',   rl:'pink',           val:'7,140 aed',  tag:'pink 34%' },
@@ -4226,6 +4510,18 @@
       hourly: [2, 3, 4, 5, 7, 9, 11, 14, 13, 11, 8, 6, 3],
       best: 'Wool-blend overcoat', bestSub: '14 units · ATV 1,490',
       teamSub: '4 on shift',
+      topSellers: [
+        { rank:1, nm:"Oversized cashmere jumper",     cat:'knitwear',  qty:48, val:'AED 14,400' },
+        { rank:2, nm:"Wool-blend coat · navy",         cat:'outerwear', qty:22, val:'AED 12,540' },
+        { rank:3, nm:"Wide-leg trouser · ecru",        cat:'bottoms',   qty:64, val:'AED 7,680' },
+        { rank:4, nm:"Silk shirt · ivory",             cat:'shirts',    qty:38, val:'AED 6,460' },
+        { rank:5, nm:"Heeled leather boot",            cat:'footwear',  qty:18, val:'AED 5,400' }
+      ],
+      topCats: [
+        { cat:'Knitwear',  mix:'34%', delta:'+5.2pp vs LW', trend:'pos' },
+        { cat:'Outerwear', mix:'24%', delta:'+2.8pp',        trend:'pos' },
+        { cat:'Bottoms',   mix:'18%', delta:'+0.6pp',        trend:'pos' }
+      ],
       team: [
         { in:'K', name:'Karim',   rl:'tailoring',   val:'18,940 aed', tag:'atv 1,420' },
         { in:'I', name:'Iman',    rl:'wear',        val:'9,820 aed',  tag:'4.6 tried' },
@@ -4263,6 +4559,18 @@
       hourly: [2, 3, 5, 7, 9, 11, 14, 16, 15, 12, 10, 7, 4],
       best: 'Pillow Talk Original', bestSub: '38 demos · 24 sold',
       teamSub: '3 on shift',
+      topSellers: [
+        { rank:1, nm:"Pillow Talk · Matte Revolution",       cat:'lipstick',   qty:92, val:'AED 12,420' },
+        { rank:2, nm:"Magic Cream · 50ml",                    cat:'skincare',   qty:38, val:'AED 13,300' },
+        { rank:3, nm:"Hollywood Flawless Filter",             cat:'foundation', qty:64, val:'AED 11,520' },
+        { rank:4, nm:"Eyes To Mesmerise · Bette Davis",       cat:'eyeshadow',  qty:54, val:'AED 5,940' },
+        { rank:5, nm:"Hollywood Beauty Light Wand",            cat:'cheek',     qty:42, val:'AED 6,720' }
+      ],
+      topCats: [
+        { cat:'Lipstick',  mix:'28%', delta:'+1.8pp vs LW', trend:'pos' },
+        { cat:'Skincare',  mix:'24%', delta:'+4.1pp',        trend:'pos' },
+        { cat:'Eyeshadow', mix:'18%', delta:'+0.4pp',        trend:'pos' }
+      ],
       team: [
         { in:'A', name:'Amal',    rl:'beauty advisor',   val:'18,420 aed', tag:'soft glam 54%' },
         { in:'L', name:'Layan',   rl:'fragrance',        val:'7,180 aed',  tag:'12 demos' },
@@ -4437,6 +4745,18 @@
     hourly:[6,9,13,18,22,26,29,33,31,26,21,16,9],
     best:'Cosy fleece pyjama set', bestSub:'182 units sold · 22% mix',
     teamSub:'7 on shift · 1 break',
+    topSellers:[
+      { rank:1, nm:"Mickey hoodie · adult M",      cat:'licensed', qty:228, val:'AED 4,560' },
+      { rank:2, nm:"5-pack ankle socks",            cat:'basics',   qty:412, val:'AED 1,648' },
+      { rank:3, nm:"Fleece pyjama set · M",         cat:'kids',     qty:182, val:'AED 3,640' },
+      { rank:4, nm:"Plain crew tee · L",            cat:'basics',   qty:368, val:'AED 1,840' },
+      { rank:5, nm:"Bedding set · double",          cat:'home',     qty:84,  val:'AED 5,880' }
+    ],
+    topCats:[
+      { cat:'Basics',   mix:'38%', delta:'+1.2pp vs LW', trend:'pos' },
+      { cat:'Kids',     mix:'22%', delta:'+3.6pp',        trend:'pos' },
+      { cat:'Licensed', mix:'18%', delta:'+4.4pp',        trend:'pos' }
+    ],
     team:[
       { in:'R', name:'Rashed',  rl:'kidswear',   val:'7,940 aed', tag:'+12% attach' },
       { in:'N', name:'Nour',    rl:'till 4',     val:'5,610 aed', tag:'82 tx' },
@@ -4490,6 +4810,18 @@
     hourly:[2,4,6,9,12,15,18,20,19,16,12,8,4],
     best:'Lancôme La vie est belle · 30ml', bestSub:'26 units sold · 14% mix',
     teamSub:'5 on shift · 1 break',
+    topSellers:[
+      { rank:1, nm:"Tatcha Dewy Skin Cream · 50ml",   cat:'skincare',   qty:42, val:'AED 12,180' },
+      { rank:2, nm:"MAC Studio Fix powder",            cat:'foundation', qty:88, val:'AED 14,080' },
+      { rank:3, nm:"Olaplex No.3 hair perfector",      cat:'haircare',   qty:64, val:'AED 6,400' },
+      { rank:4, nm:"YSL Libre EDP · 50ml",             cat:'fragrance',  qty:28, val:'AED 12,600' },
+      { rank:5, nm:"Drunk Elephant Polypeptide",       cat:'skincare',   qty:36, val:'AED 9,720' }
+    ],
+    topCats:[
+      { cat:'Skincare',   mix:'34%', delta:'+2.8pp vs LW', trend:'pos' },
+      { cat:'Foundation', mix:'22%', delta:'+1.4pp',        trend:'pos' },
+      { cat:'Fragrance',  mix:'18%', delta:'+5.2pp',        trend:'pos' }
+    ],
     team:[
       { in:'D', name:'Dalia',  rl:'beauty advisor',  val:'12,420 aed', tag:'soft glam 54%' },
       { in:'F', name:'Farah',  rl:'fragrance',       val:'7,610 aed',  tag:'demos 38' },
@@ -4804,6 +5136,66 @@
     }
   }
 
+  // ── Top 5 best sellers + Top 3 categories (every brand) ─────
+  function renderMovers(b) {
+    const sellers = b && Array.isArray(b.topSellers) ? b.topSellers : [];
+    const cats    = b && Array.isArray(b.topCats)    ? b.topCats    : [];
+    // iPad sellers
+    const padS = document.getElementById('padTopSellers');
+    if (padS) {
+      padS.innerHTML = sellers.map(s => `
+        <div class="ts-row">
+          <div class="rk">${s.rank}</div>
+          <div class="nm" title="${s.nm}">${s.nm}</div>
+          <div class="ct">${s.cat}</div>
+          <div class="v">${s.qty} u<small>${s.val}</small></div>
+        </div>`).join('');
+    }
+    // iPad categories
+    const padC = document.getElementById('padTopCats');
+    if (padC) {
+      padC.innerHTML = cats.map(c => {
+        const pct = parseInt(String(c.mix).replace(/[^0-9]/g, ''), 10) || 0;
+        const neg = c.trend === 'neg' ? 'neg' : '';
+        return `
+          <div class="tc-row">
+            <div class="top">
+              <div class="cat">${c.cat}</div>
+              <div class="mix">${c.mix}</div>
+            </div>
+            <div class="bar"><i style="width:${Math.min(100, pct * 2)}%"></i></div>
+            <div class="foot">
+              <span class="lbl">share · today</span>
+              <span class="delta ${neg}">${c.delta}</span>
+            </div>
+          </div>`;
+      }).join('');
+    }
+    // iPhone sellers
+    const phS = document.getElementById('phTopSellers');
+    if (phS) {
+      phS.innerHTML = sellers.map(s => `
+        <div class="ph-ts">
+          <div class="rk">${s.rank}</div>
+          <div class="nm" title="${s.nm}">${s.nm}<small>${s.cat}</small></div>
+          <div class="v">${s.qty} u<br><span style="font-weight:400;color:var(--ink-3)">${s.val}</span></div>
+        </div>`).join('');
+    }
+    // iPhone categories
+    const phC = document.getElementById('phTopCats');
+    if (phC) {
+      phC.innerHTML = cats.map(c => {
+        const neg = c.trend === 'neg' ? 'neg' : '';
+        return `
+          <div class="ph-tc">
+            <div class="cat">${c.cat}</div>
+            <div class="mix">${c.mix}</div>
+            <div class="dl ${neg}">${c.delta}</div>
+          </div>`;
+      }).join('');
+    }
+  }
+
   // ── Stock search · product result render ──────────────────
   function renderStockResult(sku, source /* 'search' | 'scan' */) {
     const html = sku ? buildStockResultHTML(sku, source) : '';
@@ -5017,6 +5409,8 @@
       renderAura(b);
       renderSegments(b);
     }
+    // Top 5 best sellers + Top 3 categories (all brands)
+    renderMovers(b);
     // Clear any open scan/search product result whenever brand changes
     clearStockResult();
 
