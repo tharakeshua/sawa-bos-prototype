@@ -2723,7 +2723,7 @@
     color: var(--ink-3); text-transform: uppercase; letter-spacing: .14em;
   }
   .ph-seg .b {
-    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px;
+    display: grid; grid-template-columns: 1.2fr 0.9fr 0.8fr 0.8fr 0.8fr; gap: 6px;
     font-family: 'JetBrains Mono', monospace; font-size: 10px;
   }
   .ph-seg .b .c .l {
@@ -2737,7 +2737,7 @@
     padding: 12px 14px;
     margin-top: 4px;
     font-family: 'JetBrains Mono', monospace; font-size: 11px;
-    display: grid; grid-template-columns: 1fr auto auto auto; gap: 12px;
+    display: grid; grid-template-columns: 1fr auto auto auto auto auto; gap: 10px;
     align-items: baseline;
   }
   .ph-seg-total .ttl {
@@ -3727,6 +3727,8 @@
                     <th>LY<span class="sm">aed</span></th>
                     <th>Trans<span class="sm">plan / act</span></th>
                     <th>ATV<span class="sm">plan / act</span></th>
+                    <th>IPC<span class="sm">items / cust</span></th>
+                    <th>Footfall<span class="sm">customers in</span></th>
                     <th>Conv<span class="sm">%</span></th>
                     <th>Mix<span class="sm">% of total</span></th>
                   </tr>
@@ -3740,6 +3742,8 @@
                     <td>36.00</td>
                     <td>52 / 29</td>
                     <td>1.24 / 1.24</td>
+                    <td>1.9</td>
+                    <td>35</td>
                     <td>56%</td>
                     <td>100%</td>
                   </tr>
@@ -4323,15 +4327,15 @@
       // Mirrors SFA011 "Store Performance By Segment Report" — Hagar tracks segment, not team
       segmentsNote: 'BBW manager tracks hourly segment sales, not per-associate targets. Source · SFA011 (Actual-Segment).',
       segments: [
-        { seg:'10-12', plan: 5.20, act: 4.00,  ly: 4.00,  txPlan: 5, txAct: 3,  atvPlan: 1.33, atvAct: 1.00, mc: 27.27, conv: 60 },
-        { seg:'12-14', plan: 8.40, act: 9.00,  ly: 9.00,  txPlan: 8, txAct: 7,  atvPlan: 1.29, atvAct: 1.00, mc: 15.56, conv: 88 },
-        { seg:'14-16', plan: 16.20,act: 17.50, ly: 17.50, txPlan: 14,txAct: 15, atvPlan: 1.17, atvAct: 1.00, mc: 44.12, conv: 94 },
-        { seg:'16-18', plan: 6.80, act: 5.50,  ly: 5.50,  txPlan: 5, txAct: 4,  atvPlan: 1.38, atvAct: 1.00, mc: 25.00, conv: 72 },
-        { seg:'18-20', plan: 11.40,act: 0,     ly: 0,     txPlan: 9, txAct: 0,  atvPlan: 0,    atvAct: 0,    mc: 0,     conv: 0  },
-        { seg:'20-22', plan: 9.20, act: 0,     ly: 0,     txPlan: 8, txAct: 0,  atvPlan: 0,    atvAct: 0,    mc: 0,     conv: 0  },
-        { seg:'22-24', plan: 2.80, act: 0,     ly: 0,     txPlan: 3, txAct: 0,  atvPlan: 0,    atvAct: 0,    mc: 0,     conv: 0  }
+        { seg:'10-12', plan: 5.20, act: 4.00,  ly: 4.00,  txPlan: 5, txAct: 3,  atvPlan: 1.33, atvAct: 1.00, mc: 27.27, conv: 60, ff: 5,  ipc: 1.7 },
+        { seg:'12-14', plan: 8.40, act: 9.00,  ly: 9.00,  txPlan: 8, txAct: 7,  atvPlan: 1.29, atvAct: 1.00, mc: 15.56, conv: 88, ff: 8,  ipc: 1.9 },
+        { seg:'14-16', plan: 16.20,act: 17.50, ly: 17.50, txPlan: 14,txAct: 15, atvPlan: 1.17, atvAct: 1.00, mc: 44.12, conv: 94, ff: 16, ipc: 2.2 },
+        { seg:'16-18', plan: 6.80, act: 5.50,  ly: 5.50,  txPlan: 5, txAct: 4,  atvPlan: 1.38, atvAct: 1.00, mc: 25.00, conv: 72, ff: 6,  ipc: 1.8 },
+        { seg:'18-20', plan: 11.40,act: 0,     ly: 0,     txPlan: 9, txAct: 0,  atvPlan: 0,    atvAct: 0,    mc: 0,     conv: 0,  ff: 0,  ipc: 0   },
+        { seg:'20-22', plan: 9.20, act: 0,     ly: 0,     txPlan: 8, txAct: 0,  atvPlan: 0,    atvAct: 0,    mc: 0,     conv: 0,  ff: 0,  ipc: 0   },
+        { seg:'22-24', plan: 2.80, act: 0,     ly: 0,     txPlan: 3, txAct: 0,  atvPlan: 0,    atvAct: 0,    mc: 0,     conv: 0,  ff: 0,  ipc: 0   }
       ],
-      segTotal: { plan: 60.00, act: 36.00, ly: 36.00, txPlan: 52, txAct: 29, atvPlan: 1.24, atvAct: 1.24, mc: 0, conv: 56 },
+      segTotal: { plan: 60.00, act: 36.00, ly: 36.00, txPlan: 52, txAct: 29, atvPlan: 1.24, atvAct: 1.24, mc: 0, conv: 56, ff: 35, ipc: 1.9 },
       channels: [
         { cls:'p', code:'P', name:'SAWA POS',   tx:62, mix:'48%', val:'7,940' },
         { cls:'m', code:'M', name:'MPOS',       tx:34, mix:'30%', val:'4,980' },
@@ -5078,6 +5082,8 @@
           <td>${fmt(s.ly)}</td>
           <td>${s.txPlan} / ${s.txAct}</td>
           <td>${fmt(s.atvPlan)} / ${fmt(s.atvAct)}</td>
+          <td>${s.ipc ? fmt(s.ipc, 1) : '—'}</td>
+          <td>${s.ff || '—'}</td>
           <td>${s.conv || 0}%</td>
           <td>${mix}%</td>
         </tr>`;
@@ -5094,6 +5100,8 @@
           <td>${fmt(tot.ly)}</td>
           <td>${tot.txPlan} / ${tot.txAct}</td>
           <td>${fmt(tot.atvPlan)} / ${fmt(tot.atvAct)}</td>
+          <td>${tot.ipc ? fmt(tot.ipc, 1) : '—'}</td>
+          <td>${tot.ff || '—'}</td>
           <td>${tot.conv || 0}%</td>
           <td>100%</td>`;
       }
@@ -5112,6 +5120,8 @@
             <div class="c"><div class="l">act / plan</div><div class="v">${fmt(s.act)} / ${fmt(s.plan)}</div></div>
             <div class="c"><div class="l">tx</div><div class="v">${s.txAct} / ${s.txPlan}</div></div>
             <div class="c"><div class="l">atv</div><div class="v">${fmt(s.atvAct)}</div></div>
+            <div class="c"><div class="l">ipc</div><div class="v">${s.ipc ? fmt(s.ipc, 1) : '—'}</div></div>
+            <div class="c"><div class="l">ff</div><div class="v">${s.ff || '—'}</div></div>
           </div>
         </div>`;
       }).join('');
@@ -5124,7 +5134,9 @@
           <div><div class="ttl">Total</div></div>
           <div><span class="l">Act</span>${fmt(tot.act)}</div>
           <div><span class="l">Tx</span>${tot.txAct}</div>
-          <div><span class="l">ATV</span>${fmt(tot.atvAct)}</div>`;
+          <div><span class="l">ATV</span>${fmt(tot.atvAct)}</div>
+          <div><span class="l">IPC</span>${tot.ipc ? fmt(tot.ipc, 1) : '—'}</div>
+          <div><span class="l">FF</span>${tot.ff || '—'}</div>`;
       }
     }
   }
