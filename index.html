@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>SAWA BOS · v5.5 — Premium Live Prototype</title>
+<title>SAWA BOS · v5.6 — Premium · BBW Aura · Segment Sales · Scan Stock</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
@@ -2463,6 +2463,525 @@
 
   .pad-main::-webkit-scrollbar { width: 5px; }
   .pad-main::-webkit-scrollbar-thumb { background: var(--line-2); border-radius: 4px; }
+
+  /* ════════════════ BBW-specific overlays ════════════════ */
+  /* Hide BBW blocks for every other brand · element keeps its natural display when BBW */
+  body:not(.brand-bbw) .bbw-only { display: none !important; }
+  body.brand-bbw .not-bbw        { display: none !important; }
+
+  /* Aura card · iPad */
+  .aura-card {
+    margin-top: 16px;
+    background: linear-gradient(135deg, #F8E2EB 0%, #FBFAF7 70%);
+    border: 1px solid var(--line);
+    border-radius: var(--r-card);
+    padding: 18px 20px;
+    box-shadow: var(--shadow-card);
+    display: grid;
+    grid-template-columns: 1.2fr 1fr 1fr 1fr;
+    gap: 18px;
+    align-items: stretch;
+    position: relative;
+    overflow: hidden;
+  }
+  .aura-card::before {
+    content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+    background: linear-gradient(180deg, #D8527C, #7A1F47);
+  }
+  .aura-head {
+    display: flex; flex-direction: column; gap: 6px;
+    padding-right: 14px;
+    border-right: 1px solid var(--line);
+  }
+  .aura-head .tag {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    text-transform: uppercase; letter-spacing: .2em;
+    color: #7A1F47;
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(216,82,124,.12);
+    padding: 4px 9px; border-radius: 999px;
+    border: 1px solid rgba(216,82,124,.30);
+    width: max-content;
+  }
+  .aura-head .tag::before {
+    content: ""; width: 6px; height: 6px; border-radius: 50%;
+    background: #D8527C; box-shadow: 0 0 6px #D8527C;
+    animation: pulse 1.6s ease-in-out infinite;
+  }
+  .aura-head .ttl {
+    font-family: 'Fraunces', serif; font-weight: 500;
+    font-size: 22px; letter-spacing: -.02em; line-height: 1.1;
+    color: var(--ink);
+  }
+  .aura-head .ttl em { font-style: italic; color: #7A1F47; }
+  .aura-head .sub {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    color: var(--ink-3); text-transform: uppercase; letter-spacing: .14em;
+  }
+  .aura-cell {
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 0 8px;
+    border-right: 1px solid var(--line);
+  }
+  .aura-cell:last-child { border-right: 0; }
+  .aura-cell .lab {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    color: var(--ink-3); text-transform: uppercase; letter-spacing: .2em;
+    margin-bottom: 6px;
+  }
+  .aura-cell .num {
+    font-family: 'Fraunces', serif; font-weight: 500;
+    font-size: 30px; line-height: 1; letter-spacing: -.02em;
+    color: var(--ink);
+  }
+  .aura-cell .sub {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    color: var(--ink-3); text-transform: uppercase; letter-spacing: .14em;
+    margin-top: 4px;
+  }
+  .aura-cell .delta {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    color: var(--pos); margin-top: 4px;
+    display: inline-flex; align-items: center; gap: 5px;
+  }
+  .aura-cell .ring {
+    margin-top: 6px;
+    width: 100%; height: 6px; background: rgba(122,31,71,.10); border-radius: 999px; overflow: hidden;
+  }
+  .aura-cell .ring i {
+    display: block; height: 100%; border-radius: inherit;
+    background: linear-gradient(90deg, #D8527C, #7A1F47);
+    transition: width .8s ease;
+  }
+  .aura-top {
+    grid-column: 1 / -1;
+    margin-top: 6px;
+    padding-top: 14px;
+    border-top: 1px dashed var(--line);
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
+  }
+  .aura-top .at {
+    background: rgba(255,255,255,.6);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 8px 10px;
+  }
+  .aura-top .at .l {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    color: var(--ink-3); text-transform: uppercase; letter-spacing: .16em;
+    margin-bottom: 2px;
+  }
+  .aura-top .at .v {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    color: var(--ink); letter-spacing: .04em;
+  }
+
+  /* Aura card · iPhone (compact) */
+  .ph-aura-card {
+    background: linear-gradient(135deg, #F8E2EB 0%, #FBFAF7 70%);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 12px 14px;
+    margin-bottom: 12px;
+    position: relative;
+    overflow: hidden;
+  }
+  .ph-aura-card::before {
+    content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+    background: linear-gradient(180deg, #D8527C, #7A1F47);
+  }
+  .ph-aura-card .h {
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    text-transform: uppercase; letter-spacing: .18em;
+    color: #7A1F47; margin-bottom: 8px;
+  }
+  .ph-aura-card .h .live { color: #7A1F47; }
+  .ph-aura-card .row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+  .ph-aura-card .row3 .c {
+    text-align: left; padding: 8px 10px;
+    background: rgba(255,255,255,.6); border: 1px solid var(--line); border-radius: 10px;
+  }
+  .ph-aura-card .row3 .c .l {
+    font-family: 'JetBrains Mono', monospace; font-size: 8px;
+    color: var(--ink-3); text-transform: uppercase; letter-spacing: .16em;
+    margin-bottom: 4px;
+  }
+  .ph-aura-card .row3 .c .n {
+    font-family: 'Fraunces', serif; font-weight: 500;
+    font-size: 17px; line-height: 1; color: var(--ink);
+  }
+  .ph-aura-card .bar { margin-top: 10px; height: 5px; background: rgba(122,31,71,.10); border-radius: 999px; overflow: hidden; }
+  .ph-aura-card .bar i { display: block; height: 100%; background: linear-gradient(90deg, #D8527C, #7A1F47); }
+  .ph-aura-card .barlbl {
+    margin-top: 5px;
+    font-family: 'JetBrains Mono', monospace; font-size: 8px;
+    color: var(--ink-3); text-transform: uppercase; letter-spacing: .14em;
+    display: flex; justify-content: space-between;
+  }
+
+  /* Segment-by-hour table · iPad (replaces team list for BBW) */
+  .seg-card {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: var(--r-card);
+    padding: 14px 16px 18px;
+    box-shadow: var(--shadow-card);
+    margin-top: 16px;
+  }
+  .seg-card .ho {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    margin-bottom: 10px;
+  }
+  .seg-card .ho .ttl {
+    font-family: 'Fraunces', serif; font-weight: 500;
+    font-size: 18px; letter-spacing: -.02em; color: var(--ink);
+    line-height: 1;
+  }
+  .seg-card .ho .sub {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    color: var(--ink-3); text-transform: uppercase; letter-spacing: .16em;
+    margin-top: 4px;
+  }
+  .seg-card .ho .src {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    color: #7A1F47; text-transform: uppercase; letter-spacing: .14em;
+    padding: 4px 9px; border-radius: 999px;
+    background: rgba(216,82,124,.10); border: 1px solid rgba(216,82,124,.28);
+  }
+  .seg-table {
+    width: 100%; border-collapse: collapse;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    color: var(--ink);
+  }
+  .seg-table thead th {
+    text-align: right; font-weight: 500;
+    color: var(--ink-3); text-transform: uppercase; letter-spacing: .14em;
+    font-size: 9px;
+    padding: 8px 6px;
+    border-bottom: 1px solid var(--line);
+    background: var(--paper-2);
+  }
+  .seg-table thead th:first-child { text-align: left; padding-left: 12px; }
+  .seg-table thead th .sm {
+    display: block; font-size: 8px; opacity: .65; font-weight: 400;
+    letter-spacing: .12em; margin-top: 2px;
+  }
+  .seg-table tbody td {
+    text-align: right; padding: 9px 6px;
+    border-bottom: 1px solid var(--line);
+    color: var(--ink);
+  }
+  .seg-table tbody td:first-child {
+    text-align: left; padding-left: 12px;
+    font-weight: 500; color: var(--ink);
+    font-family: 'Fraunces', serif; font-size: 14px; letter-spacing: -.01em;
+  }
+  .seg-table tbody tr.future td { opacity: .42; }
+  .seg-table tbody tr.now td:first-child::before {
+    content: "● "; color: var(--lime-2); margin-right: 4px;
+  }
+  .seg-table tbody td .delta-up   { color: var(--pos); }
+  .seg-table tbody td .delta-down { color: var(--neg); }
+  .seg-table tfoot td {
+    padding: 12px 6px 6px;
+    font-weight: 500; color: var(--ink);
+    border-top: 2px solid var(--ink);
+  }
+  .seg-table tfoot td:first-child {
+    text-align: left; padding-left: 12px;
+    font-family: 'Fraunces', serif; font-size: 15px; letter-spacing: -.01em;
+  }
+
+  /* Segment cards · iPhone compact */
+  .ph-seg-list { display: flex; flex-direction: column; gap: 8px; }
+  .ph-seg {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 10px 12px;
+    position: relative;
+  }
+  .ph-seg.future { opacity: .55; }
+  .ph-seg.now::before {
+    content: "live"; position: absolute; right: 10px; top: 10px;
+    background: var(--lime); color: var(--lime-ink);
+    font-family: 'JetBrains Mono', monospace; font-size: 8px;
+    font-weight: 600; letter-spacing: .12em; text-transform: uppercase;
+    padding: 2px 6px; border-radius: 4px;
+  }
+  .ph-seg .h {
+    display: flex; align-items: baseline; gap: 8px;
+    margin-bottom: 6px;
+  }
+  .ph-seg .h .seg-l {
+    font-family: 'Fraunces', serif; font-weight: 500;
+    font-size: 16px; letter-spacing: -.01em; color: var(--ink);
+  }
+  .ph-seg .h .pct {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    color: var(--ink-3); text-transform: uppercase; letter-spacing: .14em;
+  }
+  .ph-seg .b {
+    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px;
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  }
+  .ph-seg .b .c .l {
+    color: var(--ink-3); text-transform: uppercase; letter-spacing: .14em;
+    font-size: 8px; margin-bottom: 2px;
+  }
+  .ph-seg .b .c .v { color: var(--ink); font-size: 11px; }
+  .ph-seg-total {
+    background: var(--ink); color: #fff;
+    border-radius: 12px;
+    padding: 12px 14px;
+    margin-top: 4px;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    display: grid; grid-template-columns: 1fr auto auto auto; gap: 12px;
+    align-items: baseline;
+  }
+  .ph-seg-total .ttl {
+    font-family: 'Fraunces', serif; font-size: 16px; letter-spacing: -.01em;
+  }
+  .ph-seg-total .v { font-size: 12px; }
+  .ph-seg-total .l { font-size: 8px; opacity: .65; letter-spacing: .14em; text-transform: uppercase; display: block; }
+
+  /* Stock product search + scan bar */
+  .stock-search-bar {
+    display: flex; gap: 8px; align-items: stretch;
+    margin-top: 12px;
+  }
+  .stock-search-bar .inp {
+    flex: 1; display: flex; align-items: center; gap: 9px;
+    background: var(--paper); border: 1px solid var(--line);
+    border-radius: 12px; padding: 11px 14px;
+    transition: border-color .15s, box-shadow .15s;
+  }
+  .stock-search-bar .inp:focus-within {
+    border-color: var(--ink);
+    box-shadow: 0 0 0 3px rgba(14,23,20,.06);
+  }
+  .stock-search-bar .inp svg { color: var(--ink-3); flex-shrink: 0; }
+  .stock-search-bar .inp input {
+    flex: 1; min-width: 0;
+    background: transparent; border: 0; outline: 0;
+    color: var(--ink); font-family: 'Inter', sans-serif; font-size: 13px;
+    letter-spacing: -.005em;
+  }
+  .stock-search-bar .inp input::placeholder { color: var(--ink-4); }
+  .stock-search-bar .scan-btn {
+    appearance: none; cursor: pointer;
+    background: var(--ink); color: var(--lime);
+    border: 0; border-radius: 12px;
+    padding: 0 16px;
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    font-weight: 600; letter-spacing: .14em; text-transform: uppercase;
+    transition: background .15s, transform .12s;
+  }
+  .stock-search-bar .scan-btn:hover { background: #1A2A22; transform: translateY(-1px); }
+  .stock-search-bar .scan-btn:active { transform: translateY(0); }
+  .stock-search-bar .scan-btn svg { color: var(--lime); }
+
+  /* Scan modal */
+  .scan-modal {
+    position: fixed; inset: 0;
+    background: rgba(14,23,20,.55);
+    backdrop-filter: blur(6px);
+    display: none;
+    align-items: center; justify-content: center;
+    z-index: 200;
+    animation: scanFade .25s ease-out;
+  }
+  .scan-modal.live { display: flex; }
+  @keyframes scanFade { from { opacity: 0; } to { opacity: 1; } }
+  .scan-modal .card {
+    width: min(420px, 92vw);
+    background: var(--paper);
+    border-radius: 20px;
+    padding: 26px 26px 22px;
+    box-shadow: 0 30px 60px rgba(14,23,20,.45);
+    position: relative;
+    animation: scanRise .35s cubic-bezier(.22,.61,.36,1);
+  }
+  @keyframes scanRise {
+    from { opacity: 0; transform: translateY(20px) scale(.96); }
+    to   { opacity: 1; transform: none; }
+  }
+  .scan-modal .top {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 14px;
+  }
+  .scan-modal .top .ttl {
+    font-family: 'Fraunces', serif; font-weight: 500;
+    font-size: 22px; letter-spacing: -.02em; color: var(--ink);
+  }
+  .scan-modal .top .close {
+    appearance: none; background: transparent; border: 0; cursor: pointer;
+    width: 32px; height: 32px; border-radius: 8px;
+    color: var(--ink-3);
+    display: grid; place-items: center;
+    transition: background .15s, color .15s;
+  }
+  .scan-modal .top .close:hover { background: var(--paper-2); color: var(--ink); }
+  .scan-frame {
+    aspect-ratio: 1.4 / 1;
+    background:
+      linear-gradient(135deg, #0E1714 0%, #1A2A22 100%);
+    border-radius: 14px;
+    position: relative; overflow: hidden;
+    display: grid; place-items: center;
+  }
+  .scan-frame .corners {
+    position: absolute; inset: 18px;
+    border: 0;
+  }
+  .scan-frame .corners::before,
+  .scan-frame .corners::after,
+  .scan-frame .corners .tl,
+  .scan-frame .corners .br {
+    content: ""; position: absolute;
+    width: 24px; height: 24px;
+    border: 2.5px solid var(--lime);
+  }
+  .scan-frame .corners::before { left: 0; top: 0; border-right: 0; border-bottom: 0; border-radius: 4px 0 0 0; }
+  .scan-frame .corners::after  { right: 0; top: 0; border-left: 0; border-bottom: 0; border-radius: 0 4px 0 0; }
+  .scan-frame .corners .tl     { left: 0; bottom: 0; border-right: 0; border-top: 0; border-radius: 0 0 0 4px; }
+  .scan-frame .corners .br     { right: 0; bottom: 0; border-left: 0; border-top: 0; border-radius: 0 0 4px 0; }
+  .scan-frame .laser {
+    position: absolute; left: 18px; right: 18px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent 0%, var(--lime) 50%, transparent 100%);
+    box-shadow: 0 0 12px var(--lime);
+    animation: laserSweep 2.2s ease-in-out infinite;
+  }
+  @keyframes laserSweep {
+    0%,100% { top: 22%; }
+    50%     { top: 78%; }
+  }
+  .scan-frame .hint {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    color: rgba(199,251,85,.85); text-transform: uppercase; letter-spacing: .22em;
+    background: rgba(0,0,0,.4);
+    padding: 6px 12px; border-radius: 999px;
+    border: 1px solid rgba(199,251,85,.25);
+    z-index: 2;
+  }
+  .scan-actions {
+    display: flex; gap: 10px; margin-top: 14px;
+  }
+  .scan-actions button {
+    flex: 1; appearance: none; cursor: pointer;
+    padding: 12px 16px; border-radius: 12px;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    font-weight: 600; letter-spacing: .14em; text-transform: uppercase;
+    transition: transform .12s, background .15s;
+  }
+  .scan-actions button:active { transform: translateY(1px); }
+  .scan-actions .demo {
+    background: var(--lime); color: var(--lime-ink); border: 0;
+  }
+  .scan-actions .demo:hover { background: var(--lime-2); }
+  .scan-actions .cancel {
+    background: var(--paper-2); color: var(--ink); border: 1px solid var(--line);
+  }
+  .scan-actions .cancel:hover { background: var(--paper); }
+  .scan-modal .note {
+    margin-top: 12px;
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    color: var(--ink-3); text-transform: uppercase; letter-spacing: .16em;
+    text-align: center;
+  }
+
+  /* Stock product result card (when search/scan matches) */
+  .stock-result {
+    margin-top: 12px;
+    background: var(--paper);
+    border: 1.5px solid var(--ink);
+    border-radius: var(--r-card);
+    padding: 16px 18px;
+    box-shadow: var(--shadow-card-2);
+    display: none;
+    position: relative;
+    animation: scanRise .3s ease-out;
+  }
+  .stock-result.live { display: block; }
+  .stock-result::before {
+    content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+    background: linear-gradient(180deg, var(--lime-2), var(--lime));
+    border-radius: var(--r-card) 0 0 var(--r-card);
+  }
+  .stock-result .hd {
+    display: flex; justify-content: space-between; align-items: flex-start; gap: 12px;
+    margin-bottom: 12px;
+  }
+  .stock-result .hd .nm {
+    font-family: 'Fraunces', serif; font-weight: 500;
+    font-size: 18px; letter-spacing: -.015em; color: var(--ink);
+    line-height: 1.2;
+  }
+  .stock-result .hd .id {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    color: var(--ink-3); text-transform: uppercase; letter-spacing: .14em;
+    margin-top: 4px;
+  }
+  .stock-result .hd .src {
+    flex-shrink: 0;
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    color: var(--lime-ink);
+    background: var(--lime); padding: 4px 9px; border-radius: 999px;
+    text-transform: uppercase; letter-spacing: .14em; font-weight: 600;
+  }
+  .stock-result .hd .src.scan { background: #1A2A22; color: var(--lime); }
+  .stock-result .grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
+  }
+  .stock-result .grid .c {
+    background: var(--paper-2);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 10px 12px;
+  }
+  .stock-result .grid .c .l {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    color: var(--ink-3); text-transform: uppercase; letter-spacing: .16em;
+    margin-bottom: 4px;
+  }
+  .stock-result .grid .c .n {
+    font-family: 'Fraunces', serif; font-weight: 500;
+    font-size: 22px; line-height: 1; color: var(--ink);
+  }
+  .stock-result .grid .c .n .u {
+    font-size: 13px; color: var(--ink-3); margin-left: 2px;
+  }
+  .stock-result .grid .c.low { background: var(--neg-soft); border-color: rgba(190,58,58,.30); }
+  .stock-result .grid .c.low .n { color: var(--neg); }
+  .stock-result .meta {
+    display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px;
+    margin-top: 12px; padding-top: 10px;
+    border-top: 1px dashed var(--line);
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    color: var(--ink-3); text-transform: uppercase; letter-spacing: .14em;
+  }
+  .stock-result .meta b { color: var(--ink); font-weight: 600; }
+  .stock-result .actions {
+    display: flex; gap: 8px; margin-top: 12px;
+  }
+  .stock-result .actions button {
+    appearance: none; cursor: pointer; border: 1px solid var(--line);
+    background: var(--paper); color: var(--ink);
+    padding: 9px 14px; border-radius: 10px;
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    text-transform: uppercase; letter-spacing: .14em; font-weight: 500;
+    transition: border-color .15s, background .15s;
+  }
+  .stock-result .actions button:hover { border-color: var(--ink); }
+  .stock-result .actions .pri {
+    background: var(--ink); color: var(--lime); border-color: var(--ink);
+  }
+  /* iPhone scaled version */
+  .ph-stock-result .grid { grid-template-columns: 1fr 1fr; }
+  .ph-stock-result .hd .nm { font-size: 16px; }
 </style>
 </head>
 <body>
@@ -2481,7 +3000,7 @@
       <div class="sawa-mono-lg">S</div>
       <div>
         <div class="lh-t">SAWA <em>BOS</em></div>
-        <div class="lh-s">back office system · v5.5 · premium</div>
+        <div class="lh-s">back office system · v5.6 · premium</div>
       </div>
     </div>
     <div class="login-secure">
@@ -2522,7 +3041,7 @@
       <span>·</span>
       <span>trusted store device</span>
       <span>·</span>
-      <span>Entra ID · v5.5</span>
+      <span>Entra ID · v5.6</span>
     </div>
 
     <!-- brand marquee · infinite scroll band -->
@@ -2608,7 +3127,7 @@
   <footer class="login-foot">
     <span>© Alshaya Group · live prototype</span>
     <span class="dot"></span>
-    <span>build v5.5 · premium-landing</span>
+    <span>build v5.6 · BBW Aura · segments · scan</span>
     <span class="dot"></span>
     <span class="live-dot">session live</span>
   </footer>
@@ -2703,7 +3222,7 @@
 
           <div class="pad-foot">
             <div class="live">live · auto 60s · entra id</div>
-            <div>v5.5 premium</div>
+            <div>v5.6 · BBW pack</div>
             <div id="padFootRefresh">updated 12s ago</div>
           </div>
         </aside>
@@ -2765,12 +3284,40 @@
               </div>
             </div>
 
-            <!-- brand-personal strip -->
-            <div class="bp-strip">
+            <!-- brand-personal strip · hidden for BBW (replaced by Aura card below) -->
+            <div class="bp-strip not-bbw">
               <div class="lab"><b id="padBpBrandTag">AME</b> · brand-personal</div>
               <div class="m"><div class="n" id="padBp1Val">62%</div><div class="l" id="padBp1Lbl">Aura linkage</div></div>
               <div class="m"><div class="n" id="padBp2Val">38</div><div class="l" id="padBp2Lbl">denim fittings</div></div>
               <div class="m"><div class="n" id="padBp3Val">2.4×</div><div class="l" id="padBp3Lbl">jeans : tops</div></div>
+            </div>
+
+            <!-- BBW: Aura panel (quick + full enrolments + linkage) -->
+            <div class="aura-card bbw-only" id="padAuraCard">
+              <div class="aura-head">
+                <span class="tag">Aura · live</span>
+                <div class="ttl">Aura programme <em>· today</em></div>
+                <div class="sub">linkage drives signature mix · loyalty signups</div>
+              </div>
+              <div class="aura-cell">
+                <div class="lab">Quick enrol</div>
+                <div class="num" id="padAuraQuick">84</div>
+                <div class="sub" id="padAuraQuickSub">email + phone</div>
+                <div class="delta" id="padAuraQuickDelta">+12 vs LW</div>
+              </div>
+              <div class="aura-cell">
+                <div class="lab">Full enrol</div>
+                <div class="num" id="padAuraFull">36</div>
+                <div class="sub" id="padAuraFullSub">profile + prefs</div>
+                <div class="delta" id="padAuraFullDelta">+5 vs LW</div>
+              </div>
+              <div class="aura-cell">
+                <div class="lab">Linkage value</div>
+                <div class="num" id="padAuraLink">AED 17k</div>
+                <div class="sub" id="padAuraLinkSub">WTD · 9.0% of net</div>
+                <div class="ring"><i id="padAuraLinkRing" style="width:85%"></i></div>
+              </div>
+              <div class="aura-top" id="padAuraTop"></div>
             </div>
 
             <!-- Channels -->
@@ -2902,6 +3449,22 @@
                 <select class="sel"><option>All categories</option><option>Top sellers</option><option>Low / OOS</option></select>
               </div></div>
             </div>
+
+            <!-- product search + scan -->
+            <div class="stock-search-bar">
+              <label class="inp">
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="7" cy="7" r="4.2"/><path d="M10.4 10.4L13.5 13.5"/></svg>
+                <input id="padStockSearch" type="text" placeholder="search product ID · e.g. BBW-026-SPC-226 · AE-1142-DEN-32 …" />
+              </label>
+              <button class="scan-btn" id="padScanBtn" type="button" title="Scan QR / barcode">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h4v4M21 3h-4v4M3 21h4v-4M21 21h-4v-4M3 12h18"/></svg>
+                Scan QR
+              </button>
+            </div>
+
+            <!-- product result (when search/scan matches) -->
+            <div class="stock-result" id="padStockResult"></div>
+
             <div class="common-boxes" style="grid-template-columns:repeat(4,1fr); margin-top:16px;">
               <div class="cb atv"><div class="l">On floor</div><div class="n" id="padStockFloor2">2,184</div><div class="f"><span id="padStockCover2">3 wks · men's denim 69% mix</span></div></div>
               <div class="cb chan"><div class="l">Backstock</div><div class="n" id="padStockBack2">617</div><div class="f">14 cartons</div></div>
@@ -2922,10 +3485,52 @@
                 <div class="s" id="padTeamSub">4 on shift · 1 break · close 22:00 · viewing as Store Mgr</div>
               </div>
               <div class="filters"><div class="grp">
-                <select class="sel"><option>Current shift</option><option>Today</option><option>This week</option></select>
+                <select class="sel" id="padTeamPeriod"><option>Current shift</option><option>Today</option><option>This week</option></select>
               </div></div>
             </div>
-            <div class="stock-card-ipad" style="margin-top:16px;">
+
+            <!-- BBW · segment-by-hour view (SFA011 Actual-Segment) -->
+            <div class="seg-card bbw-only" id="padSegCard">
+              <div class="ho">
+                <div>
+                  <div class="ttl">Sales · by segment</div>
+                  <div class="sub" id="padSegSub">Hagar tracks hourly segment, not per-associate targets · AED ('000)</div>
+                </div>
+                <div class="src">SFA011 · Actual-Segment</div>
+              </div>
+              <div style="overflow-x:auto">
+              <table class="seg-table">
+                <thead>
+                  <tr>
+                    <th>Segment</th>
+                    <th>Plan<span class="sm">aed</span></th>
+                    <th>Act<span class="sm">aed</span></th>
+                    <th>LY<span class="sm">aed</span></th>
+                    <th>Trans<span class="sm">plan / act</span></th>
+                    <th>ATV<span class="sm">plan / act</span></th>
+                    <th>Conv<span class="sm">%</span></th>
+                    <th>Mix<span class="sm">% of total</span></th>
+                  </tr>
+                </thead>
+                <tbody id="padSegBody"></tbody>
+                <tfoot>
+                  <tr id="padSegTotal">
+                    <td>Total</td>
+                    <td>60.00</td>
+                    <td>36.00</td>
+                    <td>36.00</td>
+                    <td>52 / 29</td>
+                    <td>1.24 / 1.24</td>
+                    <td>56%</td>
+                    <td>100%</td>
+                  </tr>
+                </tfoot>
+              </table>
+              </div>
+            </div>
+
+            <!-- All non-BBW brands · associates ranked by sales -->
+            <div class="stock-card-ipad not-bbw" style="margin-top:16px;">
               <div class="head"><div class="l">Associates · ranked by sales</div><div class="r" id="padTeamRoleHint">store mgr · sees all</div></div>
               <div class="stock-list" id="padTeamList"></div>
             </div>
@@ -3018,7 +3623,7 @@
             <div class="alt">SSO only · no password ui · trusted store device</div>
             <div class="secure">
               <span class="l">session protected</span>
-              <span>entra id · v5.5</span>
+              <span>entra id · v5.6</span>
             </div>
           </section>
 
@@ -3117,13 +3722,28 @@
               <div class="c"><div class="l">Conv</div><div class="n" id="phConv">14<span style="font-size:13px;color:var(--ink-3)">%</span></div><div class="u" id="phConvFF">7,073 ff</div></div>
             </div>
 
-            <!-- brand-personal mini strip -->
-            <div class="bp-mini">
+            <!-- brand-personal mini strip · hidden for BBW (replaced by Aura) -->
+            <div class="bp-mini not-bbw">
               <div class="h">
                 <span><b id="phBpBrand">AME</b> · brand-personal</span>
                 <span id="phBpLive">live</span>
               </div>
               <div class="grid" id="phBp"></div>
+            </div>
+
+            <!-- BBW: Aura mini card -->
+            <div class="ph-aura-card bbw-only" id="phAuraCard">
+              <div class="h">
+                <span>Aura · brand-personal</span>
+                <span class="live">● live</span>
+              </div>
+              <div class="row3">
+                <div class="c"><div class="l">Quick enrol</div><div class="n" id="phAuraQuick">84</div></div>
+                <div class="c"><div class="l">Full enrol</div><div class="n" id="phAuraFull">36</div></div>
+                <div class="c"><div class="l">Linkage</div><div class="n" id="phAuraLink">17k</div></div>
+              </div>
+              <div class="bar"><i id="phAuraLinkRing" style="width:85%"></i></div>
+              <div class="barlbl"><span id="phAuraLinkLbl">target AED 20k</span><span id="phAuraLinkPct">85%</span></div>
             </div>
 
             <!-- Hourly chart -->
@@ -3195,6 +3815,19 @@
               <select class="sel"><option>All categories</option><option>Top sellers</option><option>Low / OOS</option></select>
             </div>
 
+            <!-- product search + scan -->
+            <div class="stock-search-bar" style="margin-top:10px;">
+              <label class="inp">
+                <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="7" cy="7" r="4.2"/><path d="M10.4 10.4L13.5 13.5"/></svg>
+                <input id="phStockSearch" type="text" placeholder="search product ID" />
+              </label>
+              <button class="scan-btn" id="phScanBtn" type="button" title="Scan">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h4v4M21 3h-4v4M3 21h4v-4M21 21h-4v-4M3 12h18"/></svg>
+                Scan
+              </button>
+            </div>
+            <div class="stock-result ph-stock-result" id="phStockResult"></div>
+
             <div class="ph-stock-sum">
               <div class="c"><div class="l">On floor</div><div class="n" id="phStockFloor">2,184</div><div class="f" id="phStockCover">312 styles</div></div>
               <div class="c"><div class="l">Backstock</div><div class="n" id="phStockBack">617</div><div class="f">14 cartons</div></div>
@@ -3225,12 +3858,30 @@
               <select class="sel"><option>WTD</option></select>
             </div>
 
-            <div class="team-pulse-bar">
+            <div class="team-pulse-bar not-bbw">
               <div><div class="l">Team pulse</div><div class="v">4 on shift · 1 break</div></div>
               <div class="live-tag">● live</div>
             </div>
 
-            <div class="team-list" id="phTeamList"></div>
+            <div class="team-list not-bbw" id="phTeamList"></div>
+
+            <!-- BBW · segment-by-hour list (SFA011) -->
+            <div class="bbw-only" id="phSegWrap">
+              <div class="team-pulse-bar" style="background:linear-gradient(135deg,#F8E2EB 0%,#FBFAF7 70%);border-color:rgba(216,82,124,.25);">
+                <div style="min-width:0; flex:1; padding-right:8px;">
+                  <div class="l">Segment sales · SFA011</div>
+                  <div class="v" style="font-size:11px; line-height:1.3;">hourly segments · not per-associate</div>
+                </div>
+                <div class="live-tag" style="background:#7A1F47;color:#fff;flex-shrink:0">● live</div>
+              </div>
+              <div class="ph-seg-list" id="phSegList"></div>
+              <div class="ph-seg-total" id="phSegTotal">
+                <div><div class="ttl">Total</div></div>
+                <div><span class="l">Act</span>36.00</div>
+                <div><span class="l">Tx</span>29</div>
+                <div><span class="l">ATV</span>1.24</div>
+              </div>
+            </div>
           </section>
 
           <!-- ME -->
@@ -3275,7 +3926,7 @@
                 <div class="row"><span class="l">Sprint window</span><span class="v">02–12 Jun 2026</span></div>
                 <div class="row"><span class="l">Last shift</span><span class="v">Tue 22:14</span></div>
                 <div class="row"><span class="l">Auth</span><span class="v" id="phMeAuth">Microsoft Entra ID</span></div>
-                <div class="row"><span class="l">App version</span><span class="v">v5.5 · premium</span></div>
+                <div class="row"><span class="l">App version</span><span class="v">v5.6 · BBW pack</span></div>
                 <div class="row"><span class="l">Device</span><span class="v">Store iPhone 14 · trusted</span></div>
               </div>
             </div>
@@ -3315,7 +3966,32 @@
 
   <div class="cap">
     <span class="cap-dot"></span>
-    <span>live · v5.5 · premium-landing · 8 brands · 4 roles · brand-keyed stock + me · motion polish</span>
+    <span>live · v5.6 · BBW Aura + segment-sales + scan stock · 8 brands · 4 roles</span>
+  </div>
+</div>
+
+<!-- ═════════════════ SCAN MODAL (QR/Barcode) ═════════════════ -->
+<div class="scan-modal" id="scanModal">
+  <div class="card">
+    <div class="top">
+      <div>
+        <div class="ttl">Scan <em style="font-style:italic;color:#7A1F47;">product</em></div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.18em;margin-top:4px;">QR · barcode · article ID</div>
+      </div>
+      <button class="close" id="scanClose" aria-label="Close">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 3l10 10M13 3L3 13"/></svg>
+      </button>
+    </div>
+    <div class="scan-frame">
+      <div class="corners"><span class="tl"></span><span class="br"></span></div>
+      <div class="laser"></div>
+      <div class="hint" id="scanHint">align code in frame</div>
+    </div>
+    <div class="scan-actions">
+      <button class="cancel" id="scanCancel">Cancel</button>
+      <button class="demo" id="scanDemo">Simulate scan ↦</button>
+    </div>
+    <div class="note">demo · scans return a sample product from this brand's stock</div>
   </div>
 </div>
 
@@ -3380,11 +4056,37 @@
       atv: '128', ipc: '4', conv: '22', convFF: '8,640 ff',
       tx: '1,471', chanLive: '4',
       bp: [
-        { v: '58%', l: 'Signature mix' },
-        { v: '42%', l: '3-for-2 attach' },
-        { v: 'AED 17k',  l: 'Aura linkage' }
+        { v: '84',     l: 'Aura · quick enrol' },
+        { v: '36',     l: 'Aura · full enrol' },
+        { v: 'AED 17k', l: 'Aura · linkage' }
       ],
       bpTag: 'BBW',
+      // Aura panel — quick + full enrolments, linkage value, target progress
+      aura: {
+        quick:   { v: 84,        l: 'Quick enrolments',  sub: 'email + phone · today', delta: '+12 vs LW' },
+        full:    { v: 36,        l: 'Full enrolments',   sub: 'profile + preferences', delta: '+5 vs LW' },
+        linkage: { v: 'AED 17k', l: 'Linkage value',     sub: 'WTD · 9.0% of net',     delta: 'target 20k', pct: 85 },
+        capture: { v: '42%',     l: 'Capture rate',      sub: '120 txn · 51 enrolled', delta: 'target 50%' },
+        top:     [
+          { lab: 'fragrance bar', val: '34 quick · 18 full' },
+          { lab: 'candle wall',   val: '22 quick · 9 full'  },
+          { lab: 'gift wrap',     val: '14 quick · 6 full'  },
+          { lab: 'till 2',        val: '14 quick · 3 full'  }
+        ]
+      },
+      // Segment-by-hour sales (replaces team-level individual targets for BBW)
+      // Mirrors SFA011 "Store Performance By Segment Report" — Hagar tracks segment, not team
+      segmentsNote: 'BBW manager tracks hourly segment sales, not per-associate targets. Source · SFA011 (Actual-Segment).',
+      segments: [
+        { seg:'10-12', plan: 5.20, act: 4.00,  ly: 4.00,  txPlan: 5, txAct: 3,  atvPlan: 1.33, atvAct: 1.00, mc: 27.27, conv: 60 },
+        { seg:'12-14', plan: 8.40, act: 9.00,  ly: 9.00,  txPlan: 8, txAct: 7,  atvPlan: 1.29, atvAct: 1.00, mc: 15.56, conv: 88 },
+        { seg:'14-16', plan: 16.20,act: 17.50, ly: 17.50, txPlan: 14,txAct: 15, atvPlan: 1.17, atvAct: 1.00, mc: 44.12, conv: 94 },
+        { seg:'16-18', plan: 6.80, act: 5.50,  ly: 5.50,  txPlan: 5, txAct: 4,  atvPlan: 1.38, atvAct: 1.00, mc: 25.00, conv: 72 },
+        { seg:'18-20', plan: 11.40,act: 0,     ly: 0,     txPlan: 9, txAct: 0,  atvPlan: 0,    atvAct: 0,    mc: 0,     conv: 0  },
+        { seg:'20-22', plan: 9.20, act: 0,     ly: 0,     txPlan: 8, txAct: 0,  atvPlan: 0,    atvAct: 0,    mc: 0,     conv: 0  },
+        { seg:'22-24', plan: 2.80, act: 0,     ly: 0,     txPlan: 3, txAct: 0,  atvPlan: 0,    atvAct: 0,    mc: 0,     conv: 0  }
+      ],
+      segTotal: { plan: 60.00, act: 36.00, ly: 36.00, txPlan: 52, txAct: 29, atvPlan: 1.24, atvAct: 1.24, mc: 0, conv: 56 },
       channels: [
         { cls:'p', code:'P', name:'SAWA POS',   tx:62, mix:'48%', val:'7,940' },
         { cls:'m', code:'M', name:'MPOS',       tx:34, mix:'30%', val:'4,980' },
@@ -3604,10 +4306,12 @@
         floor:'1,962', back:'548', low:6, s2s:'5.4',
         cover:'2.8 wks · Signature 58% mix',
         sku: [
-          { nm:'Strawberry Pound Cake · body cream 226g', sku:'BBW-026-SPC-226', ct:4, fill:22, sev:'low' },
-          { nm:'Champagne Toast · 3-wick candle',          sku:'BBW-310-CHT-3W',  ct:5, fill:28, sev:'low' },
-          { nm:'A Thousand Wishes · PocketBac',            sku:'BBW-005-ATW-29',  ct:12,fill:55, sev:'mid' },
-          { nm:'Stress Relief · aromatherapy mist 75ml',   sku:'BBW-712-STR-75',  ct:8, fill:42, sev:'mid' }
+          { nm:'Strawberry Pound Cake · body cream 226g', sku:'BBW-026-SPC-226', ct:4,  fill:22, sev:'low', floor:4,  back:18, bay:'Bay 3 · top shelf' },
+          { nm:'Champagne Toast · 3-wick candle',          sku:'BBW-310-CHT-3W',  ct:5,  fill:28, sev:'low', floor:5,  back:24, bay:'Candle wall · row 2' },
+          { nm:'A Thousand Wishes · PocketBac',            sku:'BBW-005-ATW-29',  ct:12, fill:55, sev:'mid', floor:12, back:62, bay:'Front fixture · queue' },
+          { nm:'Stress Relief · aromatherapy mist 75ml',   sku:'BBW-712-STR-75',  ct:8,  fill:42, sev:'mid', floor:8,  back:36, bay:'Aromatherapy table' },
+          { nm:'Japanese Cherry Blossom · body lotion',     sku:'BBW-118-JCB-LOT', ct:22, fill:88, sev:'',    floor:22, back:78, bay:'Bay 1 · core' },
+          { nm:'Warm Vanilla Sugar · shower gel',           sku:'BBW-204-WVS-SG',  ct:18, fill:80, sev:'',    floor:18, back:54, bay:'Bay 2 · shower' }
         ]
       },
       meAi: {
@@ -3986,6 +4690,245 @@
     </div>`).join('');
   }
 
+  // ── BBW · Aura panel render (iPad + iPhone) ─────────────────
+  function renderAura(b) {
+    if (!b || !b.aura) return;
+    const a = b.aura;
+    // iPad
+    const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+    set('padAuraQuick',  a.quick.v);
+    set('padAuraQuickSub', a.quick.sub);
+    set('padAuraQuickDelta', a.quick.delta);
+    set('padAuraFull',   a.full.v);
+    set('padAuraFullSub', a.full.sub);
+    set('padAuraFullDelta', a.full.delta);
+    set('padAuraLink',   a.linkage.v);
+    set('padAuraLinkSub', a.linkage.sub);
+    const ring = document.getElementById('padAuraLinkRing');
+    if (ring) ring.style.width = (a.linkage.pct || 80) + '%';
+    const top = document.getElementById('padAuraTop');
+    if (top && a.top) {
+      top.innerHTML = a.top.map(t =>
+        `<div class="at"><div class="l">${t.lab}</div><div class="v">${t.val}</div></div>`
+      ).join('');
+    }
+    // iPhone
+    set('phAuraQuick', a.quick.v);
+    set('phAuraFull',  a.full.v);
+    set('phAuraLink',  String(a.linkage.v).replace(/^AED\s*/i, ''));
+    const phRing = document.getElementById('phAuraLinkRing');
+    if (phRing) phRing.style.width = (a.linkage.pct || 80) + '%';
+    set('phAuraLinkLbl', `linkage · ${a.linkage.delta}`);
+    set('phAuraLinkPct', (a.linkage.pct || 80) + '%');
+  }
+
+  // ── BBW · Segment-by-hour view (SFA011 Actual-Segment) ────
+  function renderSegments(b) {
+    if (!b || !b.segments) return;
+    const segs   = b.segments;
+    const tot    = b.segTotal;
+    // "now" segment = last band with any actual sales (later bands are future)
+    let nowSeg = 0;
+    for (let i = 0; i < segs.length; i++) if (segs[i].act > 0) nowSeg = i;
+
+    const totalAct = tot ? tot.act : segs.reduce((s,x) => s + x.act, 0);
+    const fmt = (n, dp=2) => (n || 0).toFixed(dp);
+
+    // iPad table body
+    const tbody = document.getElementById('padSegBody');
+    if (tbody) {
+      tbody.innerHTML = segs.map((s, i) => {
+        const future = s.act === 0 && s.plan > 0 && i > nowSeg;
+        const now    = i === nowSeg;
+        const mix    = totalAct > 0 ? ((s.act / totalAct) * 100).toFixed(1) : '0.0';
+        const deltaCls = s.act >= s.plan ? 'delta-up' : 'delta-down';
+        const deltaSym = s.act >= s.plan ? '↑' : '↓';
+        const planAct = (s.plan > 0 || s.act > 0)
+          ? `<span class="${deltaCls}">${deltaSym}</span> ${fmt(s.act)}`
+          : '—';
+        return `<tr class="${future?'future':''} ${now?'now':''}">
+          <td>${s.seg}</td>
+          <td>${fmt(s.plan)}</td>
+          <td>${planAct}</td>
+          <td>${fmt(s.ly)}</td>
+          <td>${s.txPlan} / ${s.txAct}</td>
+          <td>${fmt(s.atvPlan)} / ${fmt(s.atvAct)}</td>
+          <td>${s.conv || 0}%</td>
+          <td>${mix}%</td>
+        </tr>`;
+      }).join('');
+    }
+    // iPad totals row
+    if (tot) {
+      const tr = document.getElementById('padSegTotal');
+      if (tr) {
+        tr.innerHTML = `
+          <td>Total</td>
+          <td>${fmt(tot.plan)}</td>
+          <td>${fmt(tot.act)}</td>
+          <td>${fmt(tot.ly)}</td>
+          <td>${tot.txPlan} / ${tot.txAct}</td>
+          <td>${fmt(tot.atvPlan)} / ${fmt(tot.atvAct)}</td>
+          <td>${tot.conv || 0}%</td>
+          <td>100%</td>`;
+      }
+    }
+    // iPhone compact list
+    const phList = document.getElementById('phSegList');
+    if (phList) {
+      phList.innerHTML = segs.map((s, i) => {
+        const future = s.act === 0 && s.plan > 0 && i > nowSeg;
+        const now    = i === nowSeg;
+        const cls    = future ? 'future' : (now ? 'now' : '');
+        const pct    = s.plan > 0 ? Math.round((s.act / s.plan) * 100) : 0;
+        return `<div class="ph-seg ${cls}">
+          <div class="h"><span class="seg-l">${s.seg}</span><span class="pct">${pct}% of plan</span></div>
+          <div class="b">
+            <div class="c"><div class="l">act / plan</div><div class="v">${fmt(s.act)} / ${fmt(s.plan)}</div></div>
+            <div class="c"><div class="l">tx</div><div class="v">${s.txAct} / ${s.txPlan}</div></div>
+            <div class="c"><div class="l">atv</div><div class="v">${fmt(s.atvAct)}</div></div>
+          </div>
+        </div>`;
+      }).join('');
+    }
+    // iPhone totals
+    if (tot) {
+      const ttRow = document.getElementById('phSegTotal');
+      if (ttRow) {
+        ttRow.innerHTML = `
+          <div><div class="ttl">Total</div></div>
+          <div><span class="l">Act</span>${fmt(tot.act)}</div>
+          <div><span class="l">Tx</span>${tot.txAct}</div>
+          <div><span class="l">ATV</span>${fmt(tot.atvAct)}</div>`;
+      }
+    }
+  }
+
+  // ── Stock search · product result render ──────────────────
+  function renderStockResult(sku, source /* 'search' | 'scan' */) {
+    const html = sku ? buildStockResultHTML(sku, source) : '';
+    const padR = document.getElementById('padStockResult');
+    const phR  = document.getElementById('phStockResult');
+    if (padR) { padR.innerHTML = html; padR.classList.toggle('live', !!sku); }
+    if (phR)  { phR.innerHTML  = html; phR.classList.toggle('live',  !!sku); }
+  }
+  function buildStockResultHTML(s, source) {
+    const total = (s.floor || 0) + (s.back || 0);
+    const lowCls  = s.sev === 'low' ? 'low' : '';
+    const srcCls  = source === 'scan' ? 'scan' : '';
+    const srcLbl  = source === 'scan' ? '● scanned' : '● matched';
+    return `
+      <div class="hd">
+        <div>
+          <div class="nm">${s.nm}</div>
+          <div class="id">SKU ${s.sku}${s.bay ? ' · ' + s.bay : ''}</div>
+        </div>
+        <div class="src ${srcCls}">${srcLbl}</div>
+      </div>
+      <div class="grid">
+        <div class="c ${lowCls}"><div class="l">Total avail</div><div class="n">${total}<span class="u">units</span></div></div>
+        <div class="c"><div class="l">On floor</div><div class="n">${s.floor || 0}</div></div>
+        <div class="c"><div class="l">Backstore</div><div class="n">${s.back || 0}</div></div>
+        <div class="c ${lowCls}"><div class="l">Fill rate</div><div class="n">${s.fill || 0}<span class="u">%</span></div></div>
+      </div>
+      <div class="meta">
+        <span>Severity · <b>${s.sev === 'low' ? 'low — replenish' : (s.sev === 'mid' ? 'monitor' : 'healthy')}</b></span>
+        <span>Source · <b>${source === 'scan' ? 'QR scan' : 'manual lookup'}</b></span>
+        <span>Last refresh · <b>14:18</b></span>
+      </div>
+      <div class="actions">
+        <button class="pri" type="button">Reserve from back ↗</button>
+        <button type="button">Open in RFID</button>
+        <button type="button" data-clear-result>Clear</button>
+      </div>`;
+  }
+  function clearStockResult() {
+    ['padStockResult','phStockResult'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) { el.classList.remove('live'); el.innerHTML = ''; }
+    });
+  }
+  // Search across the current brand's SKU list
+  function findSkuInCurrentBrand(q) {
+    const b = brands[state.brand];
+    if (!b || !b.stock || !b.stock.sku) return null;
+    const needle = String(q || '').trim().toUpperCase();
+    if (!needle) return null;
+    return b.stock.sku.find(s =>
+      s.sku.toUpperCase().includes(needle) ||
+      s.nm.toUpperCase().includes(needle)
+    ) || null;
+  }
+  function wireStockSearchAndScan() {
+    const padInp = document.getElementById('padStockSearch');
+    const phInp  = document.getElementById('phStockSearch');
+    function handle(q) {
+      if (!q) { clearStockResult(); return; }
+      const hit = findSkuInCurrentBrand(q);
+      if (hit) renderStockResult(hit, 'search');
+      else renderStockResult(null);
+    }
+    if (padInp) padInp.addEventListener('input', e => handle(e.target.value));
+    if (phInp)  phInp .addEventListener('input', e => handle(e.target.value));
+
+    document.addEventListener('click', e => {
+      if (e.target.closest('[data-clear-result]')) {
+        const padInp = document.getElementById('padStockSearch');
+        const phInp  = document.getElementById('phStockSearch');
+        if (padInp) padInp.value = '';
+        if (phInp)  phInp.value  = '';
+        clearStockResult();
+      }
+    });
+
+    // Scan buttons
+    const scanOpen = () => {
+      const modal = document.getElementById('scanModal');
+      if (modal) modal.classList.add('live');
+      const hint = document.getElementById('scanHint');
+      if (hint) hint.textContent = 'align code in frame';
+    };
+    const scanClose = () => {
+      const modal = document.getElementById('scanModal');
+      if (modal) modal.classList.remove('live');
+    };
+    const padScan = document.getElementById('padScanBtn');
+    const phScan  = document.getElementById('phScanBtn');
+    if (padScan) padScan.addEventListener('click', scanOpen);
+    if (phScan)  phScan .addEventListener('click', scanOpen);
+    const closeBtn = document.getElementById('scanClose');
+    const cancelBtn = document.getElementById('scanCancel');
+    const demoBtn   = document.getElementById('scanDemo');
+    if (closeBtn)  closeBtn.addEventListener('click', scanClose);
+    if (cancelBtn) cancelBtn.addEventListener('click', scanClose);
+    if (demoBtn)   demoBtn.addEventListener('click', () => {
+      const hint = document.getElementById('scanHint');
+      if (hint) hint.textContent = 'reading…';
+      setTimeout(() => {
+        const b = brands[state.brand];
+        const pick = (b.stock && b.stock.sku && b.stock.sku[0]) || null;
+        scanClose();
+        if (pick) {
+          renderStockResult(pick, 'scan');
+          // populate input field with the SKU for transparency
+          const padInp = document.getElementById('padStockSearch');
+          const phInp  = document.getElementById('phStockSearch');
+          if (padInp) padInp.value = pick.sku;
+          if (phInp)  phInp.value  = pick.sku;
+        }
+      }, 1100);
+    });
+    // close on backdrop click
+    const modal = document.getElementById('scanModal');
+    if (modal) modal.addEventListener('click', e => {
+      if (e.target === modal) scanClose();
+    });
+    // close on Escape
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') scanClose();
+    });
+  }
+
   // ───────────────────── PROGRESS / DELTA HELPERS ─────────────────────
   function deltaClassPos(t) { return t === 'pos' ? 'delta-pos' : 'delta-neg'; }
   function trendClassUp(t) { return t === 'pos' ? 'up' : ''; }
@@ -4066,6 +5009,16 @@
     document.body.classList.toggle('no-edit', !r.edit);
     // Tightened VM access (fix · review high #8)
     document.body.classList.toggle('role-vm', r.code === 'vm');
+    // Brand-specific overlays (Aura + segments + …)
+    document.body.classList.toggle('brand-bbw', b.key === 'bbw');
+
+    // BBW · Aura panel + Segment-by-hour view
+    if (b.key === 'bbw') {
+      renderAura(b);
+      renderSegments(b);
+    }
+    // Clear any open scan/search product result whenever brand changes
+    clearStockResult();
 
     // header chips active state
     $$('#brandChips .chip').forEach(c => c.classList.toggle('active', c.dataset.brand === b.key));
@@ -4471,6 +5424,9 @@
     c.addEventListener('click', () => enterApp(c.dataset.role));
   });
   document.getElementById('signOut').addEventListener('click', signOut);
+
+  // Stock product search + scan wiring (all brands)
+  wireStockSearchAndScan();
 
   // ─────────────────── DEMO LOGIN (prototype only) ───────────────────
   // Any non-empty user + pwd works; user-handle auto-maps to a starter brand × role.
